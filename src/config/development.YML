@@ -1,0 +1,62 @@
+# jwt配置
+jwt:
+  # 密钥
+  secretKey: 'secret'
+  signOptions:
+    # 过期时间
+    expiresIn: '12h'
+
+# redis配置
+redis:
+  port: 63397
+  host: "127.0.0.1"
+  db: 0
+  password: "123456"
+
+# 数据库配置
+mysql:
+  name: "default"
+  # 指定数据库类型为 mysql
+  type: 'mysql'
+  # 自动加载实体类。将此设置为 true，TypeORM 将自动在应用启动时扫描并加载实体类
+  autoLoadEntities: true
+  # 保持数据库连接活动状态。将此设置为 true，即使应用程序处于空闲状态，也将保持与数据库的连接
+  keepConnectionAlive: true
+  # 数据库服务器的主机地址
+  host: 'localhost'
+  # 数据库的用户名
+  username: 'root'
+  # 数据库的密码
+  password: 'root'
+  # 要连接的数据库名称
+  database: 'all-sql'
+  # 数据库服务器的端口号
+  port: 3306
+  # 数据库的字符集设置。这里使用的是 UTF-8 编码
+  charset: 'utf8mb4'
+  # 设置数据库查询日志记录器的类型。在此示例中，使用的是高级控制台日志记录器
+  logger: 'advanced-console'
+  # 禁用数据库查询日志记录。将此设置为 false，TypeORM 不会记录数据库查询日志。
+  logging: true
+  # 允许在单个查询中使用多个语句
+  multipleStatements: true
+  # 禁止在每次应用启动时删除数据库模式
+  dropSchema: false
+  # 自动同步实体类到数据库
+  synchronize: true
+  # 支持处理大数值
+  supportBigNumbers: true
+  # 将大数值作为字符串处理，以避免 JavaScript 中的精度问题
+  bigNumberStrings: true
+  # 启用缓存
+  cache: true
+  # 启用日期字符串转换
+  dateStrings: true
+
+# 系统配置
+system:
+  port: 18000
+  # 重置密码
+  password: 'Aa123456.'
+  # 系统版本号
+  versions: 'v1'
