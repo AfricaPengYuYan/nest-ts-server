@@ -6,10 +6,14 @@ export class UserEntity {
     @PrimaryGeneratedColumn({ comment: "用户id", name: "user_id", type: "int" })
     userId: number;
 
-    @Column({ type: "varchar", default: null, length: 20, name: "user_name", comment: "用户名称" })
+    @Column({ type: "varchar", default: null, length: 20, name: "user_name", comment: "用户真实名称" })
     userName: string;
 
+    @Column({ type: "varchar", default: null, length: 20, name: "nick_name", comment: "用户昵称" })
+    nickName: string;
+
     @Column({
+        unique: true,
         type: "varchar",
         default: null,
         length: 20,

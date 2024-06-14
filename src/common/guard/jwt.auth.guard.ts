@@ -23,6 +23,7 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
         const res = ctx.switchToHttp().getResponse();
         const temp_path = req.path;
         const ip = req.ip;
+
         // 拿到 temp_path 地址，根据 configService 里面的版本号判断是否有前缀，有就去掉
         const version = this.configService.get("system.versions");
         let path = temp_path;

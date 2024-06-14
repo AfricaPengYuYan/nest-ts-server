@@ -34,4 +34,28 @@ export class UserService {
             throw new HttpException(e.message, 500);
         }
     }
+
+    /**
+     * 根据账号和密码查找用户信息
+     * @param {string} account - 用户账号
+     * @param {string} password - 用户密码
+     * @param {boolean} isSpecial - 特殊流程，默认对查询的结果进行验空
+     * @returns {Promise<UserEntity>} 返回一个 Promise 对象，表示查找到的用户信息
+     * @throws {HttpException} 如果账号或密码为空
+     * @throws {HttpException} 如果在数据库查询不到
+     */
+    async findUserByAccountAndPassword(account: string, password: string, isSpecial: boolean = true): Promise<UserEntity> {
+        if (!account || !password) {
+            throw new HttpException("账号或密码不能为空", 500);
+        }
+        const userInfo = await this.repository.findOne({
+            where: { account, password },
+        });
+        if (!userInfo && isSpecial) throw new HttpException("很抱歉，未找到该账号的相关信息！", 500);
+        return userInfo;
+    }
+
+    async insert(){
+
+    }
 }
