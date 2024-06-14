@@ -1,3 +1,3 @@
-export class TokenFields {
+export class AccessTokenFields {
     userId: number;
 }

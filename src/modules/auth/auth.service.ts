@@ -4,20 +4,22 @@ import { JwtService } from "@nestjs/jwt";
 import { UserEntity } from "~/modules/auth/user/user.entity";
 import { verifyUser } from "~/modules/auth/user/user.utils";
 import { AuthLoginDto, AuthRegisterDto } from "~/modules/auth/auth.dto";
-import { TokenFields } from "../base.dto";
+import { AccessTokenFields } from "../base.dto";
+import { Response } from "~/modules/result";
 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly jwtService: JwtService,
-        private readonly userService: UserService,
+        private readonly userService: UserService
     ) {
     }
 
     /**
      * 根据账号密码返回新的令牌(Token)
-     * @param account 账号
-     * @param password 密码
+     * @param {Object} param
+     * @param {string} param.account 账号
+     * @param {string} param.password 密码
      */
     async login({ account, password }: AuthLoginDto) {
         const userInfo = await this.userService.findUserByAccountAndPassword(account, password);
@@ -25,27 +27,37 @@ export class AuthService {
         try {
             const payload = { userId: userInfo.userId, source: userInfo.source };
             const accessToken = await this.createToken(payload);
-            return { access_token: accessToken };
+            return Response.success({ access_token: accessToken }, "欢迎回来");
         } catch (e) {
             throw new HttpException(e.message, 500);
         }
     }
 
+    /**
+     * 根据 账号 密码 用户名称 进行注册
+     * @async
+     * @param {Object} param
+     * @param {string} param.account 账号
+     * @param {string} param.password 密码
+     * @param {string} param.userName 用户名称
+     */
     async register(param: AuthRegisterDto) {
-        // 判断是不是注册过但是禁用了
-        const userInfo = await this.userService.findUserByAccountAndPassword(param.account, param.password, false);
-        if (userInfo) {
-            return await verifyUser(userInfo);
-        }
+        return this.userService.insert(param);
+    }
+
+
+    async getUserInfo() {
 
     }
+
+    // -------------------------------------------------- Token 操作 --------------------------------------------------
 
     /**
      * 根据传递的参数生成令牌(Token)
      * @param {Object} param
      * @param {number} param.userId
      */
-    async createToken(param: TokenFields) {
+    async createToken(param: AccessTokenFields) {
         return this.jwtService.sign(param);
     }
 
