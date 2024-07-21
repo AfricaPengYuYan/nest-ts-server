@@ -1,6 +1,5 @@
 # https://editorconfig.org
 
-# 已经是顶层配置文件，不必继续向上搜索
 root = true
 
 [*]
