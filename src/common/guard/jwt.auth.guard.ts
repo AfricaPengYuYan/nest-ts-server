@@ -1,8 +1,8 @@
+import { AuthService } from "@/modules/auth/auth.service";
 import { ExecutionContext, HttpException, Inject, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Reflector } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
-import { AuthService } from "~/modules/auth/auth.service";
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard("jwt") {

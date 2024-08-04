@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "module": "NodeNext",
-        "moduleResolution": "Node",
         "declaration": true,
         "removeComments": true,
         "esModuleInterop": true,
@@ -21,7 +20,7 @@
         "noFallthroughCasesInSwitch": false,
         "lib": ["ESNext"],
         "paths": {
-            "~/*": ["src/*"]
+            "@/*": ["src/*"]
         }
     },
     "exclude": ["node_modules", "dist"]

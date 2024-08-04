@@ -1,5 +1,4 @@
 import { HttpStatus, UnprocessableEntityException, ValidationPipe } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 import { NestFactory, Reflector } from "@nestjs/core";
 import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
 import { ValidationError } from "class-validator";
@@ -39,10 +38,8 @@ async function bootstrap() {
         }),
     );
 
-    const config = app.get(ConfigService);
-
     // 初始化Swagger
-    initSwagger(app, config);
+    initSwagger(app);
 
     // 允许跨站访问
     app.enableCors();

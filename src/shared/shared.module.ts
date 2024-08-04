@@ -1,8 +1,10 @@
+import { ConfigurationKeyPaths } from "@/config/configuration";
 import { HttpModule } from "@nestjs/axios";
-import { CacheModule, Global, Module } from "@nestjs/common";
+import { Global, Module } from "@nestjs/common";
+
+import { CacheModule } from "@nestjs/cache-manager";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
-import { ConfigurationKeyPaths } from "~/config/configuration";
 import { RedisModule } from "./redis/redis.module";
 import { RedisService } from "./redis/redis.service";
 import { UtilService } from "./util.service";
