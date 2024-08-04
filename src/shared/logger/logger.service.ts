@@ -1,13 +1,13 @@
-import { join } from "path";
-import { Injectable, Optional, Inject, LoggerService as NestLoggerService } from "@nestjs/common";
+import { Inject, Injectable, LoggerService as NestLoggerService, Optional } from "@nestjs/common";
 import { clc, yellow } from "@nestjs/common/utils/cli-colors.util";
-import { createLogger, Logger as WinstonLogger, format } from "winston";
-import WinstonDailyRotateFile from "winston-daily-rotate-file";
-import { isDev } from "src/config/env";
 import { isPlainObject } from "lodash";
-import { getAppRootPath } from "./utils/app-root-path.util";
-import { LoggerModuleOptions, WinstonLogLevel } from "./logger.interface";
+import { join } from "path";
+import { isDev } from "src/config/env";
+import { createLogger, format, Logger as WinstonLogger } from "winston";
+import WinstonDailyRotateFile from "winston-daily-rotate-file";
 import { DEFAULT_ERROR_LOG_NAME, DEFAULT_MAX_SIZE, DEFAULT_WEB_LOG_NAME, LOGGER_MODULE_OPTIONS, PROJECT_LOG_DIR_NAME } from "./logger.constants";
+import { LoggerModuleOptions, WinstonLogLevel } from "./logger.interface";
+import { getAppRootPath } from "./utils/app-root-path.util";
 
 /**
  * 默认输出的日志等级

@@ -1,6 +1,6 @@
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { ConfigService } from "@nestjs/config";
 import { INestApplication } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 export function initSwagger(app: INestApplication, config: ConfigService) {
     const version = config.get<string>("system.versions");
