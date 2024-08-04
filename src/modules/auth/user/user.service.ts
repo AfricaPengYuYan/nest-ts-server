@@ -17,9 +17,8 @@ export class UserService {
         private readonly repository: Repository<UserEntity>,
         private readonly roleService: RoleService,
         private readonly menuService: MenuService,
-        private readonly configService: ConfigService
-    ) {
-    }
+        private readonly configService: ConfigService,
+    ) {}
 
     /**
      * 根据用户 ID 查询用户信息
@@ -33,7 +32,7 @@ export class UserService {
             // 过滤部分信息
             return await this.repository.findOne({
                 select: ["userId", "age", "sex", "userName", "account", "openId", "email", "createTime", "updateTime", "isState", "isDelete", "idCard", "source", "phone"],
-                where: { userId }
+                where: { userId },
             });
         } catch (e) {
             throw new HttpException(e.message, 500);
@@ -55,15 +54,14 @@ export class UserService {
             throw new HttpException("账号或密码不能为空", 500);
         }
         const userInfo = await this.repository.findOne({
-            where: { account }
+            where: { account },
         });
         if (userInfo) {
             const verifyPasswordExample = await comparePasswords(password, userInfo.saltPassword);
             if (!verifyPasswordExample && isSpecial) {
                 throw new HttpException("账号或密码错误", 500);
             }
-        }
-        else if (isSpecial) throw new HttpException("很抱歉，未找到该账号的相关信息", 500);
+        } else if (isSpecial) throw new HttpException("很抱歉，未找到该账号的相关信息", 500);
 
         delete userInfo.password;
         delete userInfo.saltPassword;

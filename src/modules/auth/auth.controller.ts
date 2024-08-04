@@ -6,8 +6,7 @@ import { AuthLoginDto, AuthRegisterDto } from "~/modules/auth/auth.dto";
 @ApiTags("认证授权")
 @Controller("auth")
 export class AuthController {
-    constructor(private readonly authService: AuthService) {
-    }
+    constructor(private readonly authService: AuthService) {}
 
     @ApiOperation({ summary: "PC端登录", description: "PC端用户登录成功返回令牌(Token)" })
     @Post("login")

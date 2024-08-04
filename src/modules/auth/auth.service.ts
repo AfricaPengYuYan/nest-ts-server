@@ -11,9 +11,8 @@ import { Response } from "~/modules/result";
 export class AuthService {
     constructor(
         private readonly jwtService: JwtService,
-        private readonly userService: UserService
-    ) {
-    }
+        private readonly userService: UserService,
+    ) {}
 
     /**
      * 根据账号密码返回新的令牌(Token)
@@ -45,10 +44,7 @@ export class AuthService {
         return this.userService.insert(param);
     }
 
-
-    async getUserInfo() {
-
-    }
+    async getUserInfo() {}
 
     // -------------------------------------------------- Token 操作 --------------------------------------------------
 
