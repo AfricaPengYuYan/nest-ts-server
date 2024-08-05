@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common";
-import { ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, registerDecorator } from "class-validator";
-import { isNil, merge } from "lodash";
-import { ClsService } from "nestjs-cls";
-import { DataSource, Not, ObjectType } from "typeorm";
+import { Injectable } from '@nestjs/common';
+import { ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, registerDecorator } from 'class-validator';
+import { isNil, merge } from 'lodash';
+import { ClsService } from 'nestjs-cls';
+import { DataSource, Not, ObjectType } from 'typeorm';
 
 interface Condition {
     entity: ObjectType<any>;
@@ -15,7 +15,7 @@ interface Condition {
 /**
  * 验证某个字段的唯一性
  */
-@ValidatorConstraint({ name: "entityItemUnique", async: true })
+@ValidatorConstraint({ name: 'entityItemUnique', async: true })
 @Injectable()
 export class UniqueConstraint implements ValidatorConstraintInterface {
     constructor(
@@ -25,11 +25,11 @@ export class UniqueConstraint implements ValidatorConstraintInterface {
 
     async validate(value: any, args: ValidationArguments) {
         // 获取要验证的模型和字段
-        const config: Omit<Condition, "entity"> = {
+        const config: Omit<Condition, 'entity'> = {
             field: args.property,
         };
 
-        const condition = ("entity" in args.constraints[0]
+        const condition = ('entity' in args.constraints[0]
             ? merge(config, args.constraints[0])
             : {
                   ...config,
@@ -51,7 +51,7 @@ export class UniqueConstraint implements ValidatorConstraintInterface {
             }
 
             let andWhere = {};
-            const operateId = this.cls.get("operateId");
+            const operateId = this.cls.get('operateId');
             // 如果是编辑操作，则排除自身
             if (Number.isInteger(operateId)) {
                 andWhere = { id: Not(operateId) };
@@ -74,7 +74,7 @@ export class UniqueConstraint implements ValidatorConstraintInterface {
         // if (!(args.object as any).getManager)
         //   return 'getManager function not been found!'
 
-        if (!entity) return "Model not been specified!";
+        if (!entity) return 'Model not been specified!';
 
         if (message) {
             return message;

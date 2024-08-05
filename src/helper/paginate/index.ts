@@ -1,8 +1,8 @@
-import { FindManyOptions, FindOptionsWhere, ObjectLiteral, Repository, SelectQueryBuilder } from "typeorm";
+import { FindManyOptions, FindOptionsWhere, ObjectLiteral, Repository, SelectQueryBuilder } from 'typeorm';
 
-import { createPaginationObject } from "./create-pagination";
-import { IPaginationOptions, PaginationTypeEnum } from "./interface";
-import { Pagination } from "./pagination";
+import { createPaginationObject } from './create-pagination';
+import { IPaginationOptions, PaginationTypeEnum } from './interface';
+import { Pagination } from './pagination';
 
 const DEFAULT_LIMIT = 10;
 const DEFAULT_PAGE = 1;

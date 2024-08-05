@@ -1,4 +1,4 @@
-import { IsDefined, IsNotEmpty, IsNumber } from "class-validator";
+import { IsDefined, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class BatchDeleteDto {
     @IsDefined()

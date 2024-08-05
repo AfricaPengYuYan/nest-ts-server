@@ -1,15 +1,15 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
-import { RESPONSE_SUCCESS_CODE, RESPONSE_SUCCESS_MSG } from "~/common/constants/response.constant";
+import { RESPONSE_SUCCESS_CODE, RESPONSE_SUCCESS_MSG } from '~/common/constants/response.constant';
 
 export class ResOp<T = any> {
-    @ApiProperty({ type: "object" })
+    @ApiProperty({ type: 'object' })
     data?: T;
 
-    @ApiProperty({ type: "number", default: RESPONSE_SUCCESS_CODE })
+    @ApiProperty({ type: 'number', default: RESPONSE_SUCCESS_CODE })
     code: number;
 
-    @ApiProperty({ type: "string", default: RESPONSE_SUCCESS_MSG })
+    @ApiProperty({ type: 'string', default: RESPONSE_SUCCESS_MSG })
     message: string;
 
     constructor(code: number, data: T, message = RESPONSE_SUCCESS_MSG) {

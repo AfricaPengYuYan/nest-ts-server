@@ -1,16 +1,16 @@
-import { Module } from "@nestjs/common";
+import { Module } from '@nestjs/common';
 
-import { ConfigService } from "@nestjs/config";
-import { TypeOrmModule } from "@nestjs/typeorm";
+import { ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { DataSource, LoggerOptions } from "typeorm";
+import { DataSource, LoggerOptions } from 'typeorm';
 
-import { ConfigKeyPaths, IDatabaseConfig } from "~/config";
-import { env } from "~/global/env";
+import { ConfigKeyPaths, IDatabaseConfig } from '~/config';
+import { env } from '~/global/env';
 
-import { EntityExistConstraint } from "./constraints/entity-exist.constraint";
-import { UniqueConstraint } from "./constraints/unique.constraint";
-import { TypeORMLogger } from "./typeorm-logger";
+import { EntityExistConstraint } from './constraints/entity-exist.constraint';
+import { UniqueConstraint } from './constraints/unique.constraint';
+import { TypeORMLogger } from './typeorm-logger';
 
 const providers = [EntityExistConstraint, UniqueConstraint];
 
@@ -19,7 +19,7 @@ const providers = [EntityExistConstraint, UniqueConstraint];
         TypeOrmModule.forRootAsync({
             inject: [ConfigService],
             useFactory: (configService: ConfigService<ConfigKeyPaths>) => {
-                let loggerOptions: LoggerOptions = env("DB_LOGGING") as "all";
+                let loggerOptions: LoggerOptions = env('DB_LOGGING') as 'all';
 
                 try {
                     // 解析成 js 数组 ['error']
@@ -29,7 +29,7 @@ const providers = [EntityExistConstraint, UniqueConstraint];
                 }
 
                 return {
-                    ...configService.get<IDatabaseConfig>("database"),
+                    ...configService.get<IDatabaseConfig>('database'),
                     autoLoadEntities: true,
                     logging: loggerOptions,
                     logger: new TypeORMLogger(loggerOptions),

@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, registerDecorator } from "class-validator";
-import { DataSource, ObjectType, Repository } from "typeorm";
+import { Injectable } from '@nestjs/common';
+import { ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, registerDecorator } from 'class-validator';
+import { DataSource, ObjectType, Repository } from 'typeorm';
 
 interface Condition {
     entity: ObjectType<any>;
@@ -11,7 +11,7 @@ interface Condition {
 /**
  * 查询某个字段的值是否在数据表中存在
  */
-@ValidatorConstraint({ name: "entityItemExist", async: true })
+@ValidatorConstraint({ name: 'entityItemExist', async: true })
 @Injectable()
 export class EntityExistConstraint implements ValidatorConstraintInterface {
     constructor(private dataSource: DataSource) {}
@@ -21,11 +21,11 @@ export class EntityExistConstraint implements ValidatorConstraintInterface {
 
         if (!value) return true;
         // 默认对比字段是id
-        let field = "id";
+        let field = 'id';
         // 通过传入的 entity 获取其 repository
-        if ("entity" in args.constraints[0]) {
+        if ('entity' in args.constraints[0]) {
             // 传入的是对象 可以指定对比字段
-            field = args.constraints[0].field ?? "id";
+            field = args.constraints[0].field ?? 'id';
             repo = this.dataSource.getRepository(args.constraints[0].entity);
         } else {
             // 传入的是实体类
@@ -37,7 +37,7 @@ export class EntityExistConstraint implements ValidatorConstraintInterface {
     }
 
     defaultMessage(args: ValidationArguments) {
-        if (!args.constraints[0]) return "Model not been specified!";
+        if (!args.constraints[0]) return 'Model not been specified!';
 
         return `All instance of ${args.constraints[0].name} must been exists in databse!`;
     }

@@ -1,5 +1,5 @@
 export function catchError() {
-    process.on("unhandledRejection", (reason, p) => {
-        console.log("Promise: ", p, "Reason: ", reason);
+    process.on('unhandledRejection', (reason, p) => {
+        console.log('Promise: ', p, 'Reason: ', reason);
     });
 }

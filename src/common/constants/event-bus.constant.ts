@@ -1,4 +1,4 @@
 export enum EventBusEvents {
-    TokenExpired = "token.expired",
-    SystemException = "system.exception",
+    TokenExpired = 'token.expired',
+    SystemException = 'system.exception',
 }

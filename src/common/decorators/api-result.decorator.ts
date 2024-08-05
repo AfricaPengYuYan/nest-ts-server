@@ -1,10 +1,10 @@
-import { HttpStatus, RequestMethod, Type, applyDecorators } from "@nestjs/common";
-import { METHOD_METADATA } from "@nestjs/common/constants";
-import { ApiExtraModels, ApiResponse, getSchemaPath } from "@nestjs/swagger";
+import { HttpStatus, RequestMethod, Type, applyDecorators } from '@nestjs/common';
+import { METHOD_METADATA } from '@nestjs/common/constants';
+import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger';
 
-import { ResOp } from "~/common/model/response.model";
+import { ResOp } from '~/common/model/response.model';
 
-const baseTypeNames = ["String", "Number", "Boolean"];
+const baseTypeNames = ['String', 'Number', 'Boolean'];
 
 function genBaseProp(type: Type<any>) {
     if (baseTypeNames.includes(type.name)) return { type: type.name.toLocaleLowerCase() };
@@ -20,34 +20,34 @@ export function ApiResult<TModel extends Type<any>>({ type, isPage, status }: { 
     if (Array.isArray(type)) {
         if (isPage) {
             prop = {
-                type: "object",
+                type: 'object',
                 properties: {
                     items: {
-                        type: "array",
+                        type: 'array',
                         items: { $ref: getSchemaPath(type[0]) },
                     },
                     meta: {
-                        type: "object",
+                        type: 'object',
                         properties: {
-                            itemCount: { type: "number", default: 0 },
-                            totalItems: { type: "number", default: 0 },
-                            itemsPerPage: { type: "number", default: 0 },
-                            totalPages: { type: "number", default: 0 },
-                            currentPage: { type: "number", default: 0 },
+                            itemCount: { type: 'number', default: 0 },
+                            totalItems: { type: 'number', default: 0 },
+                            itemsPerPage: { type: 'number', default: 0 },
+                            totalPages: { type: 'number', default: 0 },
+                            currentPage: { type: 'number', default: 0 },
                         },
                     },
                 },
             };
         } else {
             prop = {
-                type: "array",
+                type: 'array',
                 items: genBaseProp(type[0]),
             };
         }
     } else if (type) {
         prop = genBaseProp(type);
     } else {
-        prop = { type: "null", default: null };
+        prop = { type: 'null', default: null };
     }
 
     const model = Array.isArray(type) ? type[0] : type;

@@ -1,18 +1,18 @@
-import type { Type } from "@nestjs/common";
+import type { Type } from '@nestjs/common';
 
-import { Body, Controller, Delete, Get, Patch, Post, Put, Query } from "@nestjs/common";
-import { ApiBody, IntersectionType, PartialType } from "@nestjs/swagger";
-import { upperFirst } from "lodash";
-import pluralize from "pluralize";
+import { Body, Controller, Delete, Get, Patch, Post, Put, Query } from '@nestjs/common';
+import { ApiBody, IntersectionType, PartialType } from '@nestjs/swagger';
+import { upperFirst } from 'lodash';
+import pluralize from 'pluralize';
 
-import { ApiResult } from "~/common/decorators/api-result.decorator";
-import { IdParam } from "~/common/decorators/id-param.decorator";
-import { PagerDto } from "~/common/dto/pager.dto";
+import { ApiResult } from '~/common/decorators/api-result.decorator';
+import { IdParam } from '~/common/decorators/id-param.decorator';
+import { PagerDto } from '~/common/dto/pager.dto';
 
-import { BaseService } from "./base.service";
+import { BaseService } from './base.service';
 
 export function BaseCrudFactory<E extends new (...args: any[]) => any>({ entity, dto, permissions }: { entity: E; dto?: Type<any>; permissions?: Record<string, string> }): Type<any> {
-    const prefix = entity.name.toLowerCase().replace(/entity$/, "");
+    const prefix = entity.name.toLowerCase().replace(/entity$/, '');
     const pluralizeName = pluralize(prefix) as string;
 
     dto = dto ?? class extends entity {};
@@ -47,7 +47,7 @@ export function BaseCrudFactory<E extends new (...args: any[]) => any>({ entity,
             return await this.service.list(pager);
         }
 
-        @Get(":id")
+        @Get(':id')
         @ApiResult({ type: entity })
         async get(@IdParam() id: number) {
             return await this.service.findOne(id);
@@ -59,17 +59,17 @@ export function BaseCrudFactory<E extends new (...args: any[]) => any>({ entity,
             return await this.service.create(dto);
         }
 
-        @Put(":id")
+        @Put(':id')
         async update(@IdParam() id: number, @Body() dto: UpdateDto) {
             return await this.service.update(id, dto);
         }
 
-        @Patch(":id")
+        @Patch(':id')
         async patch(@IdParam() id: number, @Body() dto: UpdateDto) {
             await this.service.update(id, dto);
         }
 
-        @Delete(":id")
+        @Delete(':id')
         async delete(@IdParam() id: number) {
             await this.service.delete(id);
         }

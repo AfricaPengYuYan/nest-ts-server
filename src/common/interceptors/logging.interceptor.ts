@@ -1,5 +1,5 @@
-import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from "@nestjs/common";
-import { Observable, tap } from "rxjs";
+import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from '@nestjs/common';
+import { Observable, tap } from 'rxjs';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -9,7 +9,7 @@ export class LoggingInterceptor implements NestInterceptor {
         const call$ = next.handle();
         const request = context.switchToHttp().getRequest();
         const content = `${request.method} -> ${request.url}`;
-        const isSse = request.headers.accept === "text/event-stream";
+        const isSse = request.headers.accept === 'text/event-stream';
         this.logger.debug(`+++ 请求：${content}`);
         const now = Date.now();
 

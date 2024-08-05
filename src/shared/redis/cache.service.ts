@@ -1,13 +1,13 @@
-import { CACHE_MANAGER } from "@nestjs/cache-manager";
-import { Inject, Injectable } from "@nestjs/common";
-import { Emitter } from "@socket.io/redis-emitter";
-import { Cache } from "cache-manager";
-import type { Redis } from "ioredis";
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Inject, Injectable } from '@nestjs/common';
+import { Emitter } from '@socket.io/redis-emitter';
+import { Cache } from 'cache-manager';
+import type { Redis } from 'ioredis';
 
-import { RedisIoAdapterKey } from "~/common/adapters/socket.adapter";
+import { RedisIoAdapterKey } from '~/common/adapters/socket.adapter';
 
-import { API_CACHE_PREFIX } from "~/common/constants/cache.constant";
-import { getRedisKey } from "~/utils/redis.util";
+import { API_CACHE_PREFIX } from '~/common/constants/cache.constant';
+import { getRedisKey } from '~/utils';
 
 // 获取器
 export type TCacheKey = string;
@@ -58,7 +58,7 @@ export class CacheService {
 
     public async cleanAllRedisKey() {
         const redis = this.getClient();
-        const keys: string[] = await redis.keys(getRedisKey("*"));
+        const keys: string[] = await redis.keys(getRedisKey('*'));
 
         await Promise.all(keys.map((key) => redis.del(key)));
     }

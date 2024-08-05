@@ -1,20 +1,20 @@
-import { ConsoleLogger, ConsoleLoggerOptions, Injectable } from "@nestjs/common";
+import { ConsoleLogger, ConsoleLoggerOptions, Injectable } from '@nestjs/common';
 
-import { ConfigService } from "@nestjs/config";
-import type { Logger as WinstonLogger } from "winston";
+import { ConfigService } from '@nestjs/config';
+import type { Logger as WinstonLogger } from 'winston';
 
-import { config, createLogger, format, transports } from "winston";
+import { config, createLogger, format, transports } from 'winston';
 
-import "winston-daily-rotate-file";
+import 'winston-daily-rotate-file';
 
-import { ConfigKeyPaths } from "~/config";
+import { ConfigKeyPaths } from '~/config';
 
 export enum LogLevel {
-    ERROR = "error",
-    WARN = "warn",
-    INFO = "info",
-    DEBUG = "debug",
-    VERBOSE = "verbose",
+    ERROR = 'error',
+    WARN = 'warn',
+    INFO = 'info',
+    DEBUG = 'debug',
+    VERBOSE = 'verbose',
 }
 
 @Injectable()
@@ -31,11 +31,11 @@ export class LoggerService extends ConsoleLogger {
     }
 
     protected get level(): LogLevel {
-        return this.configService.get("app.logger.level", { infer: true }) as LogLevel;
+        return this.configService.get('app.logger.level', { infer: true }) as LogLevel;
     }
 
     protected get maxFiles(): number {
-        return this.configService.get("app.logger.maxFiles", { infer: true });
+        return this.configService.get('app.logger.maxFiles', { infer: true });
     }
 
     protected initWinston(): void {
@@ -45,19 +45,19 @@ export class LoggerService extends ConsoleLogger {
             transports: [
                 new transports.DailyRotateFile({
                     level: this.level,
-                    filename: "logs/app.%DATE%.log",
-                    datePattern: "YYYY-MM-DD",
+                    filename: 'logs/app.%DATE%.log',
+                    datePattern: 'YYYY-MM-DD',
                     maxFiles: this.maxFiles,
                     format: format.combine(format.timestamp(), format.json()),
-                    auditFile: "logs/.audit/app.json",
+                    auditFile: 'logs/.audit/app.json',
                 }),
                 new transports.DailyRotateFile({
                     level: LogLevel.ERROR,
-                    filename: "logs/app-error.%DATE%.log",
-                    datePattern: "YYYY-MM-DD",
+                    filename: 'logs/app-error.%DATE%.log',
+                    datePattern: 'YYYY-MM-DD',
                     maxFiles: this.maxFiles,
                     format: format.combine(format.timestamp(), format.json()),
-                    auditFile: "logs/.audit/app-error.json",
+                    auditFile: 'logs/.audit/app-error.json',
                 }),
             ],
         });

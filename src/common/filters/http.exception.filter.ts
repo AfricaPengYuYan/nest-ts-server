@@ -1,11 +1,11 @@
-import { ArgumentsHost, ExceptionFilter, HttpException, HttpStatus, Logger } from "@nestjs/common";
-import { FastifyReply, FastifyRequest } from "fastify";
-import { QueryFailedError } from "typeorm";
+import { ArgumentsHost, ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { FastifyReply, FastifyRequest } from 'fastify';
+import { QueryFailedError } from 'typeorm';
 
-import { ErrorEnum } from "~/common/constants/error-code.constant";
-import { ApiException } from "~/common/exceptions/api.exception";
+import { ErrorEnum } from '~/common/constants/error-code.constant';
+import { ApiException } from '~/common/exceptions/api.exception';
 
-import { isDev } from "~/global/env";
+import { isDev } from '~/global/env';
 
 interface myError {
     readonly status: number;
@@ -32,10 +32,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
         // 系统内部错误时
         if (status === HttpStatus.INTERNAL_SERVER_ERROR && !(exception instanceof ApiException)) {
-            Logger.error(exception, undefined, "Catch");
+            Logger.error(exception, undefined, 'Catch');
 
             // 生产环境下隐藏错误信息
-            if (!isDev) message = ErrorEnum.SERVER_ERROR?.split(":")[1];
+            if (!isDev) message = ErrorEnum.SERVER_ERROR?.split(':')[1];
         } else {
             this.logger.warn(`错误信息：(${status}) ${message} Path: ${decodeURI(url)}`);
         }
@@ -74,12 +74,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     registerCatchAllExceptionsHook() {
-        process.on("unhandledRejection", (reason) => {
-            console.error("unhandledRejection: ", reason);
+        process.on('unhandledRejection', (reason) => {
+            console.error('unhandledRejection: ', reason);
         });
 
-        process.on("uncaughtException", (err) => {
-            console.error("uncaughtException: ", err);
+        process.on('uncaughtException', (err) => {
+            console.error('uncaughtException: ', err);
         });
     }
 }

@@ -1,8 +1,8 @@
-import { applyDecorators } from "@nestjs/common";
-import { IsBoolean, IsDate, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, Max, MaxLength, Min, MinLength } from "class-validator";
-import { isNumber } from "lodash";
+import { applyDecorators } from '@nestjs/common';
+import { IsBoolean, IsDate, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { isNumber } from 'lodash';
 
-import { ToArray, ToBoolean, ToDate, ToLowerCase, ToNumber, ToTrim, ToUpperCase } from "./transform.decorator";
+import { ToArray, ToBoolean, ToDate, ToLowerCase, ToNumber, ToTrim, ToUpperCase } from './transform.decorator';
 
 interface IOptionalOptions {
     required?: boolean;

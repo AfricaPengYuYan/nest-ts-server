@@ -1,10 +1,10 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Expose, Transform } from "class-transformer";
-import { Allow, IsEnum, IsInt, IsOptional, IsString, Max, Min } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { Expose, Transform } from 'class-transformer';
+import { Allow, IsEnum, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export enum Order {
-    ASC = "ASC",
-    DESC = "DESC",
+    ASC = 'ASC',
+    DESC = 'DESC',
 }
 
 export class PagerDto<T = any> {
@@ -37,7 +37,7 @@ export class PagerDto<T = any> {
     @ApiProperty({ enum: Order })
     @IsEnum(Order)
     @IsOptional()
-    @Transform(({ value }) => (value === "asc" ? Order.ASC : Order.DESC))
+    @Transform(({ value }) => (value === 'asc' ? Order.ASC : Order.DESC))
     order?: Order;
 
     @Allow()

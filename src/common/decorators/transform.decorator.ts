@@ -1,5 +1,5 @@
-import { Transform } from "class-transformer";
-import { castArray, isArray, isNil, trim } from "lodash";
+import { Transform } from 'class-transformer';
+import { castArray, isArray, isNil, trim } from 'lodash';
 
 /**
  * convert string to number
@@ -40,9 +40,9 @@ export function ToBoolean(): PropertyDecorator {
     return Transform(
         (params) => {
             switch (params.value) {
-                case "true":
+                case 'true':
                     return true;
-                case "false":
+                case 'false':
                     return false;
                 default:
                     return params.value;
