@@ -1,9 +1,9 @@
-import { RedisService } from "@/cache/redis.service";
 import { HttpException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { Request } from "express";
 import { ExtractJwt, Strategy } from "passport-jwt";
+import { RedisService } from "~/cache/redis.service";
 import { AuthService } from "./auth.service";
 import { UserEntity } from "./user/user.entity";
 

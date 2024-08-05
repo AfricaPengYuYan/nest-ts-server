@@ -1,49 +1,42 @@
-import { ConfigurationKeyPaths } from "@/config/configuration";
 import { HttpModule } from "@nestjs/axios";
 import { Global, Module } from "@nestjs/common";
+import { EventEmitterModule } from "@nestjs/event-emitter";
+import { ScheduleModule } from "@nestjs/schedule";
+import { ThrottlerModule, seconds } from "@nestjs/throttler";
 
-import { CacheModule } from "@nestjs/cache-manager";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import { JwtModule } from "@nestjs/jwt";
+import { isDev } from "~/global/env";
+
+import { LoggerModule } from "./logger/logger.module";
 import { RedisModule } from "./redis/redis.module";
-import { RedisService } from "./redis/redis.service";
-import { UtilService } from "./util.service";
 
-// common provider list
-const providers = [UtilService, RedisService];
-
-/**
- * 全局共享模块
- */
 @Global()
 @Module({
     imports: [
-        HttpModule.register({
-            timeout: 5000,
-            maxRedirects: 5,
-        }),
-        // redis cache
-        CacheModule.register(),
-        // jwt
-        JwtModule.registerAsync({
-            imports: [ConfigModule],
-            useFactory: (configService: ConfigService<ConfigurationKeyPaths>) => ({
-                secret: configService.get<string>("jwt.secret"),
+        // logger
+        LoggerModule.forRoot(),
+        // http
+        HttpModule,
+        // schedule
+        ScheduleModule.forRoot(),
+        // 避免暴力请求，限制同一个接口 10 秒内不能超过 7 次请求
+        ThrottlerModule.forRootAsync({
+            useFactory: () => ({
+                errorMessage: "当前操作过于频繁，请稍后再试！",
+                throttlers: [{ ttl: seconds(10), limit: 7 }],
             }),
-            inject: [ConfigService],
         }),
-        RedisModule.registerAsync({
-            imports: [ConfigModule],
-            useFactory: (configService: ConfigService<ConfigurationKeyPaths>) => ({
-                host: configService.get<string>("redis.host"),
-                port: configService.get<number>("redis.port"),
-                password: configService.get<string>("redis.password"),
-                db: configService.get<number>("redis.db"),
-            }),
-            inject: [ConfigService],
+        EventEmitterModule.forRoot({
+            wildcard: true,
+            delimiter: ".",
+            newListener: false,
+            removeListener: false,
+            maxListeners: 20,
+            verboseMemoryLeak: isDev,
+            ignoreErrors: false,
         }),
+        // redis
+        RedisModule,
     ],
-    providers: [...providers],
-    exports: [HttpModule, CacheModule, JwtModule, ...providers],
+    exports: [HttpModule, RedisModule],
 })
 export class SharedModule {}

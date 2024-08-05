@@ -1,13 +1,13 @@
 {
-  "printWidth": 240,
-  "tabWidth": 4,
-  "useTabs": false,
-  "semi": true,
-  "bracketSpacing": true,
-  "eslintIntegration": false,
-  "jsxBracketSameLine": false,
-  "jsxSingleQuote": true,
-  "trailingComma": "all",
-  "singleQuote": false,
-  "tslintIntegration": false
+    "printWidth": 240,
+    "tabWidth": 4,
+    "useTabs": false,
+    "semi": true,
+    "bracketSpacing": true,
+    "eslintIntegration": false,
+    "jsxBracketSameLine": false,
+    "jsxSingleQuote": true,
+    "trailingComma": "all",
+    "singleQuote": false,
+    "tslintIntegration": false
 }

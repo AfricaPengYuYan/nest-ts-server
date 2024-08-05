@@ -46,7 +46,7 @@ module.exports = {
 
                 pathGroups: [
                     {
-                        pattern: "@nestjs/**",
+                        pattern: ["@nestjs/**", "~/**"],
                         group: "external",
                         position: "before",
                     },
