@@ -1,17 +1,12 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { FastifyRequest } from 'fastify';
-
 import { isArray, isEmpty, isNil } from 'lodash';
-
 import { DataSource, In, Repository } from 'typeorm';
-
-import { BusinessException } from '~/common/exceptions/biz.exception';
-
-import { ErrorEnum } from '~/constants/error-code.constant';
-
-import { PUBLIC_KEY, RESOURCE_KEY, Roles } from '../auth.constant';
-import { ResourceObject } from '../decorators/resource.decorator';
+import { PUBLIC_KEY, RESOURCE_KEY, Roles } from '~/common/constants/auth.constant';
+import { ErrorEnum } from '~/common/constants/error-code.constant';
+import { ResourceObject } from '~/common/decorators/resource.decorator';
+import { ApiException } from '~/common/exceptions/api.exception';
 
 @Injectable()
 export class ResourceGuard implements CanActivate {
@@ -53,7 +48,7 @@ export class ResourceGuard implements CanActivate {
             };
 
             const items = getRequestItems(request);
-            if (isEmpty(items)) throw new BusinessException(ErrorEnum.REQUESTED_RESOURCE_NOT_FOUND);
+            if (isEmpty(items)) throw new ApiException(ErrorEnum.REQUESTED_RESOURCE_NOT_FOUND);
 
             if (condition) return condition(repo, items, user);
 
@@ -67,7 +62,7 @@ export class ResourceGuard implements CanActivate {
 
             const records = await repo.find(recordQuery);
 
-            if (isEmpty(records)) throw new BusinessException(ErrorEnum.REQUESTED_RESOURCE_NOT_FOUND);
+            if (isEmpty(records)) throw new ApiException(ErrorEnum.REQUESTED_RESOURCE_NOT_FOUND);
         }
 
         return true;

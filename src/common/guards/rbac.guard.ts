@@ -1,12 +1,10 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { FastifyRequest } from 'fastify';
-
-import { BusinessException } from '~/common/exceptions/biz.exception';
-import { ErrorEnum } from '~/constants/error-code.constant';
+import { ALLOW_ANON_KEY, PERMISSION_KEY, PUBLIC_KEY, Roles } from '~/common/constants/auth.constant';
+import { ErrorEnum } from '~/common/constants/error-code.constant';
+import { ApiException } from '~/common/exceptions/api.exception';
 import { AuthService } from '~/modules/auth/auth.service';
-
-import { ALLOW_ANON_KEY, PERMISSION_KEY, PUBLIC_KEY, Roles } from '../auth.constant';
 
 @Injectable()
 export class RbacGuard implements CanActivate {
@@ -23,7 +21,7 @@ export class RbacGuard implements CanActivate {
         const request = context.switchToHttp().getRequest<FastifyRequest>();
 
         const { user } = request;
-        if (!user) throw new BusinessException(ErrorEnum.INVALID_LOGIN);
+        if (!user) throw new ApiException(ErrorEnum.INVALID_LOGIN);
 
         // allowAnon 是需要登录后可访问(无需权限), Public 则是无需登录也可访问.
         const allowAnon = this.reflector.get<boolean>(ALLOW_ANON_KEY, context.getHandler());
@@ -49,7 +47,7 @@ export class RbacGuard implements CanActivate {
 
         if (typeof payloadPermission === 'string') canNext = allPermissions.includes(payloadPermission);
 
-        if (!canNext) throw new BusinessException(ErrorEnum.NO_PERMISSION);
+        if (!canNext) throw new ApiException(ErrorEnum.NO_PERMISSION);
 
         return true;
     }

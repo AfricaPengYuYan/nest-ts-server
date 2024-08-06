@@ -15,9 +15,8 @@ import { genTokenBlacklistKey } from '~/helper/genRedisKey';
 import { AuthService } from '~/modules/auth/auth.service';
 
 import { checkIsDemoMode } from '~/utils';
-
+import { AuthStrategy, PUBLIC_KEY } from '~/common/constants/auth.constant';
 import { TokenService } from '~/modules/auth/token/token.service';
-import { AuthStrategy, PUBLIC_KEY } from '../auth.constant';
 
 /** @type {import('fastify').RequestGenericInterface} */
 interface RequestType {

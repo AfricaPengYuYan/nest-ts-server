@@ -1,10 +1,9 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn, VersionColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, Relation } from 'typeorm';
+import { CompleteEntity } from '~/common/entity/common.entity';
+import { RoleEntity } from '../role/role.entity';
 
 @Entity('sys_menu')
-export class MenuEntity {
-    @PrimaryGeneratedColumn({ comment: '菜单id', name: 'menu_id', type: 'int' })
-    menuId: number;
-
+export class MenuEntity extends CompleteEntity {
     @Column({
         type: 'varchar',
         nullable: true,
@@ -31,7 +30,7 @@ export class MenuEntity {
     })
     menuType: string;
 
-    @Column({ type: 'int', default: null, name: 'sort', comment: '显示顺序' })
+    @Column({ type: 'tinyint', default: null, name: 'sort', comment: '显示顺序' })
     sort: number;
 
     @Column({
@@ -54,7 +53,7 @@ export class MenuEntity {
     icon: string;
 
     @Column({
-        type: 'int',
+        type: 'tinyint',
         nullable: true,
         default: 0,
         name: 'parent_menu_id',
@@ -73,7 +72,7 @@ export class MenuEntity {
     permission: string;
 
     @Column({
-        type: 'int',
+        type: 'tinyint',
         nullable: true,
         default: 0,
         name: 'is_frame',
@@ -82,7 +81,7 @@ export class MenuEntity {
     isFrame: number;
 
     @Column({
-        type: 'int',
+        type: 'tinyint',
         nullable: true,
         default: 0,
         name: 'is_cache',
@@ -91,7 +90,7 @@ export class MenuEntity {
     isCache: number;
 
     @Column({
-        type: 'int',
+        type: 'tinyint',
         nullable: true,
         default: 0,
         name: 'visible',
@@ -100,7 +99,7 @@ export class MenuEntity {
     visible: number;
 
     @Column({
-        type: 'int',
+        type: 'tinyint',
         nullable: true,
         default: 0,
         comment: '是否是禁用/停用状态（0:不是 1:是）',
@@ -109,54 +108,13 @@ export class MenuEntity {
     isState: number;
 
     @Column({
-        type: 'int',
+        type: 'tinyint',
         nullable: true,
         default: 0,
         comment: '是否是删除状态（0:不是 1:是）',
         name: 'is_delete',
     })
     isDelete: number;
-
-    @Column({
-        type: 'timestamp',
-        nullable: true,
-        default: () => 'CURRENT_TIMESTAMP',
-        comment: '创建时间',
-        name: 'create_time',
-    })
-    createTime: Date;
-
-    @Column({
-        type: 'varchar',
-        nullable: true,
-        default: null,
-        length: 20,
-        name: 'create_by',
-        comment: '创建人',
-    })
-    createBy: string;
-
-    @Column({
-        type: 'timestamp',
-        nullable: true,
-        default: () => 'CURRENT_TIMESTAMP',
-        comment: '修改时间',
-        name: 'update_time',
-    })
-    updateTime: Date;
-
-    @Column({
-        type: 'varchar',
-        nullable: true,
-        default: null,
-        length: 20,
-        name: 'update_by',
-        comment: '修改人',
-    })
-    updateBy: string;
-
-    @VersionColumn({ name: 'version', nullable: true, comment: '锁' })
-    version: number;
 
     @Column({
         type: 'varchar',
@@ -167,13 +125,8 @@ export class MenuEntity {
     })
     remark: string;
 
-    @BeforeInsert()
-    updateCreateTime() {
-        this.createTime = new Date();
-    }
-
-    @BeforeUpdate()
-    updateUpdateTime() {
-        this.updateTime = new Date();
-    }
+    @ManyToMany(() => RoleEntity, (role) => role.menus, {
+        onDelete: 'CASCADE',
+    })
+    roles: Relation<RoleEntity[]>;
 }

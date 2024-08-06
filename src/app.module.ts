@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import type { FastifyRequest } from 'fastify';
 import { ClsModule } from 'nestjs-cls';
 import { DataSource, LoggerOptions } from 'typeorm';
 import { HttpExceptionFilter } from './common/filters/http.exception.filter';
@@ -14,10 +15,7 @@ import { env } from './global/env';
 import { AuthModule } from './modules/auth/auth.module';
 import { MenuModule } from './modules/system/menu/menu.module';
 import { RoleModule } from './modules/system/role/role.module';
-import { RoleDeptModule } from './modules/system/role_dept/role_dept.module';
-import { RoleMenuModule } from './modules/system/role_menu/role_menu.module';
 import { UserModule } from './modules/system/user/user.module';
-import { UserRoleModule } from './modules/system/user_role/user_role.module';
 import { TypeORMLogger } from './shared/database/typeorm-logger';
 import { SharedModule } from './shared/shared.module';
 
@@ -39,7 +37,7 @@ import { SharedModule } from './shared/shared.module';
                 try {
                     // 解析成 js 数组 ['error']
                     loggerOptions = JSON.parse(loggerOptions);
-                } catch {
+                } catch (e) {
                     // ignore
                 }
 
@@ -76,10 +74,7 @@ import { SharedModule } from './shared/shared.module';
 
         // RBAC
         UserModule,
-        UserRoleModule,
         RoleModule,
-        RoleMenuModule,
-        RoleDeptModule,
         MenuModule,
         AuthModule,
     ],

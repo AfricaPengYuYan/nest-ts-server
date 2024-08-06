@@ -1,15 +1,16 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn, VersionColumn } from 'typeorm';
+import { ApiHideProperty } from '@nestjs/swagger';
+import { Column, Entity, JoinTable, ManyToMany, Relation } from 'typeorm';
+import { CompleteEntity } from '~/common/entity/common.entity';
+import { MenuEntity } from '../menu/menu.entity';
+import { UserEntity } from '../user/user.entity';
 
 @Entity('sys_role')
-export class RoleEntity {
-    @PrimaryGeneratedColumn({ comment: '角色id', name: 'role_id', type: 'int' })
-    roleId: number;
-
-    @Column({ type: 'int', default: null, name: 'sort', comment: '显示顺序' })
+export class RoleEntity extends CompleteEntity {
+    @Column({ type: 'tinyint', default: null, name: 'sort', comment: '显示顺序' })
     sort: number;
 
     @Column({
-        type: 'int',
+        type: 'tinyint',
         nullable: true,
         default: 1,
         name: 'data_scope',
@@ -36,7 +37,7 @@ export class RoleEntity {
     roleKey: string;
 
     @Column({
-        type: 'int',
+        type: 'tinyint',
         nullable: true,
         default: 0,
         comment: '是否是禁用/停用状态（0:不是 1:是）',
@@ -45,54 +46,13 @@ export class RoleEntity {
     isState: number;
 
     @Column({
-        type: 'int',
+        type: 'tinyint',
         nullable: true,
         default: 0,
         comment: '是否是删除状态（0:不是 1:是）',
         name: 'is_delete',
     })
     isDelete: number;
-
-    @Column({
-        type: 'timestamp',
-        nullable: true,
-        default: () => 'CURRENT_TIMESTAMP',
-        comment: '创建时间',
-        name: 'create_time',
-    })
-    createTime: Date;
-
-    @Column({
-        type: 'varchar',
-        nullable: true,
-        default: null,
-        length: 20,
-        name: 'create_by',
-        comment: '创建人',
-    })
-    createBy: string;
-
-    @Column({
-        type: 'timestamp',
-        nullable: true,
-        default: () => 'CURRENT_TIMESTAMP',
-        comment: '修改时间',
-        name: 'update_time',
-    })
-    updateTime: Date;
-
-    @Column({
-        type: 'varchar',
-        nullable: true,
-        default: null,
-        length: 20,
-        name: 'update_by',
-        comment: '修改人',
-    })
-    updateBy: string;
-
-    @VersionColumn({ name: 'version', nullable: true, comment: '锁' })
-    version: number;
 
     @Column({
         type: 'varchar',
@@ -103,13 +63,16 @@ export class RoleEntity {
     })
     remark: string;
 
-    @BeforeInsert()
-    updateCreateTime() {
-        this.createTime = new Date();
-    }
+    @ApiHideProperty()
+    @ManyToMany(() => UserEntity, (user) => user.roles)
+    users: Relation<UserEntity[]>;
 
-    @BeforeUpdate()
-    updateUpdateTime() {
-        this.updateTime = new Date();
-    }
+    @ApiHideProperty()
+    @ManyToMany(() => MenuEntity, (menu) => menu.roles, {})
+    @JoinTable({
+        name: 'sys_role_menus',
+        joinColumn: { name: 'role_id', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'menu_id', referencedColumnName: 'id' },
+    })
+    menus: Relation<MenuEntity[]>;
 }

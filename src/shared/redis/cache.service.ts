@@ -18,6 +18,7 @@ export class CacheService {
     private cache!: Cache;
 
     private ioRedis!: Redis;
+
     constructor(@Inject(CACHE_MANAGER) cache: Cache) {
         this.cache = cache;
     }

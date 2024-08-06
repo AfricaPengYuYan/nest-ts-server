@@ -1,6 +1,7 @@
-import { Check, Column, Entity, OneToMany, Relation } from 'typeorm';
+import { Check, Column, Entity, JoinTable, ManyToMany, OneToMany, Relation } from 'typeorm';
 import { CompleteEntity } from '~/common/entity/common.entity';
 import { AccessTokenEntity } from '~/modules/auth/token/access-token.entity';
+import { RoleEntity } from '../role/role.entity';
 
 @Entity({ name: 'sys_user' })
 @Check(`"age" > 0`)
@@ -58,7 +59,7 @@ export class UserEntity extends CompleteEntity {
     phone: string;
 
     @Column({
-        type: 'int',
+        type: 'tinyint',
         nullable: true,
         name: 'source',
         comment: '来源（0表示PC端后台注册 1表示小程序 2表示H5公众号）',
@@ -66,7 +67,7 @@ export class UserEntity extends CompleteEntity {
     source: number;
 
     @Column({
-        type: 'int',
+        type: 'tinyint',
         nullable: true,
         default: 0,
         name: 'sex',
@@ -74,7 +75,7 @@ export class UserEntity extends CompleteEntity {
     })
     sex: number;
 
-    @Column({ type: 'int', default: null, name: 'age', comment: '年龄' })
+    @Column({ type: 'tinyint', default: null, name: 'age', comment: '年龄' })
     age: number;
 
     @Column({
@@ -95,7 +96,7 @@ export class UserEntity extends CompleteEntity {
     email: string;
 
     @Column({
-        type: 'int',
+        type: 'tinyint',
         default: 0,
         nullable: true,
         name: 'is_super',
@@ -103,13 +104,8 @@ export class UserEntity extends CompleteEntity {
     })
     isSuper: number;
 
-    @OneToMany(() => AccessTokenEntity, (accessToken) => accessToken.user, {
-        cascade: true,
-    })
-    accessTokens: Relation<AccessTokenEntity[]>;
-
     @Column({
-        type: 'int',
+        type: 'tinyint',
         nullable: true,
         default: 0,
         comment: '是否是禁用/停用状态（0:不是 1:是）',
@@ -118,11 +114,24 @@ export class UserEntity extends CompleteEntity {
     isState: number;
 
     @Column({
-        type: 'int',
+        type: 'tinyint',
         nullable: true,
         default: 0,
         comment: '是否是删除状态（0:不是 1:是）',
         name: 'is_delete',
     })
     isDelete: number;
+
+    @ManyToMany(() => RoleEntity, (role) => role.users)
+    @JoinTable({
+        name: 'sys_user_roles',
+        joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' },
+    })
+    roles: Relation<RoleEntity[]>;
+
+    @OneToMany(() => AccessTokenEntity, (accessToken) => accessToken.user, {
+        cascade: true,
+    })
+    accessTokens: Relation<AccessTokenEntity[]>;
 }

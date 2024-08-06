@@ -1,10 +1,7 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn, VersionColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
 
 @Entity('sys_dept')
 export class DeptEntity {
-    @PrimaryGeneratedColumn({ comment: '部门id', name: 'dept_id', type: 'int' })
-    deptId: number;
-
     @Column({
         type: 'int',
         default: null,
@@ -22,7 +19,7 @@ export class DeptEntity {
     })
     deptName: string;
 
-    @Column({ type: 'int', default: null, name: 'sort', comment: '显示顺序' })
+    @Column({ type: 'tinyint', default: null, name: 'sort', comment: '显示顺序' })
     sort: number;
 
     @Column({
@@ -44,7 +41,7 @@ export class DeptEntity {
     phone: string;
 
     @Column({
-        type: 'int',
+        type: 'tinyint',
         nullable: true,
         default: 0,
         comment: '是否是禁用/停用状态（0:不是 1:是）',
@@ -53,7 +50,7 @@ export class DeptEntity {
     isState: number;
 
     @Column({
-        type: 'int',
+        type: 'tinyint',
         nullable: true,
         default: 0,
         comment: '是否是删除状态（0:不是 1:是）',
@@ -98,14 +95,6 @@ export class DeptEntity {
         comment: '修改人',
     })
     updateBy: string;
-
-    @VersionColumn({
-        name: 'version',
-        nullable: true,
-        comment: '锁',
-        type: 'int',
-    })
-    version: number;
 
     @BeforeInsert()
     updateCreateTime() {
