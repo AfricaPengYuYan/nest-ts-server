@@ -1,10 +1,10 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus } from '@nestjs/common'
 
-import { ErrorEnum } from '~/common/constants/error-code.constant';
-import { RESPONSE_SUCCESS_CODE } from '~/common/constants/response.constant';
+import { ErrorEnum } from '~/common/constants/error-code.constant'
+import { RESPONSE_SUCCESS_CODE } from '~/common/constants/response.constant'
 
 export class ApiException extends HttpException {
-    private errorCode: number;
+    private errorCode: number
 
     constructor(error: ErrorEnum | string) {
         // 如果是非 ErrorEnum
@@ -15,24 +15,24 @@ export class ApiException extends HttpException {
                     message: error,
                 }),
                 HttpStatus.OK,
-            );
-            this.errorCode = RESPONSE_SUCCESS_CODE;
-            return;
+            )
+            this.errorCode = RESPONSE_SUCCESS_CODE
+            return
         }
 
-        const [code, message] = error.split(':');
+        const [code, message] = error.split(':')
         super(
             HttpException.createBody({
                 code,
                 message,
             }),
             HttpStatus.OK,
-        );
+        )
 
-        this.errorCode = Number(code);
+        this.errorCode = Number(code)
     }
 
     getErrorCode(): number {
-        return this.errorCode;
+        return this.errorCode
     }
 }

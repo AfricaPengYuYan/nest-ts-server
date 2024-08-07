@@ -1,14 +1,13 @@
-import { FastifyRequest } from 'fastify';
-import { isArray, isEmpty, isNil } from 'lodash';
-import { DataSource, In, Repository } from 'typeorm';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
+import { Reflector } from '@nestjs/core'
+import { FastifyRequest } from 'fastify'
+import { isArray, isEmpty, isNil } from 'lodash'
+import { DataSource, In, Repository } from 'typeorm'
 
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-
-import { PUBLIC_KEY, RESOURCE_KEY, Roles } from '~/common/constants/auth.constant';
-import { ErrorEnum } from '~/common/constants/error-code.constant';
-import { ResourceObject } from '~/common/decorators/resource.decorator';
-import { ApiException } from '~/common/exceptions/api.exception';
+import { PUBLIC_KEY, RESOURCE_KEY, Roles } from '~/common/constants/auth.constant'
+import { ErrorEnum } from '~/common/constants/error-code.constant'
+import { ResourceObject } from '~/common/decorators/resource.decorator'
+import { ApiException } from '~/common/exceptions/api.exception'
 
 @Injectable()
 export class ResourceGuard implements CanActivate {
@@ -18,41 +17,46 @@ export class ResourceGuard implements CanActivate {
     ) {}
 
     async canActivate(context: ExecutionContext): Promise<any> {
-        const isPublic = this.reflector.getAllAndOverride<boolean>(PUBLIC_KEY, [context.getHandler(), context.getClass()]);
+        const isPublic = this.reflector.getAllAndOverride<boolean>(PUBLIC_KEY, [context.getHandler(), context.getClass()])
 
-        const request = context.switchToHttp().getRequest<FastifyRequest>();
-        const isSse = request.headers.accept === 'text/event-stream';
+        const request = context.switchToHttp().getRequest<FastifyRequest>()
+        const isSse = request.headers.accept === 'text/event-stream'
         // 忽略 sse 请求
-        if (isPublic || isSse) return true;
+        if (isPublic || isSse)
+            return true
 
-        const { user } = request;
+        const { user } = request
 
-        if (!user) return false;
+        if (!user)
+            return false
 
         // 如果是检查资源所属，且不是超级管理员，还需要进一步判断是否是自己的数据
-        const { entity, condition } = this.reflector.get<ResourceObject>(RESOURCE_KEY, context.getHandler()) ?? { entity: null, condition: null };
+        const { entity, condition } = this.reflector.get<ResourceObject>(RESOURCE_KEY, context.getHandler()) ?? { entity: null, condition: null }
 
         if (entity && !user.roles.includes(Roles.ADMIN)) {
-            const repo: Repository<any> = this.dataSource.getRepository(entity);
+            const repo: Repository<any> = this.dataSource.getRepository(entity)
 
             /**
              * 获取请求中的 items (ids) 验证数据拥有者
              * @param request
              */
             const getRequestItems = (request?: FastifyRequest): number[] => {
-                const { params = {}, body = {}, query = {} } = (request ?? {}) as any;
-                const id = params.id ?? body.id ?? query.id;
+                const { params = {}, body = {}, query = {} } = (request ?? {}) as any
+                const id = params.id ?? body.id ?? query.id
 
-                if (id) return [id];
+                if (id)
+                    return [id]
 
-                const { items } = body;
-                return !isNil(items) && isArray(items) ? items : [];
-            };
+                const { items } = body
+                return !isNil(items) && isArray(items) ? items : []
+            }
 
-            const items = getRequestItems(request);
-            if (isEmpty(items)) throw new ApiException(ErrorEnum.REQUESTED_RESOURCE_NOT_FOUND);
+            const items = getRequestItems(request)
+            if (isEmpty(items))
+                throw new ApiException(ErrorEnum.REQUESTED_RESOURCE_NOT_FOUND)
 
-            if (condition) return condition(repo, items, user);
+            if (condition)
+                return condition(repo, items, user)
 
             const recordQuery = {
                 where: {
@@ -60,13 +64,14 @@ export class ResourceGuard implements CanActivate {
                     user: { id: user.uid },
                 },
                 relations: ['user'],
-            };
+            }
 
-            const records = await repo.find(recordQuery);
+            const records = await repo.find(recordQuery)
 
-            if (isEmpty(records)) throw new ApiException(ErrorEnum.REQUESTED_RESOURCE_NOT_FOUND);
+            if (isEmpty(records))
+                throw new ApiException(ErrorEnum.REQUESTED_RESOURCE_NOT_FOUND)
         }
 
-        return true;
+        return true
     }
 }

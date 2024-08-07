@@ -1,8 +1,8 @@
-import { IPaginationMeta } from './interface';
-import { Pagination } from './pagination';
+import { IPaginationMeta } from './interface'
+import { Pagination } from './pagination'
 
-export function createPaginationObject<T>({ items, totalItems, currentPage, limit }: { items: T[]; totalItems?: number; currentPage: number; limit: number }): Pagination<T> {
-    const totalPages = totalItems !== undefined ? Math.ceil(totalItems / limit) : undefined;
+export function createPaginationObject<T>({ items, totalItems, currentPage, limit }: { items: T[], totalItems?: number, currentPage: number, limit: number }): Pagination<T> {
+    const totalPages = totalItems !== undefined ? Math.ceil(totalItems / limit) : undefined
 
     const meta: IPaginationMeta = {
         totalItems,
@@ -10,7 +10,7 @@ export function createPaginationObject<T>({ items, totalItems, currentPage, limi
         itemsPerPage: limit,
         totalPages,
         currentPage,
-    };
+    }
 
-    return new Pagination<T>(items, meta);
+    return new Pagination<T>(items, meta)
 }

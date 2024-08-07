@@ -1,4 +1,4 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm'
 
 @Entity('sys_dept')
 export class DeptEntity {
@@ -8,7 +8,7 @@ export class DeptEntity {
         name: 'parent_id',
         comment: '父部门id',
     })
-    parentId: number;
+    parentId: number
 
     @Column({
         type: 'varchar',
@@ -17,10 +17,10 @@ export class DeptEntity {
         name: 'dept_name',
         comment: '部门名称',
     })
-    deptName: string;
+    deptName: string
 
     @Column({ type: 'tinyint', default: null, name: 'sort', comment: '显示顺序' })
-    sort: number;
+    sort: number
 
     @Column({
         type: 'varchar',
@@ -29,7 +29,7 @@ export class DeptEntity {
         name: 'leader',
         comment: '负责人',
     })
-    leader: string;
+    leader: string
 
     @Column({
         type: 'varchar',
@@ -38,7 +38,7 @@ export class DeptEntity {
         name: 'phone',
         comment: '手机号码/联系电话',
     })
-    phone: string;
+    phone: string
 
     @Column({
         type: 'tinyint',
@@ -47,7 +47,7 @@ export class DeptEntity {
         comment: '是否是禁用/停用状态（0:不是 1:是）',
         name: 'is_state',
     })
-    isState: number;
+    isState: number
 
     @Column({
         type: 'tinyint',
@@ -56,7 +56,7 @@ export class DeptEntity {
         comment: '是否是删除状态（0:不是 1:是）',
         name: 'is_delete',
     })
-    isDelete: number;
+    isDelete: number
 
     @Column({
         type: 'timestamp',
@@ -65,7 +65,7 @@ export class DeptEntity {
         comment: '创建时间',
         name: 'create_time',
     })
-    createTime: Date;
+    createTime: Date
 
     @Column({
         type: 'varchar',
@@ -75,7 +75,7 @@ export class DeptEntity {
         name: 'create_by',
         comment: '创建人',
     })
-    createBy: string;
+    createBy: string
 
     @Column({
         type: 'timestamp',
@@ -84,7 +84,7 @@ export class DeptEntity {
         comment: '修改时间',
         name: 'update_time',
     })
-    updateTime: Date;
+    updateTime: Date
 
     @Column({
         type: 'varchar',
@@ -94,15 +94,15 @@ export class DeptEntity {
         name: 'update_by',
         comment: '修改人',
     })
-    updateBy: string;
+    updateBy: string
 
     @BeforeInsert()
     updateCreateTime() {
-        this.createTime = new Date();
+        this.createTime = new Date()
     }
 
     @BeforeUpdate()
     updateUpdateTime() {
-        this.updateTime = new Date();
+        this.updateTime = new Date()
     }
 }

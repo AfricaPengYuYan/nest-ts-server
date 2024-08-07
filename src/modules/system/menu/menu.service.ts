@@ -1,13 +1,12 @@
-import { concat, isEmpty, uniq } from 'lodash';
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { concat, isEmpty, uniq } from 'lodash'
 
-import { In, IsNull, Not, Repository } from 'typeorm';
+import { In, IsNull, Not, Repository } from 'typeorm'
 
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { RoleService } from '../role/role.service'
 
-import { RoleService } from '../role/role.service';
-
-import { MenuEntity } from './menu.entity';
+import { MenuEntity } from './menu.entity'
 
 @Injectable()
 export class MenuService {
@@ -18,16 +17,18 @@ export class MenuService {
     ) {}
 
     async getPermissions(uid: number): Promise<string[]> {
-        const roleIds = await this.roleService.getRoleIdsByUser(uid);
-        let permission: any[] = [];
-        let result: any = null;
+        const roleIds = await this.roleService.getRoleIdsByUser(uid)
+        let permission: any[] = []
+        let result: any = null
         if (this.roleService.hasAdminRole(roleIds)) {
             result = await this.repository.findBy({
                 permission: Not(IsNull()),
                 type: In([1, 2]),
-            });
-        } else {
-            if (isEmpty(roleIds)) return permission;
+            })
+        }
+        else {
+            if (isEmpty(roleIds))
+                return permission
 
             result = await this.repository
                 .createQueryBuilder('menu')
@@ -35,14 +36,15 @@ export class MenuService {
                 .andWhere('role.id IN (:...roleIds)', { roleIds })
                 .andWhere('menu.type IN (1,2)')
                 .andWhere('menu.permission IS NOT NULL')
-                .getMany();
+                .getMany()
         }
         if (!isEmpty(result)) {
             result.forEach((e) => {
-                if (e.permission) permission = concat(permission, e.permission.split(','));
-            });
-            permission = uniq(permission);
+                if (e.permission)
+                    permission = concat(permission, e.permission.split(','))
+            })
+            permission = uniq(permission)
         }
-        return permission;
+        return permission
     }
 }

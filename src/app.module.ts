@@ -1,24 +1,24 @@
-import { ClassSerializerInterceptor, Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { ThrottlerGuard } from '@nestjs/throttler';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import type { FastifyRequest } from 'fastify';
-import { ClsModule } from 'nestjs-cls';
-import { DataSource, LoggerOptions } from 'typeorm';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core'
+import { ThrottlerGuard } from '@nestjs/throttler'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import type { FastifyRequest } from 'fastify'
+import { ClsModule } from 'nestjs-cls'
+import { DataSource, LoggerOptions } from 'typeorm'
 
-import { HttpExceptionFilter } from './common/filters/http.exception.filter';
-import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
-import { RbacGuard } from './common/guards/rbac.guard';
-import { TransformInterceptor } from './common/interceptors/transform.interceptor';
-import config, { ConfigKeyPaths, IDatabaseConfig } from './config';
-import { env } from './global/env';
-import { AuthModule } from './modules/auth/auth.module';
-import { MenuModule } from './modules/system/menu/menu.module';
-import { RoleModule } from './modules/system/role/role.module';
-import { UserModule } from './modules/system/user/user.module';
-import { TypeORMLogger } from './shared/database/typeorm-logger';
-import { SharedModule } from './shared/shared.module';
+import { HttpExceptionFilter } from './common/filters/http.exception.filter'
+import { JwtAuthGuard } from './common/guards/jwt-auth.guard'
+import { RbacGuard } from './common/guards/rbac.guard'
+import { TransformInterceptor } from './common/interceptors/transform.interceptor'
+import config, { ConfigKeyPaths, IDatabaseConfig } from './config'
+import { env } from './global/env'
+import { AuthModule } from './modules/auth/auth.module'
+import { MenuModule } from './modules/system/menu/menu.module'
+import { RoleModule } from './modules/system/role/role.module'
+import { UserModule } from './modules/system/user/user.module'
+import { TypeORMLogger } from './shared/database/typeorm-logger'
+import { SharedModule } from './shared/shared.module'
 
 @Module({
     imports: [
@@ -33,12 +33,13 @@ import { SharedModule } from './shared/shared.module';
         TypeOrmModule.forRootAsync({
             inject: [ConfigService],
             useFactory: (configService: ConfigService<ConfigKeyPaths>) => {
-                let loggerOptions: LoggerOptions = env('DB_LOGGING') as 'all';
+                let loggerOptions: LoggerOptions = env('DB_LOGGING') as 'all'
 
                 try {
                     // 解析成 js 数组 ['error']
-                    loggerOptions = JSON.parse(loggerOptions);
-                } catch (e) {
+                    loggerOptions = JSON.parse(loggerOptions)
+                }
+                catch (e) {
                     // ignore
                 }
 
@@ -47,11 +48,11 @@ import { SharedModule } from './shared/shared.module';
                     autoLoadEntities: true,
                     logging: loggerOptions,
                     logger: new TypeORMLogger(loggerOptions),
-                };
+                }
             },
             dataSourceFactory: async (options) => {
-                const dataSource = await new DataSource(options).initialize();
-                return dataSource;
+                const dataSource = await new DataSource(options).initialize()
+                return dataSource
             },
         }),
         // 启用 CLS 上下文
@@ -61,10 +62,10 @@ import { SharedModule } from './shared/shared.module';
             interceptor: {
                 mount: true,
                 setup: (cls, context) => {
-                    const req = context.switchToHttp().getRequest<FastifyRequest<{ Params: { id?: string } }>>();
+                    const req = context.switchToHttp().getRequest<FastifyRequest<{ Params: { id?: string } }>>()
                     if (req.params?.id && req.body) {
                         // 供自定义参数验证器(UniqueConstraint)使用
-                        cls.set('operateId', Number.parseInt(req.params.id));
+                        cls.set('operateId', Number.parseInt(req.params.id))
                     }
                 },
             },

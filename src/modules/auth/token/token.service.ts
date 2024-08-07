@@ -1,21 +1,19 @@
-import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import { InjectRedis } from '@liaoliaots/nestjs-redis'
 
-import { RoleService } from '@modules/system/role/role.service';
-import { UserEntity } from '@modules/system/user/user.entity';
-import dayjs from 'dayjs';
+import { RoleService } from '@modules/system/role/role.service'
+import { UserEntity } from '@modules/system/user/user.entity'
 
-import Redis from 'ioredis';
+import { Inject, Injectable } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
+import dayjs from 'dayjs'
+import Redis from 'ioredis'
 
-import { Inject, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { ISecurityConfig, SecurityConfig } from '~/config'
+import { genOnlineUserKey } from '~/helper/genRedisKey'
+import { generateUUID } from '~/utils'
 
-import { AccessTokenEntity } from './access-token.entity';
-
-import { RefreshTokenEntity } from './refresh-token.entity';
-
-import { ISecurityConfig, SecurityConfig } from '~/config';
-import { genOnlineUserKey } from '~/helper/genRedisKey';
-import { generateUUID } from '~/utils';
+import { AccessTokenEntity } from './access-token.entity'
+import { RefreshTokenEntity } from './refresh-token.entity'
 
 /**
  * 令牌服务
@@ -34,29 +32,30 @@ export class TokenService {
      * @param accessToken
      */
     async refreshToken(accessToken: AccessTokenEntity) {
-        const { user, refreshToken } = accessToken;
+        const { user, refreshToken } = accessToken
 
         if (refreshToken) {
-            const now = dayjs();
+            const now = dayjs()
             // 判断refreshToken是否过期
-            if (now.isAfter(refreshToken.expired_at)) return null;
+            if (now.isAfter(refreshToken.expired_at))
+                return null
 
-            const roleIds = await this.roleService.getRoleIdsByUser(user.id);
-            const roleValues = await this.roleService.getRoleValues(roleIds);
+            const roleIds = await this.roleService.getRoleIdsByUser(user.id)
+            const roleValues = await this.roleService.getRoleValues(roleIds)
 
             // 如果没过期则生成新的access_token和refresh_token
-            const token = await this.generateAccessToken(user.id, roleValues);
+            const token = await this.generateAccessToken(user.id, roleValues)
 
-            await accessToken.remove();
-            return token;
+            await accessToken.remove()
+            return token
         }
-        return null;
+        return null
     }
 
     generateJwtSign(payload: any) {
-        const jwtSign = this.jwtService.sign(payload);
+        const jwtSign = this.jwtService.sign(payload)
 
-        return jwtSign;
+        return jwtSign
     }
 
     async generateAccessToken(uid: number, roles: string[] = []) {
@@ -64,25 +63,25 @@ export class TokenService {
             uid,
             pv: 1,
             roles,
-        };
+        }
 
-        const jwtSign = await this.jwtService.signAsync(payload);
+        const jwtSign = await this.jwtService.signAsync(payload)
 
         // 生成accessToken
-        const accessToken = new AccessTokenEntity();
-        accessToken.value = jwtSign;
-        accessToken.user = { id: uid } as UserEntity;
-        accessToken.expired_at = dayjs().add(this.securityConfig.jwtExprire, 'second').toDate();
+        const accessToken = new AccessTokenEntity()
+        accessToken.value = jwtSign
+        accessToken.user = { id: uid } as UserEntity
+        accessToken.expired_at = dayjs().add(this.securityConfig.jwtExprire, 'second').toDate()
 
-        await accessToken.save();
+        await accessToken.save()
 
         // 生成refreshToken
-        const refreshToken = await this.generateRefreshToken(accessToken, dayjs());
+        const refreshToken = await this.generateRefreshToken(accessToken, dayjs())
 
         return {
             accessToken: jwtSign,
             refreshToken,
-        };
+        }
     }
 
     /**
@@ -93,20 +92,20 @@ export class TokenService {
     async generateRefreshToken(accessToken: AccessTokenEntity, now: dayjs.Dayjs): Promise<string> {
         const refreshTokenPayload = {
             uuid: generateUUID(),
-        };
+        }
 
         const refreshTokenSign = await this.jwtService.signAsync(refreshTokenPayload, {
             secret: this.securityConfig.refreshSecret,
-        });
+        })
 
-        const refreshToken = new RefreshTokenEntity();
-        refreshToken.value = refreshTokenSign;
-        refreshToken.expired_at = now.add(this.securityConfig.refreshExpire, 'second').toDate();
-        refreshToken.accessToken = accessToken;
+        const refreshToken = new RefreshTokenEntity()
+        refreshToken.value = refreshTokenSign
+        refreshToken.expired_at = now.add(this.securityConfig.refreshExpire, 'second').toDate()
+        refreshToken.accessToken = accessToken
 
-        await refreshToken.save();
+        await refreshToken.save()
 
-        return refreshTokenSign;
+        return refreshTokenSign
     }
 
     /**
@@ -114,18 +113,19 @@ export class TokenService {
      * @param value
      */
     async checkAccessToken(value: string) {
-        let isValid = false;
+        let isValid = false
         try {
-            await this.verifyAccessToken(value);
+            await this.verifyAccessToken(value)
             const res = await AccessTokenEntity.findOne({
                 where: { value },
                 relations: ['user', 'refreshToken'],
                 cache: true,
-            });
-            isValid = Boolean(res);
-        } catch (error) {}
+            })
+            isValid = Boolean(res)
+        }
+        catch (error) {}
 
-        return isValid;
+        return isValid
     }
 
     /**
@@ -135,10 +135,10 @@ export class TokenService {
     async removeAccessToken(value: string) {
         const accessToken = await AccessTokenEntity.findOne({
             where: { value },
-        });
+        })
         if (accessToken) {
-            this.redis.del(genOnlineUserKey(accessToken.id));
-            await accessToken.remove();
+            this.redis.del(genOnlineUserKey(accessToken.id))
+            await accessToken.remove()
         }
     }
 
@@ -150,11 +150,12 @@ export class TokenService {
         const refreshToken = await RefreshTokenEntity.findOne({
             where: { value },
             relations: ['accessToken'],
-        });
+        })
         if (refreshToken) {
-            if (refreshToken.accessToken) this.redis.del(genOnlineUserKey(refreshToken.accessToken.id));
-            await refreshToken.accessToken.remove();
-            await refreshToken.remove();
+            if (refreshToken.accessToken)
+                this.redis.del(genOnlineUserKey(refreshToken.accessToken.id))
+            await refreshToken.accessToken.remove()
+            await refreshToken.remove()
         }
     }
 
@@ -163,6 +164,6 @@ export class TokenService {
      * @param token
      */
     async verifyAccessToken(token: string): Promise<IAuthUser> {
-        return this.jwtService.verifyAsync(token);
+        return this.jwtService.verifyAsync(token)
     }
 }

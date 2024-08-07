@@ -1,7 +1,7 @@
-import { Controller } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Controller } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 
-import { AuthService } from './auth.service';
+import { AuthService } from './auth.service'
 
 @ApiTags('认证授权')
 @Controller('auth')

@@ -1,13 +1,12 @@
-import { Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
 
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { InjectRepository } from '@nestjs/typeorm';
+import { MenuService } from '../menu/menu.service'
+import { RoleService } from '../role/role.service'
 
-import { MenuService } from '../menu/menu.service';
-import { RoleService } from '../role/role.service';
-
-import { UserEntity } from './user.entity';
+import { UserEntity } from './user.entity'
 
 @Injectable()
 export class UserService {

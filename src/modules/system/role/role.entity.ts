@@ -1,16 +1,15 @@
-import { Column, Entity, JoinTable, ManyToMany, Relation } from 'typeorm';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
+import { Column, Entity, JoinTable, ManyToMany, Relation } from 'typeorm'
 
-import { ApiHideProperty } from '@nestjs/swagger';
+import { CompleteEntity } from '~/common/entity/common.entity'
 
-import { MenuEntity } from '../menu/menu.entity';
-import { UserEntity } from '../user/user.entity';
-
-import { CompleteEntity } from '~/common/entity/common.entity';
+import { MenuEntity } from '../menu/menu.entity'
+import { UserEntity } from '../user/user.entity'
 
 @Entity('sys_role')
 export class RoleEntity extends CompleteEntity {
     @Column({ type: 'tinyint', default: null, name: 'sort', comment: '显示顺序' })
-    sort: number;
+    sort: number
 
     @Column({
         type: 'tinyint',
@@ -19,7 +18,7 @@ export class RoleEntity extends CompleteEntity {
         name: 'data_scope',
         comment: '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）',
     })
-    dataScope: number;
+    dataScope: number
 
     @Column({
         type: 'varchar',
@@ -28,7 +27,11 @@ export class RoleEntity extends CompleteEntity {
         name: 'role_name',
         comment: '角色名称',
     })
-    roleName: string;
+    roleName: string
+
+    @Column({ unique: true, comment: '角色标识' })
+    @ApiProperty({ description: '角色标识' })
+    value: string
 
     @Column({
         type: 'varchar',
@@ -37,7 +40,7 @@ export class RoleEntity extends CompleteEntity {
         name: 'role_key',
         comment: '角色权限字符串',
     })
-    roleKey: string;
+    roleKey: string
 
     @Column({
         type: 'tinyint',
@@ -46,7 +49,7 @@ export class RoleEntity extends CompleteEntity {
         comment: '是否是禁用/停用状态（0:不是 1:是）',
         name: 'is_state',
     })
-    isState: number;
+    isState: number
 
     @Column({
         type: 'tinyint',
@@ -55,7 +58,7 @@ export class RoleEntity extends CompleteEntity {
         comment: '是否是删除状态（0:不是 1:是）',
         name: 'is_delete',
     })
-    isDelete: number;
+    isDelete: number
 
     @Column({
         type: 'varchar',
@@ -64,18 +67,18 @@ export class RoleEntity extends CompleteEntity {
         name: 'remark',
         comment: '备注',
     })
-    remark: string;
+    remark: string
 
     @ApiHideProperty()
-    @ManyToMany(() => UserEntity, (user) => user.roles)
-    users: Relation<UserEntity[]>;
+    @ManyToMany(() => UserEntity, user => user.roles)
+    users: Relation<UserEntity[]>
 
     @ApiHideProperty()
-    @ManyToMany(() => MenuEntity, (menu) => menu.roles, {})
+    @ManyToMany(() => MenuEntity, menu => menu.roles, {})
     @JoinTable({
         name: 'sys_role_menus',
         joinColumn: { name: 'role_id', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'menu_id', referencedColumnName: 'id' },
     })
-    menus: Relation<MenuEntity[]>;
+    menus: Relation<MenuEntity[]>
 }

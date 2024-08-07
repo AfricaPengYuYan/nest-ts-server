@@ -1,7 +1,7 @@
-import { Controller } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Controller } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 
-import { MenuService } from './menu.service';
+import { MenuService } from './menu.service'
 
 @ApiTags('菜单管理')
 @Controller('menu')

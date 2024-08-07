@@ -1,12 +1,11 @@
-import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import { InjectRedis } from '@liaoliaots/nestjs-redis'
 
-import { Redis } from 'ioredis';
+import { Injectable } from '@nestjs/common'
+import { Redis } from 'ioredis'
 
-import { Injectable } from '@nestjs/common';
+import { genAuthPVKey, genAuthPermKey, genAuthTokenKey } from '~/helper/genRedisKey'
 
-import { MenuService } from '../system/menu/menu.service';
-
-import { genAuthPermKey, genAuthPVKey, genAuthTokenKey } from '~/helper/genRedisKey';
+import { MenuService } from '../system/menu/menu.service'
 
 @Injectable()
 export class AuthService {
@@ -16,19 +15,19 @@ export class AuthService {
     ) {}
 
     async getPasswordVersionByUid(uid: number): Promise<string> {
-        return this.redis.get(genAuthPVKey(uid));
+        return this.redis.get(genAuthPVKey(uid))
     }
 
     async getTokenByUid(uid: number): Promise<string> {
-        return this.redis.get(genAuthTokenKey(uid));
+        return this.redis.get(genAuthTokenKey(uid))
     }
 
     async getPermissionsCache(uid: number): Promise<string[]> {
-        const permissionString = await this.redis.get(genAuthPermKey(uid));
-        return permissionString ? JSON.parse(permissionString) : [];
+        const permissionString = await this.redis.get(genAuthPermKey(uid))
+        return permissionString ? JSON.parse(permissionString) : []
     }
 
     async getPermissions(uid: number): Promise<string[]> {
-        return this.menuService.getPermissions(uid);
+        return this.menuService.getPermissions(uid)
     }
 }

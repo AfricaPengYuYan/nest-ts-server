@@ -1,18 +1,18 @@
-import { Check, Column, Entity, JoinTable, ManyToMany, OneToMany, Relation } from 'typeorm';
+import { Check, Column, Entity, JoinTable, ManyToMany, OneToMany, Relation } from 'typeorm'
 
-import { RoleEntity } from '../role/role.entity';
+import { CompleteEntity } from '~/common/entity/common.entity'
+import { AccessTokenEntity } from '~/modules/auth/token/access-token.entity'
 
-import { CompleteEntity } from '~/common/entity/common.entity';
-import { AccessTokenEntity } from '~/modules/auth/token/access-token.entity';
+import { RoleEntity } from '../role/role.entity'
 
 @Entity({ name: 'sys_user' })
 @Check(`"age" > 0`)
 export class UserEntity extends CompleteEntity {
     @Column({ type: 'varchar', default: null, length: 20, name: 'user_name', comment: '用户真实名称' })
-    userName: string;
+    userName: string
 
     @Column({ type: 'varchar', default: null, length: 20, name: 'nick_name', comment: '用户昵称' })
-    nickName: string;
+    nickName: string
 
     @Column({
         unique: true,
@@ -22,7 +22,7 @@ export class UserEntity extends CompleteEntity {
         name: 'account',
         comment: '账号',
     })
-    account: string;
+    account: string
 
     @Column({
         type: 'varchar',
@@ -31,7 +31,7 @@ export class UserEntity extends CompleteEntity {
         name: 'open_id',
         comment: '唯一标识',
     })
-    openId: string;
+    openId: string
 
     @Column({
         type: 'varchar',
@@ -40,7 +40,7 @@ export class UserEntity extends CompleteEntity {
         name: 'password',
         comment: '密码',
     })
-    password: string;
+    password: string
 
     @Column({
         type: 'varchar',
@@ -49,7 +49,7 @@ export class UserEntity extends CompleteEntity {
         name: 'salt_password',
         comment: '加盐密码',
     })
-    saltPassword: string;
+    saltPassword: string
 
     @Column({
         type: 'varchar',
@@ -58,7 +58,7 @@ export class UserEntity extends CompleteEntity {
         name: 'phone',
         comment: '手机号码',
     })
-    phone: string;
+    phone: string
 
     @Column({
         type: 'tinyint',
@@ -66,7 +66,7 @@ export class UserEntity extends CompleteEntity {
         name: 'source',
         comment: '来源（0表示PC端后台注册 1表示小程序 2表示H5公众号）',
     })
-    source: number;
+    source: number
 
     @Column({
         type: 'tinyint',
@@ -75,10 +75,10 @@ export class UserEntity extends CompleteEntity {
         name: 'sex',
         comment: '性别（0表示女 1表示男）',
     })
-    sex: number;
+    sex: number
 
     @Column({ type: 'tinyint', default: null, name: 'age', comment: '年龄' })
-    age: number;
+    age: number
 
     @Column({
         type: 'int',
@@ -86,7 +86,7 @@ export class UserEntity extends CompleteEntity {
         name: 'id_card',
         comment: '身份证',
     })
-    idCard: number;
+    idCard: number
 
     @Column({
         type: 'varchar',
@@ -95,7 +95,7 @@ export class UserEntity extends CompleteEntity {
         name: 'email',
         comment: '邮箱',
     })
-    email: string;
+    email: string
 
     @Column({
         type: 'tinyint',
@@ -104,7 +104,7 @@ export class UserEntity extends CompleteEntity {
         name: 'is_super',
         comment: '是否为超级管理员（1表示是 0表示不是）',
     })
-    isSuper: number;
+    isSuper: number
 
     @Column({
         type: 'tinyint',
@@ -113,7 +113,7 @@ export class UserEntity extends CompleteEntity {
         comment: '是否是禁用/停用状态（0:不是 1:是）',
         name: 'is_state',
     })
-    isState: number;
+    isState: number
 
     @Column({
         type: 'tinyint',
@@ -122,18 +122,18 @@ export class UserEntity extends CompleteEntity {
         comment: '是否是删除状态（0:不是 1:是）',
         name: 'is_delete',
     })
-    isDelete: number;
+    isDelete: number
 
-    @ManyToMany(() => RoleEntity, (role) => role.users)
+    @ManyToMany(() => RoleEntity, role => role.users)
     @JoinTable({
         name: 'sys_user_roles',
         joinColumn: { name: 'user_id', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' },
     })
-    roles: Relation<RoleEntity[]>;
+    roles: Relation<RoleEntity[]>
 
-    @OneToMany(() => AccessTokenEntity, (accessToken) => accessToken.user, {
+    @OneToMany(() => AccessTokenEntity, accessToken => accessToken.user, {
         cascade: true,
     })
-    accessTokens: Relation<AccessTokenEntity[]>;
+    accessTokens: Relation<AccessTokenEntity[]>
 }

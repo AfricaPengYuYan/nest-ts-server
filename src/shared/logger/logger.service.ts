@@ -1,12 +1,12 @@
-import { ConsoleLogger, ConsoleLoggerOptions, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { ConsoleLogger, ConsoleLoggerOptions, Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 
-import { ConfigKeyPaths } from '~/config';
+import { ConfigKeyPaths } from '~/config'
 
-import type { Logger as WinstonLogger } from 'winston';
-import { config, createLogger, format, transports } from 'winston';
+import type { Logger as WinstonLogger } from 'winston'
+import { config, createLogger, format, transports } from 'winston'
 
-import 'winston-daily-rotate-file';
+import 'winston-daily-rotate-file'
 
 export enum LogLevel {
     ERROR = 'error',
@@ -18,23 +18,23 @@ export enum LogLevel {
 
 @Injectable()
 export class LoggerService extends ConsoleLogger {
-    private winstonLogger: WinstonLogger;
+    private winstonLogger: WinstonLogger
 
     constructor(
         context: string,
         options: ConsoleLoggerOptions,
         private configService: ConfigService<ConfigKeyPaths>,
     ) {
-        super(context, options);
-        this.initWinston();
+        super(context, options)
+        this.initWinston()
     }
 
     protected get level(): LogLevel {
-        return this.configService.get('app.logger.level', { infer: true }) as LogLevel;
+        return this.configService.get('app.logger.level', { infer: true }) as LogLevel
     }
 
     protected get maxFiles(): number {
-        return this.configService.get('app.logger.maxFiles', { infer: true });
+        return this.configService.get('app.logger.maxFiles', { infer: true })
     }
 
     protected initWinston(): void {
@@ -59,7 +59,7 @@ export class LoggerService extends ConsoleLogger {
                     auditFile: 'logs/.audit/app-error.json',
                 }),
             ],
-        });
+        })
 
         // if (isDev) {
         //   this.winstonLogger.add(
@@ -75,36 +75,36 @@ export class LoggerService extends ConsoleLogger {
     }
 
     verbose(message: any, context?: string): void {
-        super.verbose.apply(this, [message, context]);
+        super.verbose.apply(this, [message, context])
 
-        this.winstonLogger.log(LogLevel.VERBOSE, message, { context });
+        this.winstonLogger.log(LogLevel.VERBOSE, message, { context })
     }
 
     debug(message: any, context?: string): void {
-        super.debug.apply(this, [message, context]);
+        super.debug.apply(this, [message, context])
 
-        this.winstonLogger.log(LogLevel.DEBUG, message, { context });
+        this.winstonLogger.log(LogLevel.DEBUG, message, { context })
     }
 
     log(message: any, context?: string): void {
-        super.log.apply(this, [message, context]);
+        super.log.apply(this, [message, context])
 
-        this.winstonLogger.log(LogLevel.INFO, message, { context });
+        this.winstonLogger.log(LogLevel.INFO, message, { context })
     }
 
     warn(message: any, context?: string): void {
-        super.warn.apply(this, [message, context]);
+        super.warn.apply(this, [message, context])
 
-        this.winstonLogger.log(LogLevel.WARN, message);
+        this.winstonLogger.log(LogLevel.WARN, message)
     }
 
     error(message: any, stack?: string, context?: string): void {
-        super.error.apply(this, [message, stack, context]);
+        super.error.apply(this, [message, stack, context])
 
-        const hasStack = !!context;
+        const hasStack = !!context
         this.winstonLogger.log(LogLevel.ERROR, {
             context: hasStack ? context : stack,
             message: hasStack ? new Error(message) : message,
-        });
+        })
     }
 }
