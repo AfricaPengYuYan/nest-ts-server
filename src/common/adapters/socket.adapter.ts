@@ -1,6 +1,7 @@
+import { createAdapter } from '@socket.io/redis-adapter';
+
 import { INestApplication } from '@nestjs/common';
 import { IoAdapter } from '@nestjs/platform-socket.io';
-import { createAdapter } from '@socket.io/redis-adapter';
 
 import { REDIS_PUBSUB } from '~/shared/redis/redis.constant';
 

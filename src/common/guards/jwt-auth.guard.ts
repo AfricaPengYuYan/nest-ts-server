@@ -1,22 +1,26 @@
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
-import { ExecutionContext, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { AuthGuard } from '@nestjs/passport';
+
 import { FastifyRequest } from 'fastify';
+
 import Redis from 'ioredis';
+
 import { isEmpty, isNil } from 'lodash';
 
 import { ExtractJwt } from 'passport-jwt';
 
+import { ExecutionContext, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { AuthGuard } from '@nestjs/passport';
+
+import { AuthStrategy, PUBLIC_KEY } from '~/common/constants/auth.constant';
 import { ErrorEnum } from '~/common/constants/error-code.constant';
 import { ApiException } from '~/common/exceptions/api.exception';
 import { AppConfig, IAppConfig } from '~/config';
 import { genTokenBlacklistKey } from '~/helper/genRedisKey';
 import { AuthService } from '~/modules/auth/auth.service';
 
-import { checkIsDemoMode } from '~/utils';
-import { AuthStrategy, PUBLIC_KEY } from '~/common/constants/auth.constant';
 import { TokenService } from '~/modules/auth/token/token.service';
+import { checkIsDemoMode } from '~/utils';
 
 /** @type {import('fastify').RequestGenericInterface} */
 interface RequestType {

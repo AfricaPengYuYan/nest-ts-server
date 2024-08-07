@@ -1,6 +1,7 @@
-import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { BaseEntity, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn, VirtualColumn } from 'typeorm';
+
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 
 // 如果觉得前端转换时间太麻烦，并且不考虑通用性的话，可以在服务端进行转换，eg: @UpdateDateColumn({ name: 'updated_at', transformer })
 // const transformer: ValueTransformer = {

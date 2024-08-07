@@ -1,7 +1,9 @@
 import { Check, Column, Entity, JoinTable, ManyToMany, OneToMany, Relation } from 'typeorm';
+
+import { RoleEntity } from '../role/role.entity';
+
 import { CompleteEntity } from '~/common/entity/common.entity';
 import { AccessTokenEntity } from '~/modules/auth/token/access-token.entity';
-import { RoleEntity } from '../role/role.entity';
 
 @Entity({ name: 'sys_user' })
 @Check(`"age" > 0`)

@@ -1,8 +1,12 @@
+import { concat, isEmpty, uniq } from 'lodash';
+
+import { In, IsNull, Not, Repository } from 'typeorm';
+
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { concat, isEmpty, uniq } from 'lodash';
-import { In, IsNull, Not, Repository } from 'typeorm';
+
 import { RoleService } from '../role/role.service';
+
 import { MenuEntity } from './menu.entity';
 
 @Injectable()

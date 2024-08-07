@@ -1,9 +1,13 @@
+import { isEmpty } from 'lodash';
+
+import { In, Repository } from 'typeorm';
+
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { isEmpty } from 'lodash';
-import { In, Repository } from 'typeorm';
-import { ROOT_ROLE_ID } from '~/common/constants/system.constant';
+
 import { RoleEntity } from './role.entity';
+
+import { ROOT_ROLE_ID } from '~/common/constants/system.constant';
 
 @Injectable()
 export class RoleService {

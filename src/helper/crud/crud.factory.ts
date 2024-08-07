@@ -1,15 +1,17 @@
+import { upperFirst } from 'lodash';
+
+import pluralize from 'pluralize';
+
 import type { Type } from '@nestjs/common';
 
 import { Body, Controller, Delete, Get, Patch, Post, Put, Query } from '@nestjs/common';
 import { ApiBody, IntersectionType, PartialType } from '@nestjs/swagger';
-import { upperFirst } from 'lodash';
-import pluralize from 'pluralize';
+
+import { BaseService } from './base.service';
 
 import { ApiResult } from '~/common/decorators/api-result.decorator';
 import { IdParam } from '~/common/decorators/id-param.decorator';
 import { PagerDto } from '~/common/dto/pager.dto';
-
-import { BaseService } from './base.service';
 
 export function BaseCrudFactory<E extends new (...args: any[]) => any>({ entity, dto, permissions }: { entity: E; dto?: Type<any>; permissions?: Record<string, string> }): Type<any> {
     const prefix = entity.name.toLowerCase().replace(/entity$/, '');

@@ -4,10 +4,10 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule, seconds } from '@nestjs/throttler';
 
-import { isDev } from '~/global/env';
-
 import { LoggerModule } from './logger/logger.module';
 import { RedisModule } from './redis/redis.module';
+
+import { isDev } from '~/global/env';
 
 @Global()
 @Module({

@@ -8,10 +8,9 @@ import path from 'node:path';
 import { AppModule } from './app.module';
 import { fastifyApp } from './common/adapters/fastify.adapter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
+import type { ConfigKeyPaths } from './config';
 import { isDev } from './global/env';
 import { setupSwagger } from './setup-swagger';
-
-import type { ConfigKeyPaths } from './config';
 
 async function bootstrap() {
     // 发起请求->中间件(middleware)->守卫(guards)->全局拦截器(interceptors 控制器之前)->管道(pipes)->控制器(方法处理器)->路由拦截器->(请求之后)全局过滤器->异常过滤器

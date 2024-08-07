@@ -1,5 +1,6 @@
-import { ConfigType, registerAs } from '@nestjs/config';
 import * as qiniu from 'qiniu';
+
+import { ConfigType, registerAs } from '@nestjs/config';
 
 import { env } from '~/global/env';
 

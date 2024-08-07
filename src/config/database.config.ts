@@ -1,6 +1,6 @@
-import { ConfigType, registerAs } from '@nestjs/config';
-
 import { DataSource, DataSourceOptions } from 'typeorm';
+
+import { ConfigType, registerAs } from '@nestjs/config';
 
 import { env, envBoolean, envNumber } from '~/global/env';
 

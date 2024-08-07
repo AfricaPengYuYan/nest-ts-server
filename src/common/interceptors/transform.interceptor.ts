@@ -1,13 +1,14 @@
-import { CallHandler, ExecutionContext, HttpStatus, Injectable, NestInterceptor } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
 import type { FastifyRequest } from 'fastify';
 import qs from 'qs';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ResOp } from '~/common/model/response.model';
+import { CallHandler, ExecutionContext, HttpStatus, Injectable, NestInterceptor } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 
 import { BYPASS_KEY } from '../decorators/bypass.decorator';
+
+import { ResOp } from '~/common/model/response.model';
 
 /**
  * 统一处理接口请求与响应结果，如果不需要则添加 @Bypass 装饰器

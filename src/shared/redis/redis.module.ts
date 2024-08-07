@@ -2,7 +2,6 @@ import { RedisModule as NestRedisModule } from '@liaoliaots/nestjs-redis';
 import { CacheModule } from '@nestjs/cache-manager';
 import { Global, Module, Provider } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
 import { redisStore } from 'cache-manager-ioredis-yet';
 import { RedisOptions } from 'ioredis';
 

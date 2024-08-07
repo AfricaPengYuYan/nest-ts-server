@@ -1,18 +1,21 @@
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
-import { Inject, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+
+import { RoleService } from '@modules/system/role/role.service';
+import { UserEntity } from '@modules/system/user/user.entity';
 import dayjs from 'dayjs';
 
 import Redis from 'ioredis';
 
-import { RoleService } from '@modules/system/role/role.service';
-import { UserEntity } from '@modules/system/user/user.entity';
+import { Inject, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+
+import { AccessTokenEntity } from './access-token.entity';
+
+import { RefreshTokenEntity } from './refresh-token.entity';
+
 import { ISecurityConfig, SecurityConfig } from '~/config';
 import { genOnlineUserKey } from '~/helper/genRedisKey';
 import { generateUUID } from '~/utils';
-
-import { AccessTokenEntity } from './access-token.entity';
-import { RefreshTokenEntity } from './refresh-token.entity';
 
 /**
  * 令牌服务

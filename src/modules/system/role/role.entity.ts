@@ -1,8 +1,11 @@
-import { ApiHideProperty } from '@nestjs/swagger';
 import { Column, Entity, JoinTable, ManyToMany, Relation } from 'typeorm';
-import { CompleteEntity } from '~/common/entity/common.entity';
+
+import { ApiHideProperty } from '@nestjs/swagger';
+
 import { MenuEntity } from '../menu/menu.entity';
 import { UserEntity } from '../user/user.entity';
+
+import { CompleteEntity } from '~/common/entity/common.entity';
 
 @Entity('sys_role')
 export class RoleEntity extends CompleteEntity {

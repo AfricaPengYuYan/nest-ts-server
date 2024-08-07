@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import type { FastifyRequest } from 'fastify';
 import { ClsModule } from 'nestjs-cls';
 import { DataSource, LoggerOptions } from 'typeorm';
+
 import { HttpExceptionFilter } from './common/filters/http.exception.filter';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RbacGuard } from './common/guards/rbac.guard';

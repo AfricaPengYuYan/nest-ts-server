@@ -1,6 +1,8 @@
 import { Column, Entity, ManyToMany, Relation } from 'typeorm';
-import { CompleteEntity } from '~/common/entity/common.entity';
+
 import { RoleEntity } from '../role/role.entity';
+
+import { CompleteEntity } from '~/common/entity/common.entity';
 
 @Entity('sys_menu')
 export class MenuEntity extends CompleteEntity {

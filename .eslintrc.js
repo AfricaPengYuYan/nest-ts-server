@@ -35,24 +35,5 @@ module.exports = {
 
         // prettier
         'prettier/prettier': 'error',
-
-        // import
-        'import/first': 'error',
-        'import/no-duplicates': 'error',
-        'import/order': [
-            'error',
-            {
-                groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
-
-                pathGroups: [
-                    {
-                        pattern: ['@nestjs/**', '~/**'],
-                        group: 'external',
-                        position: 'before',
-                    },
-                ],
-                pathGroupsExcludedImportTypes: ['type'],
-            },
-        ],
     },
 };

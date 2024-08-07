@@ -1,8 +1,12 @@
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
-import { Injectable } from '@nestjs/common';
+
 import { Redis } from 'ioredis';
-import { genAuthPermKey, genAuthPVKey, genAuthTokenKey } from '~/helper/genRedisKey';
+
+import { Injectable } from '@nestjs/common';
+
 import { MenuService } from '../system/menu/menu.service';
+
+import { genAuthPermKey, genAuthPVKey, genAuthTokenKey } from '~/helper/genRedisKey';
 
 @Injectable()
 export class AuthService {

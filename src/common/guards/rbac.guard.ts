@@ -1,6 +1,8 @@
+import { FastifyRequest } from 'fastify';
+
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { FastifyRequest } from 'fastify';
+
 import { ALLOW_ANON_KEY, PERMISSION_KEY, PUBLIC_KEY, Roles } from '~/common/constants/auth.constant';
 import { ErrorEnum } from '~/common/constants/error-code.constant';
 import { ApiException } from '~/common/exceptions/api.exception';

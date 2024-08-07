@@ -9,7 +9,7 @@
         "build": "nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
         "start": "nest start",
-        "dev": "cross-env NODE_ENV=development nest start --watch",
+        "dev": "cross-env NODE_ENV=development nest start --watch --path tsconfig.json",
         "start:dev": "nest start --watch",
         "start:debug": "nest start --debug --watch",
         "start:prod": "node dist/main",
@@ -21,7 +21,6 @@
         "test:e2e": "jest --config ./test/jest-e2e.json"
     },
     "dependencies": {
-        "@antfu/eslint-config": "^2.24.1",
         "@fastify/cookie": "^9.3.1",
         "@fastify/multipart": "^8.3.0",
         "@liaoliaots/nestjs-redis": "^9.0.5",
