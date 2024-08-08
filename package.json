@@ -8,11 +8,11 @@
     "scripts": {
         "build": "nest build",
         "start": "nest start",
-        "dev": "cross-env NODE_ENV=development nest start --watch --path tsconfig.json",
+        "dev": "cross-env NODE_ENV=development nest start -w --path tsconfig.json",
         "start:dev": "nest start --watch",
         "start:debug": "nest start --debug --watch",
         "start:prod": "node dist/main",
-        "lint": "eslint \"{src,apps,libs,test,types}/**/*.ts\" --fix",
+        "lint": "eslint \"{src,types}/**/*.ts\" --fix",
         "test": "jest",
         "test:watch": "jest --watch",
         "test:cov": "jest --coverage",
