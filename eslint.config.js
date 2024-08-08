@@ -1,12 +1,12 @@
-const antfu = require('@antfu/eslint-config').default;
+const antfu = require('@antfu/eslint-config').default
 
 module.exports = antfu(
     {
         stylistic: {
             indent: 4,
-            quotes: 'single'
+            quotes: 'single',
         },
-        typescript: true
+        typescript: true,
     },
     {
         rules: {
@@ -21,18 +21,23 @@ module.exports = antfu(
             'import/order': [
                 2,
                 {
-                    pathGroups: [
+                    'pathGroups': [
+                        {
+                            pattern: '@nestjs/**',
+                            group: 'external',
+                            position: 'after',
+                        },
                         {
                             pattern: '~/**',
                             group: 'external',
-                            position: 'after'
-                        }
+                            position: 'after',
+                        },
                     ],
-                    alphabetize: {order: 'asc', caseInsensitive: false},
+                    'alphabetize': { order: 'asc', caseInsensitive: false },
                     'newlines-between': 'always-and-inside-groups',
-                    warnOnUnassignedImports: true
-                }
-            ]
-        }
-    }
-);
+                    'warnOnUnassignedImports': true,
+                },
+            ],
+        },
+    },
+)
