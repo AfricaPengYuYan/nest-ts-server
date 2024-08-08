@@ -4,12 +4,12 @@ import { LoggerService } from './logger.service'
 
 @Module({})
 export class LoggerModule {
-    static forRoot() {
-        return {
-            global: true,
-            module: LoggerModule,
-            providers: [LoggerService],
-            exports: [LoggerService],
-        }
+  static forRoot() {
+    return {
+      global: true,
+      module: LoggerModule,
+      providers: [LoggerService],
+      exports: [LoggerService],
     }
+  }
 }

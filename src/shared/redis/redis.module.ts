@@ -8,54 +8,53 @@ import { RedisOptions } from 'ioredis'
 
 import { ConfigKeyPaths, IRedisConfig } from '~/config'
 
-import { REDIS_PUBSUB } from '../../common/constants/redis.constant'
-
 import { CacheService } from './cache.service'
 import { RedisSubPub } from './redis-subpub'
+import { REDIS_PUBSUB } from './redis.constant'
 import { RedisPubSubService } from './subpub.service'
 
 const providers: Provider[] = [
-    CacheService,
-    {
-        provide: REDIS_PUBSUB,
-        useFactory: (configService: ConfigService<ConfigKeyPaths>) => {
-            const redisOptions: RedisOptions = configService.get<IRedisConfig>('redis')
-            return new RedisSubPub(redisOptions)
-        },
-        inject: [ConfigService],
+  CacheService,
+  {
+    provide: REDIS_PUBSUB,
+    useFactory: (configService: ConfigService<ConfigKeyPaths>) => {
+      const redisOptions: RedisOptions = configService.get<IRedisConfig>('redis')
+      return new RedisSubPub(redisOptions)
     },
-    RedisPubSubService,
+    inject: [ConfigService],
+  },
+  RedisPubSubService,
 ]
 
 @Global()
 @Module({
-    imports: [
+  imports: [
     // cache
-        CacheModule.registerAsync({
-            imports: [ConfigModule],
-            useFactory: (configService: ConfigService<ConfigKeyPaths>) => {
-                const redisOptions: RedisOptions = configService.get<IRedisConfig>('redis')
+    CacheModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService<ConfigKeyPaths>) => {
+        const redisOptions: RedisOptions = configService.get<IRedisConfig>('redis')
 
-                return {
-                    isGlobal: true,
-                    store: redisStore,
-                    isCacheableValue: () => true,
-                    ...redisOptions,
-                }
-            },
-            inject: [ConfigService],
-        }),
-        // redis
-        NestRedisModule.forRootAsync({
-            imports: [ConfigModule],
-            useFactory: (configService: ConfigService<ConfigKeyPaths>) => ({
-                readyLog: true,
-                config: configService.get<IRedisConfig>('redis'),
-            }),
-            inject: [ConfigService],
-        }),
-    ],
-    providers,
-    exports: [...providers, CacheModule],
+        return {
+          isGlobal: true,
+          store: redisStore,
+          isCacheableValue: () => true,
+          ...redisOptions,
+        }
+      },
+      inject: [ConfigService],
+    }),
+    // redis
+    NestRedisModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService<ConfigKeyPaths>) => ({
+        readyLog: true,
+        config: configService.get<IRedisConfig>('redis'),
+      }),
+      inject: [ConfigService],
+    }),
+  ],
+  providers,
+  exports: [...providers, CacheModule],
 })
 export class RedisModule {}
