@@ -6,7 +6,7 @@ import { isArray, isEmpty, isNil } from 'lodash'
 
 import { DataSource, In, Repository } from 'typeorm'
 
-import { BusinessException } from '~/common/exceptions/biz.exception'
+import { ApiException } from '~/common/exceptions/api.exception'
 
 import { ErrorEnum } from '~/constants/error-code.constant'
 
@@ -63,7 +63,7 @@ export class ResourceGuard implements CanActivate {
 
       const items = getRequestItems(request)
       if (isEmpty(items))
-        throw new BusinessException(ErrorEnum.REQUESTED_RESOURCE_NOT_FOUND)
+        throw new ApiException(ErrorEnum.REQUESTED_RESOURCE_NOT_FOUND)
 
       if (condition)
         return condition(repo, items, user)
@@ -79,7 +79,7 @@ export class ResourceGuard implements CanActivate {
       const records = await repo.find(recordQuery)
 
       if (isEmpty(records))
-        throw new BusinessException(ErrorEnum.REQUESTED_RESOURCE_NOT_FOUND)
+        throw new ApiException(ErrorEnum.REQUESTED_RESOURCE_NOT_FOUND)
     }
 
     return true

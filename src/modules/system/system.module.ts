@@ -11,14 +11,6 @@ const modules = [
     UserModule,
     RoleModule,
     MenuModule,
-//   DeptModule,
-//   DictTypeModule,
-//   DictItemModule,
-//   ParamConfigModule,
-//   LogModule,
-//   TaskModule,
-//   OnlineModule,
-//   ServeModule,
 ]
 
 @Module({

@@ -3,7 +3,7 @@ import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm'
 import { isEmpty } from 'lodash'
 import { EntityManager, Repository, TreeRepository } from 'typeorm'
 
-import { BusinessException } from '~/common/exceptions/biz.exception'
+import { ApiException } from '~/common/exceptions/api.exception'
 import { ErrorEnum } from '~/constants/error-code.constant'
 import { DeptEntity } from '~/modules/system/dept/dept.entity'
 import { UserEntity } from '~/modules/user/user.entity'
@@ -34,7 +34,7 @@ export class DeptService {
       .getOne()
 
     if (isEmpty(dept))
-      throw new BusinessException(ErrorEnum.DEPARTMENT_NOT_FOUND)
+      throw new ApiException(ErrorEnum.DEPARTMENT_NOT_FOUND)
 
     return dept
   }

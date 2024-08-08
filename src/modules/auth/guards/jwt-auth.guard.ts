@@ -1,9 +1,9 @@
 import { InjectRedis } from '@liaoliaots/nestjs-redis'
 import {
-  ExecutionContext,
-  Inject,
-  Injectable,
-  UnauthorizedException,
+    ExecutionContext,
+    Inject,
+    Injectable,
+    UnauthorizedException,
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { AuthGuard } from '@nestjs/passport'
@@ -13,7 +13,7 @@ import { isEmpty, isNil } from 'lodash'
 
 import { ExtractJwt } from 'passport-jwt'
 
-import { BusinessException } from '~/common/exceptions/biz.exception'
+import { ApiException } from '~/common/exceptions/api.exception'
 import { AppConfig, IAppConfig } from '~/config'
 import { ErrorEnum } from '~/constants/error-code.constant'
 import { genTokenBlacklistKey } from '~/helper/genRedisKey'
@@ -73,7 +73,7 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
 
     // 检查 token 是否在黑名单中
     if (await this.redis.get(genTokenBlacklistKey(token)))
-      throw new BusinessException(ErrorEnum.INVALID_LOGIN)
+      throw new ApiException(ErrorEnum.INVALID_LOGIN)
 
     request.accessToken = token
 
@@ -91,7 +91,7 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
 
       // 在 handleRequest 中 user 为 null 时会抛出 UnauthorizedException
       if (err instanceof UnauthorizedException)
-        throw new BusinessException(ErrorEnum.INVALID_LOGIN)
+        throw new ApiException(ErrorEnum.INVALID_LOGIN)
 
       // 判断 token 是否有效且存在, 如果不存在则认证失败
       const isValid = isNil(token)
@@ -99,7 +99,7 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
         : await this.tokenService.checkAccessToken(token!)
 
       if (!isValid)
-        throw new BusinessException(ErrorEnum.INVALID_LOGIN)
+        throw new ApiException(ErrorEnum.INVALID_LOGIN)
     }
 
     // SSE 请求
@@ -113,7 +113,7 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
     const pv = await this.authService.getPasswordVersionByUid(request.user.uid)
     if (pv !== `${request.user.pv}`) {
       // 密码版本不一致，登录期间已更改过密码
-      throw new BusinessException(ErrorEnum.INVALID_LOGIN)
+      throw new ApiException(ErrorEnum.INVALID_LOGIN)
     }
 
     // 不允许多端登录
@@ -122,7 +122,7 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
 
       if (token !== cacheToken) {
         // 与redis保存不一致 即二次登录
-        throw new BusinessException(ErrorEnum.ACCOUNT_LOGGED_IN_ELSEWHERE)
+        throw new ApiException(ErrorEnum.ACCOUNT_LOGGED_IN_ELSEWHERE)
       }
     }
 

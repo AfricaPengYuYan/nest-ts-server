@@ -4,7 +4,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ApiResult } from '~/common/decorators/api-result.decorator'
 import { IdParam } from '~/common/decorators/id-param.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
-import { BusinessException } from '~/common/exceptions/biz.exception'
+import { ApiException } from '~/common/exceptions/api.exception'
 import { CreatorPipe } from '~/common/pipes/creator.pipe'
 import { UpdaterPipe } from '~/common/pipes/updater.pipe'
 import { ErrorEnum } from '~/constants/error-code.constant'
@@ -65,12 +65,12 @@ export class DeptController {
     // 查询是否有关联用户或者部门，如果含有则无法删除
     const count = await this.deptService.countUserByDeptId(id)
     if (count > 0)
-      throw new BusinessException(ErrorEnum.DEPARTMENT_HAS_ASSOCIATED_USERS)
+      throw new ApiException(ErrorEnum.DEPARTMENT_HAS_ASSOCIATED_USERS)
 
     const count2 = await this.deptService.countChildDept(id)
     console.log('count2', count2)
     if (count2 > 0)
-      throw new BusinessException(ErrorEnum.DEPARTMENT_HAS_CHILD_DEPARTMENTS)
+      throw new ApiException(ErrorEnum.DEPARTMENT_HAS_CHILD_DEPARTMENTS)
 
     await this.deptService.delete(id)
   }

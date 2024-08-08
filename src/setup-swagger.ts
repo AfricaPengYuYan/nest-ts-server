@@ -4,7 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 import { API_SECURITY_AUTH } from './common/decorators/swagger.decorator'
 import { CommonEntity } from './common/entity/common.entity'
-import { ResOp, TreeResult } from './common/model/response.model'
+import { Result, TreeResult } from './common/model/response.model'
 import { ConfigKeyPaths, IAppConfig, ISwaggerConfig } from './config'
 import { Pagination } from './helper/paginate/pagination'
 
@@ -33,7 +33,7 @@ export function setupSwagger(
 
   const document = SwaggerModule.createDocument(app, documentBuilder.build(), {
     ignoreGlobalPrefix: false,
-    extraModels: [CommonEntity, ResOp, Pagination, TreeResult],
+    extraModels: [CommonEntity, Result, Pagination, TreeResult],
   })
 
   SwaggerModule.setup(path, app, document, {

@@ -1,9 +1,9 @@
 import {
-  CallHandler,
-  ExecutionContext,
-  HttpStatus,
-  Injectable,
-  NestInterceptor,
+    CallHandler,
+    ExecutionContext,
+    HttpStatus,
+    Injectable,
+    NestInterceptor,
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import type { FastifyRequest } from 'fastify'
@@ -11,7 +11,7 @@ import qs from 'qs'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
-import { ResOp } from '~/common/model/response.model'
+import { Result } from '~/common/model/response.model'
 
 import { BYPASS_KEY } from '../decorators/bypass.decorator'
 
@@ -47,7 +47,7 @@ export class TransformInterceptor implements NestInterceptor {
         //   return data;
         // }
 
-        return new ResOp(HttpStatus.OK, data ?? null)
+        return new Result(HttpStatus.OK, data ?? null)
       }),
     )
   }

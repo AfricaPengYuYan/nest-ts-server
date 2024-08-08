@@ -2,7 +2,7 @@ import { HttpStatus, RequestMethod, Type, applyDecorators } from '@nestjs/common
 import { METHOD_METADATA } from '@nestjs/common/constants'
 import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger'
 
-import { ResOp } from '~/common/model/response.model'
+import { Result } from '~/common/model/response.model'
 
 const baseTypeNames = ['String', 'Number', 'Boolean']
 
@@ -79,7 +79,7 @@ export function ApiResult<TModel extends Type<any>>({
           status: status ?? (isPost ? HttpStatus.CREATED : HttpStatus.OK),
           schema: {
             allOf: [
-              { $ref: getSchemaPath(ResOp) },
+              { $ref: getSchemaPath(Result) },
               {
                 properties: {
                   data: prop,
