@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common'
 import { IoAdapter } from '@nestjs/platform-socket.io'
 import { createAdapter } from '@socket.io/redis-adapter'
 
-import { REDIS_PUBSUB } from '~/shared/redis/redis.constant'
+import { REDIS_PUBSUB } from '~/common/constants/redis.constant'
 
 export const RedisIoAdapterKey = 'm-shop-socket'
 

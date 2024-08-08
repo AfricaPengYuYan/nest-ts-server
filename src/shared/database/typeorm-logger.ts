@@ -10,22 +10,44 @@ export class TypeORMLogger implements ITypeORMLogger {
         if (!this.isEnable('query'))
             return
 
-        const sql = query + (parameters && parameters.length ? ` -- PARAMETERS: ${this.stringifyParams(parameters)}` : '')
+        const sql
+      = query
+      + (parameters && parameters.length
+          ? ` -- PARAMETERS: ${this.stringifyParams(parameters)}`
+          : '')
 
         this.logger.log(`[QUERY]: ${sql}`)
     }
 
-    logQueryError(error: string | Error, query: string, parameters?: any[], _queryRunner?: QueryRunner) {
+    logQueryError(
+        error: string | Error,
+        query: string,
+        parameters?: any[],
+        _queryRunner?: QueryRunner,
+    ) {
         if (!this.isEnable('error'))
             return
 
-        const sql = query + (parameters && parameters.length ? ` -- PARAMETERS: ${this.stringifyParams(parameters)}` : '')
+        const sql
+      = query
+      + (parameters && parameters.length
+          ? ` -- PARAMETERS: ${this.stringifyParams(parameters)}`
+          : '')
 
         this.logger.error([`[FAILED QUERY]: ${sql}`, `[QUERY ERROR]: ${error}`])
     }
 
-    logQuerySlow(time: number, query: string, parameters?: any[], _queryRunner?: QueryRunner) {
-        const sql = query + (parameters && parameters.length ? ` -- PARAMETERS: ${this.stringifyParams(parameters)}` : '')
+    logQuerySlow(
+        time: number,
+        query: string,
+        parameters?: any[],
+        _queryRunner?: QueryRunner,
+    ) {
+        const sql
+      = query
+      + (parameters && parameters.length
+          ? ` -- PARAMETERS: ${this.stringifyParams(parameters)}`
+          : '')
 
         this.logger.warn(`[SLOW QUERY: ${time} ms]: ${sql}`)
     }
@@ -44,7 +66,11 @@ export class TypeORMLogger implements ITypeORMLogger {
         this.logger.log(message)
     }
 
-    log(level: 'warn' | 'info' | 'log', message: any, _queryRunner?: QueryRunner) {
+    log(
+        level: 'warn' | 'info' | 'log',
+        message: any,
+        _queryRunner?: QueryRunner,
+    ) {
         if (!this.isEnable(level))
             return
 
@@ -80,7 +106,13 @@ export class TypeORMLogger implements ITypeORMLogger {
     /**
      * check enbale log
      */
-    private isEnable(level: 'query' | 'schema' | 'error' | 'warn' | 'info' | 'log' | 'migration'): boolean {
-        return this.options === 'all' || this.options === true || (Array.isArray(this.options) && this.options.includes(level))
+    private isEnable(
+        level: 'query' | 'schema' | 'error' | 'warn' | 'info' | 'log' | 'migration',
+    ): boolean {
+        return (
+            this.options === 'all'
+            || this.options === true
+            || (Array.isArray(this.options) && this.options.includes(level))
+        )
     }
 }

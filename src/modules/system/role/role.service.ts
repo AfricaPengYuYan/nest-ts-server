@@ -1,19 +1,18 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { isEmpty } from 'lodash'
-
 import { In, Repository } from 'typeorm'
 
-import { ROOT_ROLE_ID } from '~/common/constants/system.constant'
+import { ROOT_ROLE_ID } from '~/constants/system.constant'
 
-import { RoleEntity } from './role.entity'
+import { RoleEntity } from '~/modules/system/role/role.entity'
 
 @Injectable()
 export class RoleService {
     constructor(
-        @InjectRepository(RoleEntity)
-        private readonly repository: Repository<RoleEntity>,
-    ) {}
+    @InjectRepository(RoleEntity)
+    private repository: Repository<RoleEntity>,
+    ) { }
 
     async getRoleIdsByUser(id: number): Promise<number[]> {
         const roles = await this.repository.find({

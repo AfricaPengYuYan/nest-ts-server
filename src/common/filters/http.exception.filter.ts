@@ -1,9 +1,16 @@
-import { ArgumentsHost, ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common'
+import {
+    ArgumentsHost,
+    Catch,
+    ExceptionFilter,
+    HttpException,
+    HttpStatus,
+    Logger,
+} from '@nestjs/common'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { QueryFailedError } from 'typeorm'
 
-import { ErrorEnum } from '~/common/constants/error-code.constant'
 import { ApiException } from '~/common/exceptions/api.exception'
+import { ErrorEnum } from '~/constants/error-code.constant'
 
 import { isDev } from '~/global/env'
 
@@ -13,6 +20,8 @@ interface myError {
 
     readonly message?: string
 }
+
+@Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
     private readonly logger = new Logger(HttpExceptionFilter.name)
 
@@ -31,7 +40,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
         let message = this.getErrorMessage(exception)
 
         // 系统内部错误时
-        if (status === HttpStatus.INTERNAL_SERVER_ERROR && !(exception instanceof ApiException)) {
+        if (
+            status === HttpStatus.INTERNAL_SERVER_ERROR
+            && !(exception instanceof ApiException)
+        ) {
             Logger.error(exception, undefined, 'Catch')
 
             // 生产环境下隐藏错误信息
@@ -39,7 +51,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
                 message = ErrorEnum.SERVER_ERROR?.split(':')[1]
         }
         else {
-            this.logger.warn(`错误信息：(${status}) ${message} Path: ${decodeURI(url)}`)
+            this.logger.warn(
+        `错误信息：(${status}) ${message} Path: ${decodeURI(url)}`,
+            )
         }
 
         const apiErrorCode = exception instanceof ApiException ? exception.getErrorCode() : status
@@ -63,7 +77,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
             return HttpStatus.INTERNAL_SERVER_ERROR
         }
         else {
-            return (exception as myError)?.status ?? (exception as myError)?.statusCode ?? HttpStatus.INTERNAL_SERVER_ERROR
+            return (exception as myError)?.status
+                ?? (exception as myError)?.statusCode ?? HttpStatus.INTERNAL_SERVER_ERROR
         }
     }
 
@@ -74,6 +89,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         else if (exception instanceof QueryFailedError) {
             return exception.message
         }
+
         else {
             return (exception as any)?.response?.message ?? (exception as myError)?.message ?? `${exception}`
         }

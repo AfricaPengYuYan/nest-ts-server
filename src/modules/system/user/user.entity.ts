@@ -1,128 +1,51 @@
-import { Check, Column, Entity, JoinTable, ManyToMany, OneToMany, Relation } from 'typeorm'
+import { Exclude } from 'class-transformer'
+import {
+    Column,
+    Entity,
+    JoinTable,
+    ManyToMany,
+    OneToMany,
+    Relation,
+} from 'typeorm'
 
-import { CompleteEntity } from '~/common/entity/common.entity'
+import { CommonEntity } from '~/common/entity/common.entity'
+
 import { AccessTokenEntity } from '~/modules/auth/token/access-token.entity'
 
-import { RoleEntity } from '../role/role.entity'
+import { RoleEntity } from '~/modules/system/role/role.entity'
 
 @Entity({ name: 'sys_user' })
-@Check(`"age" > 0`)
-export class UserEntity extends CompleteEntity {
-    @Column({ type: 'varchar', default: null, length: 20, name: 'user_name', comment: '用户真实名称' })
-    userName: string
+export class UserEntity extends CommonEntity {
+    @Column({ unique: true })
+    username: string
 
-    @Column({ type: 'varchar', default: null, length: 20, name: 'nick_name', comment: '用户昵称' })
-    nickName: string
-
-    @Column({
-        unique: true,
-        type: 'varchar',
-        default: null,
-        length: 20,
-        name: 'account',
-        comment: '账号',
-    })
-    account: string
-
-    @Column({
-        type: 'varchar',
-        default: null,
-        length: 20,
-        name: 'open_id',
-        comment: '唯一标识',
-    })
-    openId: string
-
-    @Column({
-        type: 'varchar',
-        nullable: true,
-        length: 20,
-        name: 'password',
-        comment: '密码',
-    })
+    @Exclude()
+    @Column()
     password: string
 
-    @Column({
-        type: 'varchar',
-        nullable: true,
-        length: 100,
-        name: 'salt_password',
-        comment: '加盐密码',
-    })
-    saltPassword: string
+    @Column({ length: 32 })
+    psalt: string
 
-    @Column({
-        type: 'varchar',
-        length: 20,
-        default: null,
-        name: 'phone',
-        comment: '手机号码',
-    })
-    phone: string
+    @Column({ nullable: true })
+    nickname: string
 
-    @Column({
-        type: 'tinyint',
-        nullable: true,
-        name: 'source',
-        comment: '来源（0表示PC端后台注册 1表示小程序 2表示H5公众号）',
-    })
-    source: number
+    @Column({ name: 'avatar', nullable: true })
+    avatar: string
 
-    @Column({
-        type: 'tinyint',
-        nullable: true,
-        default: 0,
-        name: 'sex',
-        comment: '性别（0表示女 1表示男）',
-    })
-    sex: number
+    @Column({ nullable: true })
+    qq: string
 
-    @Column({ type: 'tinyint', default: null, name: 'age', comment: '年龄' })
-    age: number
-
-    @Column({
-        type: 'int',
-        default: null,
-        name: 'id_card',
-        comment: '身份证',
-    })
-    idCard: number
-
-    @Column({
-        type: 'varchar',
-        default: null,
-        length: 50,
-        name: 'email',
-        comment: '邮箱',
-    })
+    @Column({ nullable: true })
     email: string
 
-    @Column({
-        type: 'tinyint',
-        default: 0,
-        nullable: true,
-        name: 'is_super',
-        comment: '是否为超级管理员（1表示是 0表示不是）',
-    })
-    isSuper: number
+    @Column({ nullable: true })
+    phone: string
 
-    @Column({
-        type: 'tinyint',
-        nullable: true,
-        default: 0,
-        comment: '是否是禁用/停用状态（0:不是 1:是）',
-        name: 'is_state',
-    })
-    isState: number
+    @Column({ nullable: true })
+    remark: string
 
-    @Column({
-        type: 'tinyint',
-        nullable: true,
-        default: 0,
-        comment: '是否是删除状态（0:不是 1:是）',
-        name: 'is_delete',
-    })
-    isDelete: number
+    @Column({ type: 'tinyint', nullable: true, default: 1 })
+    status: number
 
     @ManyToMany(() => RoleEntity, role => role.users)
     @JoinTable({

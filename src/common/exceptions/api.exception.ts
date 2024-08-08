@@ -1,13 +1,13 @@
 import { HttpException, HttpStatus } from '@nestjs/common'
 
-import { ErrorEnum } from '~/common/constants/error-code.constant'
-import { RESPONSE_SUCCESS_CODE } from '~/common/constants/response.constant'
+import { ErrorEnum } from '~/constants/error-code.constant'
+import { RESPONSE_SUCCESS_CODE } from '~/constants/response.constant'
 
 export class ApiException extends HttpException {
     private errorCode: number
 
     constructor(error: ErrorEnum | string) {
-        // 如果是非 ErrorEnum
+    // 如果是非 ErrorEnum
         if (!error.includes(':')) {
             super(
                 HttpException.createBody({

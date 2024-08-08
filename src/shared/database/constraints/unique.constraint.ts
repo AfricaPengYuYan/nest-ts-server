@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common'
-import { ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, registerDecorator } from 'class-validator'
+import {
+    ValidationArguments,
+    ValidationOptions,
+    ValidatorConstraint,
+    ValidatorConstraintInterface,
+    registerDecorator,
+} from 'class-validator'
 import { isNil, merge } from 'lodash'
 import { ClsService } from 'nestjs-cls'
 import { DataSource, Not, ObjectType } from 'typeorm'
@@ -18,13 +24,10 @@ interface Condition {
 @ValidatorConstraint({ name: 'entityItemUnique', async: true })
 @Injectable()
 export class UniqueConstraint implements ValidatorConstraintInterface {
-    constructor(
-        private dataSource: DataSource,
-        private readonly cls: ClsService,
-    ) {}
+    constructor(private dataSource: DataSource, private readonly cls: ClsService) {}
 
     async validate(value: any, args: ValidationArguments) {
-        // 获取要验证的模型和字段
+    // 获取要验证的模型和字段
         const config: Omit<Condition, 'entity'> = {
             field: args.property,
         }
@@ -93,11 +96,20 @@ export class UniqueConstraint implements ValidatorConstraintInterface {
  * @param entity Entity类或验证条件对象
  * @param validationOptions
  */
-function IsUnique(entity: ObjectType<any>, validationOptions?: ValidationOptions): (object: Record<string, any>, propertyName: string) => void
+function IsUnique(
+    entity: ObjectType<any>,
+    validationOptions?: ValidationOptions,
+): (object: Record<string, any>, propertyName: string) => void
 
-function IsUnique(condition: Condition, validationOptions?: ValidationOptions): (object: Record<string, any>, propertyName: string) => void
+function IsUnique(
+    condition: Condition,
+    validationOptions?: ValidationOptions,
+): (object: Record<string, any>, propertyName: string) => void
 
-function IsUnique(params: ObjectType<any> | Condition, validationOptions?: ValidationOptions) {
+function IsUnique(
+    params: ObjectType<any> | Condition,
+    validationOptions?: ValidationOptions,
+) {
     return (object: Record<string, any>, propertyName: string) => {
         registerDecorator({
             target: object.constructor,

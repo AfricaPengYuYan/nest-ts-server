@@ -1,12 +1,13 @@
 import { ConsoleLogger, ConsoleLoggerOptions, Injectable } from '@nestjs/common'
+
 import { ConfigService } from '@nestjs/config'
-
-import { ConfigKeyPaths } from '~/config'
-
 import type { Logger as WinstonLogger } from 'winston'
+
 import { config, createLogger, format, transports } from 'winston'
 
 import 'winston-daily-rotate-file'
+
+import { ConfigKeyPaths } from '~/config'
 
 export enum LogLevel {
     ERROR = 'error',
@@ -40,7 +41,11 @@ export class LoggerService extends ConsoleLogger {
     protected initWinston(): void {
         this.winstonLogger = createLogger({
             levels: config.npm.levels,
-            format: format.combine(format.errors({ stack: true }), format.timestamp(), format.json()),
+            format: format.combine(
+                format.errors({ stack: true }),
+                format.timestamp(),
+                format.json(),
+            ),
             transports: [
                 new transports.DailyRotateFile({
                     level: this.level,
@@ -61,17 +66,17 @@ export class LoggerService extends ConsoleLogger {
             ],
         })
 
-        // if (isDev) {
-        //   this.winstonLogger.add(
-        //     new transports.Console({
-        //       level: this.level,
-        //       format: format.combine(
-        //         format.simple(),
-        //         format.colorize({ all: true }),
-        //       ),
-        //     }),
-        //   );
-        // }
+    // if (isDev) {
+    //   this.winstonLogger.add(
+    //     new transports.Console({
+    //       level: this.level,
+    //       format: format.combine(
+    //         format.simple(),
+    //         format.colorize({ all: true }),
+    //       ),
+    //     }),
+    //   );
+    // }
     }
 
     verbose(message: any, context?: string): void {

@@ -1,15 +1,14 @@
 import { InjectRedis } from '@liaoliaots/nestjs-redis'
-
-import { RoleService } from '@modules/system/role/role.service'
-import { UserEntity } from '@modules/system/user/user.entity'
-
 import { Inject, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import dayjs from 'dayjs'
+
 import Redis from 'ioredis'
 
 import { ISecurityConfig, SecurityConfig } from '~/config'
 import { genOnlineUserKey } from '~/helper/genRedisKey'
+import { RoleService } from '~/modules/system/role/role.service'
+import { UserEntity } from '~/modules/system/user/user.entity'
 import { generateUUID } from '~/utils'
 
 import { AccessTokenEntity } from './access-token.entity'
@@ -23,8 +22,8 @@ export class TokenService {
     constructor(
         private jwtService: JwtService,
         private roleService: RoleService,
-        @InjectRedis() private redis: Redis,
-        @Inject(SecurityConfig.KEY) private securityConfig: ISecurityConfig,
+    @InjectRedis() private redis: Redis,
+    @Inject(SecurityConfig.KEY) private securityConfig: ISecurityConfig,
     ) {}
 
     /**
@@ -71,7 +70,9 @@ export class TokenService {
         const accessToken = new AccessTokenEntity()
         accessToken.value = jwtSign
         accessToken.user = { id: uid } as UserEntity
-        accessToken.expired_at = dayjs().add(this.securityConfig.jwtExprire, 'second').toDate()
+        accessToken.expired_at = dayjs()
+            .add(this.securityConfig.jwtExprire, 'second')
+            .toDate()
 
         await accessToken.save()
 
@@ -89,7 +90,10 @@ export class TokenService {
      * @param accessToken
      * @param now
      */
-    async generateRefreshToken(accessToken: AccessTokenEntity, now: dayjs.Dayjs): Promise<string> {
+    async generateRefreshToken(
+        accessToken: AccessTokenEntity,
+        now: dayjs.Dayjs,
+    ): Promise<string> {
         const refreshTokenPayload = {
             uuid: generateUUID(),
         }
@@ -100,7 +104,9 @@ export class TokenService {
 
         const refreshToken = new RefreshTokenEntity()
         refreshToken.value = refreshTokenSign
-        refreshToken.expired_at = now.add(this.securityConfig.refreshExpire, 'second').toDate()
+        refreshToken.expired_at = now
+            .add(this.securityConfig.refreshExpire, 'second')
+            .toDate()
         refreshToken.accessToken = accessToken
 
         await refreshToken.save()

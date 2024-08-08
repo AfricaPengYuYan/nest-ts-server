@@ -6,8 +6,8 @@ import type { Redis } from 'ioredis'
 
 import { RedisIoAdapterKey } from '~/common/adapters/socket.adapter'
 
-import { API_CACHE_PREFIX } from '~/common/constants/cache.constant'
-import { getRedisKey } from '~/utils'
+import { API_CACHE_PREFIX } from '~/constants/cache.constant'
+import { getRedisKey } from '~/utils/redis.util'
 
 // 获取器
 export type TCacheKey = string
@@ -18,14 +18,13 @@ export class CacheService {
     private cache!: Cache
 
     private ioRedis!: Redis
-
     constructor(@Inject(CACHE_MANAGER) cache: Cache) {
         this.cache = cache
     }
 
     private get redisClient(): Redis {
-        // eslint-disable-next-line ts/ban-ts-comment
-        // @ts-expect-error
+    // eslint-disable-next-line ts/ban-ts-comment
+    // @ts-expect-error
         return this.cache.store.client
     }
 

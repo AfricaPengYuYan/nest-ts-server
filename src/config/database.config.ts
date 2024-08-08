@@ -1,4 +1,5 @@
 import { ConfigType, registerAs } from '@nestjs/config'
+
 import { DataSource, DataSourceOptions } from 'typeorm'
 
 import { env, envBoolean, envNumber } from '~/global/env'
@@ -27,7 +28,10 @@ const dataSourceOptions: DataSourceOptions = {
 }
 export const dbRegToken = 'database'
 
-export const DatabaseConfig = registerAs(dbRegToken, (): DataSourceOptions => dataSourceOptions)
+export const DatabaseConfig = registerAs(
+    dbRegToken,
+    (): DataSourceOptions => dataSourceOptions,
+)
 
 export type IDatabaseConfig = ConfigType<typeof DatabaseConfig>
 

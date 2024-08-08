@@ -1,11 +1,16 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
+import {
+    CanActivate,
+    ExecutionContext,
+    Injectable,
+} from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { FastifyRequest } from 'fastify'
 
-import { ALLOW_ANON_KEY, PERMISSION_KEY, PUBLIC_KEY, Roles } from '~/common/constants/auth.constant'
-import { ErrorEnum } from '~/common/constants/error-code.constant'
 import { ApiException } from '~/common/exceptions/api.exception'
+import { ErrorEnum } from '~/constants/error-code.constant'
 import { AuthService } from '~/modules/auth/auth.service'
+
+import { ALLOW_ANON_KEY, PERMISSION_KEY, PUBLIC_KEY, Roles } from '../constants/auth.constant'
 
 @Injectable()
 export class RbacGuard implements CanActivate {
@@ -15,7 +20,10 @@ export class RbacGuard implements CanActivate {
     ) {}
 
     async canActivate(context: ExecutionContext): Promise<any> {
-        const isPublic = this.reflector.getAllAndOverride<boolean>(PUBLIC_KEY, [context.getHandler(), context.getClass()])
+        const isPublic = this.reflector.getAllAndOverride<boolean>(PUBLIC_KEY, [
+            context.getHandler(),
+            context.getClass(),
+        ])
 
         if (isPublic)
             return true
@@ -27,11 +35,16 @@ export class RbacGuard implements CanActivate {
             throw new ApiException(ErrorEnum.INVALID_LOGIN)
 
         // allowAnon 是需要登录后可访问(无需权限), Public 则是无需登录也可访问.
-        const allowAnon = this.reflector.get<boolean>(ALLOW_ANON_KEY, context.getHandler())
+        const allowAnon = this.reflector.get<boolean>(
+            ALLOW_ANON_KEY,
+            context.getHandler(),
+        )
         if (allowAnon)
             return true
 
-        const payloadPermission = this.reflector.getAllAndOverride<string | string[]>(PERMISSION_KEY, [context.getHandler(), context.getClass()])
+        const payloadPermission = this.reflector.getAllAndOverride<
+      string | string[]
+        >(PERMISSION_KEY, [context.getHandler(), context.getClass()])
 
         // 控制器没有设置接口权限，则默认通过
         if (!payloadPermission)
@@ -41,7 +54,7 @@ export class RbacGuard implements CanActivate {
         if (user.roles.includes(Roles.ADMIN))
             return true
 
-        const allPermissions = (await this.authService.getPermissionsCache(user.uid)) ?? (await this.authService.getPermissions(user.uid))
+        const allPermissions = await this.authService.getPermissionsCache(user.uid) ?? await this.authService.getPermissions(user.uid)
         // console.log(allPermissions)
         let canNext = false
 

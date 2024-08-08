@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common'
-import type { Redis, RedisOptions } from 'ioredis'
 import IORedis from 'ioredis'
+import type { Redis, RedisOptions } from 'ioredis'
 
 export class RedisSubPub {
     public pubClient: Redis

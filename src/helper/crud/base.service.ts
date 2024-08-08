@@ -7,9 +7,13 @@ import { paginate } from '../paginate'
 import { Pagination } from '../paginate/pagination'
 
 export class BaseService<E extends ObjectLiteral, R extends Repository<E> = Repository<E>> {
-    constructor(private repository: R) {}
+    constructor(private repository: R) {
+    }
 
-    async list({ page, pageSize }: PagerDto): Promise<Pagination<E>> {
+    async list({
+        page,
+    pageSize,
+    }: PagerDto): Promise<Pagination<E>> {
         return paginate(this.repository, { page, pageSize })
     }
 

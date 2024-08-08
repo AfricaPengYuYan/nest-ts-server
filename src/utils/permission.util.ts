@@ -101,11 +101,19 @@ function filterAsyncRoutes(menus: MenuEntity[], parentRoute: MenuEntity): RouteR
                 realRoute.children = childRoutes
             }
         }
-        else if (parentRoute && parentRoute.id === menu.parentId && menu.type === 1) {
+        else if (
+            parentRoute
+            && parentRoute.id === menu.parentId
+            && menu.type === 1
+        ) {
             // 子菜单
             realRoute = createRoute(menu, false)
         }
-        else if (parentRoute && parentRoute.id === menu.parentId && menu.type === 0) {
+        else if (
+            parentRoute
+            && parentRoute.id === menu.parentId
+            && menu.type === 0
+        ) {
             // 如果还是目录，继续递归
             const childRoutes = filterAsyncRoutes(menus, menu)
             realRoute = createRoute(menu, false)
@@ -129,7 +137,7 @@ export function generatorRouters(menus: MenuEntity[]) {
 function filterMenuToTable(menus: MenuEntity[], parentMenu) {
     const res = []
     menus.forEach((menu) => {
-        // 根级别菜单渲染
+    // 根级别菜单渲染
         let realMenu
         if (!parentMenu && !menu.parentId && menu.type === 1) {
             // 根菜单，查找该跟菜单下子菜单，因为可能会包含权限

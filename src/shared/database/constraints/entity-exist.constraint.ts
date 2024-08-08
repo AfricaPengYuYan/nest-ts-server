@@ -1,5 +1,11 @@
 import { Injectable } from '@nestjs/common'
-import { ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, registerDecorator } from 'class-validator'
+import {
+    ValidationArguments,
+    ValidationOptions,
+    ValidatorConstraint,
+    ValidatorConstraintInterface,
+    registerDecorator,
+} from 'class-validator'
 import { DataSource, ObjectType, Repository } from 'typeorm'
 
 interface Condition {
@@ -51,11 +57,20 @@ export class EntityExistConstraint implements ValidatorConstraintInterface {
  * @param entity Entity类或验证条件对象
  * @param validationOptions
  */
-function IsEntityExist(entity: ObjectType<any>, validationOptions?: ValidationOptions): (object: Record<string, any>, propertyName: string) => void
+function IsEntityExist(
+    entity: ObjectType<any>,
+    validationOptions?: ValidationOptions,
+): (object: Record<string, any>, propertyName: string) => void
 
-function IsEntityExist(condition: { entity: ObjectType<any>, field?: string }, validationOptions?: ValidationOptions): (object: Record<string, any>, propertyName: string) => void
+function IsEntityExist(
+    condition: { entity: ObjectType<any>, field?: string },
+    validationOptions?: ValidationOptions,
+): (object: Record<string, any>, propertyName: string) => void
 
-function IsEntityExist(condition: ObjectType<any> | { entity: ObjectType<any>, field?: string }, validationOptions?: ValidationOptions): (object: Record<string, any>, propertyName: string) => void {
+function IsEntityExist(
+    condition: ObjectType<any> | { entity: ObjectType<any>, field?: string },
+    validationOptions?: ValidationOptions,
+): (object: Record<string, any>, propertyName: string) => void {
     return (object: Record<string, any>, propertyName: string) => {
         registerDecorator({
             target: object.constructor,

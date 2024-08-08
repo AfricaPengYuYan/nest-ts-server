@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common'
 
 import { ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
+
 import { DataSource, LoggerOptions } from 'typeorm'
 
 import { ConfigKeyPaths, IDatabaseConfig } from '~/config'
+
 import { env } from '~/global/env'
 
 import { EntityExistConstraint } from './constraints/entity-exist.constraint'

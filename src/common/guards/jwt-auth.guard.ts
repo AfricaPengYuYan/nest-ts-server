@@ -1,25 +1,28 @@
 import { InjectRedis } from '@liaoliaots/nestjs-redis'
-
-import { ExecutionContext, Inject, Injectable, UnauthorizedException } from '@nestjs/common'
+import {
+    ExecutionContext,
+    Inject,
+    Injectable,
+    UnauthorizedException,
+} from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { AuthGuard } from '@nestjs/passport'
 import { FastifyRequest } from 'fastify'
-
 import Redis from 'ioredis'
-
 import { isEmpty, isNil } from 'lodash'
 
 import { ExtractJwt } from 'passport-jwt'
 
-import { AuthStrategy, PUBLIC_KEY } from '~/common/constants/auth.constant'
-import { ErrorEnum } from '~/common/constants/error-code.constant'
 import { ApiException } from '~/common/exceptions/api.exception'
 import { AppConfig, IAppConfig } from '~/config'
+import { ErrorEnum } from '~/constants/error-code.constant'
 import { genTokenBlacklistKey } from '~/helper/genRedisKey'
 import { AuthService } from '~/modules/auth/auth.service'
 
-import { TokenService } from '~/modules/auth/token/token.service'
 import { checkIsDemoMode } from '~/utils'
+
+import { TokenService } from '../../modules/auth/token/token.service'
+import { AuthStrategy, PUBLIC_KEY } from '../constants/auth.constant'
 
 /** @type {import('fastify').RequestGenericInterface} */
 interface RequestType {
@@ -40,14 +43,17 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
         private reflector: Reflector,
         private authService: AuthService,
         private tokenService: TokenService,
-        @InjectRedis() private readonly redis: Redis,
-        @Inject(AppConfig.KEY) private appConfig: IAppConfig,
+    @InjectRedis() private readonly redis: Redis,
+    @Inject(AppConfig.KEY) private appConfig: IAppConfig,
     ) {
         super()
     }
 
     async canActivate(context: ExecutionContext): Promise<any> {
-        const isPublic = this.reflector.getAllAndOverride<boolean>(PUBLIC_KEY, [context.getHandler(), context.getClass()])
+        const isPublic = this.reflector.getAllAndOverride<boolean>(PUBLIC_KEY, [
+            context.getHandler(),
+            context.getClass(),
+        ])
         const request = context.switchToHttp().getRequest<FastifyRequest<RequestType>>()
         // const response = context.switchToHttp().getResponse<FastifyReply>()
 
@@ -88,7 +94,9 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
                 throw new ApiException(ErrorEnum.INVALID_LOGIN)
 
             // 判断 token 是否有效且存在, 如果不存在则认证失败
-            const isValid = isNil(token) ? undefined : await this.tokenService.checkAccessToken(token!)
+            const isValid = isNil(token)
+                ? undefined
+                : await this.tokenService.checkAccessToken(token!)
 
             if (!isValid)
                 throw new ApiException(ErrorEnum.INVALID_LOGIN)
@@ -122,7 +130,7 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
     }
 
     handleRequest(err, user, info) {
-        // You can throw an exception based on either "info" or "err" arguments
+    // You can throw an exception based on either "info" or "err" arguments
         if (err || !user)
             throw err || new UnauthorizedException()
 

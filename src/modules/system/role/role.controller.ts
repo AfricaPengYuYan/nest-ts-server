@@ -1,10 +1,22 @@
-import { Controller } from '@nestjs/common'
+import {
+    Controller,
+} from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
-import { RoleService } from './role.service'
+import { definePermission } from '~/common/decorators/permission.decorator'
+import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 
-@ApiTags('角色管理')
+export const permissions = definePermission('system:role', {
+    LIST: 'list',
+    CREATE: 'create',
+    READ: 'read',
+    UPDATE: 'update',
+    DELETE: 'delete',
+} as const)
+
+@ApiTags('System - 角色模块')
+@ApiSecurityAuth()
 @Controller('role')
 export class RoleController {
-    constructor(private readonly roleService: RoleService) {}
+    constructor() {}
 }

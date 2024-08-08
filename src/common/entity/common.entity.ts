@@ -1,6 +1,13 @@
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
 import { Exclude } from 'class-transformer'
-import { BaseEntity, Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn, VirtualColumn } from 'typeorm'
+import {
+    BaseEntity,
+    Column,
+    CreateDateColumn,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+    VirtualColumn,
+} from 'typeorm'
 
 // 如果觉得前端转换时间太麻烦，并且不考虑通用性的话，可以在服务端进行转换，eg: @UpdateDateColumn({ name: 'updated_at', transformer })
 // const transformer: ValueTransformer = {
@@ -16,19 +23,11 @@ export abstract class CommonEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
 
-    @CreateDateColumn({ comment: '创建时间', name: 'create_time' })
-    createTime: Date
+    @CreateDateColumn({ name: 'created_at' })
+    createdAt: Date
 
-    @UpdateDateColumn({ comment: '修改时间', name: 'update_time' })
-    updateTime: Date
-
-    @VersionColumn({
-        name: 'version',
-        nullable: true,
-        comment: '锁',
-        type: 'int',
-    })
-    version: number
+    @UpdateDateColumn({ name: 'updated_at' })
+    updatedAt: Date
 }
 
 export abstract class CompleteEntity extends CommonEntity {

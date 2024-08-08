@@ -2,14 +2,16 @@ import { RedisModule as NestRedisModule } from '@liaoliaots/nestjs-redis'
 import { CacheModule } from '@nestjs/cache-manager'
 import { Global, Module, Provider } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
+
 import { redisStore } from 'cache-manager-ioredis-yet'
 import { RedisOptions } from 'ioredis'
 
 import { ConfigKeyPaths, IRedisConfig } from '~/config'
 
+import { REDIS_PUBSUB } from '../../common/constants/redis.constant'
+
 import { CacheService } from './cache.service'
 import { RedisSubPub } from './redis-subpub'
-import { REDIS_PUBSUB } from './redis.constant'
 import { RedisPubSubService } from './subpub.service'
 
 const providers: Provider[] = [
@@ -28,7 +30,7 @@ const providers: Provider[] = [
 @Global()
 @Module({
     imports: [
-        // cache
+    // cache
         CacheModule.registerAsync({
             imports: [ConfigModule],
             useFactory: (configService: ConfigService<ConfigKeyPaths>) => {

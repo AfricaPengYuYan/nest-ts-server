@@ -9,13 +9,22 @@ const baseTypeNames = ['String', 'Number', 'Boolean']
 function genBaseProp(type: Type<any>) {
     if (baseTypeNames.includes(type.name))
         return { type: type.name.toLocaleLowerCase() }
-    else return { $ref: getSchemaPath(type) }
+    else
+        return { $ref: getSchemaPath(type) }
 }
 
 /**
  * @description: 生成返回结果装饰器
  */
-export function ApiResult<TModel extends Type<any>>({ type, isPage, status }: { type?: TModel | TModel[], isPage?: boolean, status?: HttpStatus }) {
+export function ApiResult<TModel extends Type<any>>({
+    type,
+    isPage,
+    status,
+}: {
+    type?: TModel | TModel[]
+    isPage?: boolean
+    status?: HttpStatus
+}) {
     let prop = null
 
     if (Array.isArray(type)) {
@@ -56,23 +65,30 @@ export function ApiResult<TModel extends Type<any>>({ type, isPage, status }: { 
 
     const model = Array.isArray(type) ? type[0] : type
 
-    return applyDecorators(ApiExtraModels(model), (target: object, key: string | symbol, descriptor: TypedPropertyDescriptor<any>) => {
-        queueMicrotask(() => {
-            const isPost = Reflect.getMetadata(METHOD_METADATA, descriptor.value) === RequestMethod.POST
+    return applyDecorators(
+        ApiExtraModels(model),
+        (
+            target: object,
+            key: string | symbol,
+            descriptor: TypedPropertyDescriptor<any>,
+        ) => {
+            queueMicrotask(() => {
+                const isPost = Reflect.getMetadata(METHOD_METADATA, descriptor.value) === RequestMethod.POST
 
-            ApiResponse({
-                status: status ?? (isPost ? HttpStatus.CREATED : HttpStatus.OK),
-                schema: {
-                    allOf: [
-                        { $ref: getSchemaPath(ResOp) },
-                        {
-                            properties: {
-                                data: prop,
+                ApiResponse({
+                    status: status ?? (isPost ? HttpStatus.CREATED : HttpStatus.OK),
+                    schema: {
+                        allOf: [
+                            { $ref: getSchemaPath(ResOp) },
+                            {
+                                properties: {
+                                    data: prop,
+                                },
                             },
-                        },
-                    ],
-                },
-            })(target, key, descriptor)
-        })
-    })
+                        ],
+                    },
+                })(target, key, descriptor)
+            })
+        },
+    )
 }

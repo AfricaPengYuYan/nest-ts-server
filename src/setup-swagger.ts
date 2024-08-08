@@ -8,14 +8,20 @@ import { ResOp, TreeResult } from './common/model/response.model'
 import { ConfigKeyPaths, IAppConfig, ISwaggerConfig } from './config'
 import { Pagination } from './helper/paginate/pagination'
 
-export function setupSwagger(app: INestApplication, configService: ConfigService<ConfigKeyPaths>): void {
+export function setupSwagger(
+    app: INestApplication,
+    configService: ConfigService<ConfigKeyPaths>,
+): void {
     const { name, port } = configService.get<IAppConfig>('app')!
     const { enable, path } = configService.get<ISwaggerConfig>('swagger')!
 
     if (!enable)
         return
 
-    const documentBuilder = new DocumentBuilder().setTitle(name).setDescription(`${name} API document`).setVersion('1.0')
+    const documentBuilder = new DocumentBuilder()
+        .setTitle(name)
+        .setDescription(`${name} API document`)
+        .setVersion('1.0')
 
     // auth security
     documentBuilder.addSecurity(API_SECURITY_AUTH, {

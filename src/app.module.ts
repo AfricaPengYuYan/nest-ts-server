@@ -1,59 +1,43 @@
 import { ClassSerializerInterceptor, Module } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
+
+import { ConfigModule } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core'
-import { ThrottlerGuard } from '@nestjs/throttler'
-import { TypeOrmModule } from '@nestjs/typeorm'
+
+import { ThrottlerGuard, ThrottlerModule, seconds } from '@nestjs/throttler'
 import type { FastifyRequest } from 'fastify'
 import { ClsModule } from 'nestjs-cls'
-import { DataSource, LoggerOptions } from 'typeorm'
+
+import config from '~/config'
+import { SharedModule } from '~/shared/shared.module'
 
 import { HttpExceptionFilter } from './common/filters/http.exception.filter'
+
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard'
 import { RbacGuard } from './common/guards/rbac.guard'
+import { IdempotenceInterceptor } from './common/interceptors/idempotence.interceptor'
+import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor'
 import { TransformInterceptor } from './common/interceptors/transform.interceptor'
-import config, { ConfigKeyPaths, IDatabaseConfig } from './config'
-import { env } from './global/env'
 import { AuthModule } from './modules/auth/auth.module'
-import { MenuModule } from './modules/system/menu/menu.module'
-import { RoleModule } from './modules/system/role/role.module'
-import { UserModule } from './modules/system/user/user.module'
-import { TypeORMLogger } from './shared/database/typeorm-logger'
-import { SharedModule } from './shared/shared.module'
+import { SystemModule } from './modules/system/system.module'
+import { DatabaseModule } from './shared/database/database.module'
 
 @Module({
     imports: [
-        // 配置模块
         ConfigModule.forRoot({
-            ignoreEnvFile: false,
             isGlobal: true,
+            expandVariables: true,
+            // 指定多个 env 文件时，第一个优先级最高
+            envFilePath: ['.env.local', `.env.${process.env.NODE_ENV}`, '.env'],
             load: [...Object.values(config)],
-            envFilePath: [`.env.${process.env.NODE_ENV}`, '.env'],
         }),
-        // 使用MySql
-        TypeOrmModule.forRootAsync({
-            inject: [ConfigService],
-            useFactory: (configService: ConfigService<ConfigKeyPaths>) => {
-                let loggerOptions: LoggerOptions = env('DB_LOGGING') as 'all'
-
-                try {
-                    // 解析成 js 数组 ['error']
-                    loggerOptions = JSON.parse(loggerOptions)
-                }
-                catch (e) {
-                    // ignore
-                }
-
-                return {
-                    ...configService.get<IDatabaseConfig>('database'),
-                    autoLoadEntities: true,
-                    logging: loggerOptions,
-                    logger: new TypeORMLogger(loggerOptions),
-                }
-            },
-            dataSourceFactory: async (options) => {
-                const dataSource = await new DataSource(options).initialize()
-                return dataSource
-            },
+        // 避免暴力请求，限制同一个接口 10 秒内不能超过 7 次请求
+        ThrottlerModule.forRootAsync({
+            useFactory: () => ({
+                errorMessage: '当前操作过于频繁，请稍后再试！',
+                throttlers: [
+                    { ttl: seconds(10), limit: 7 },
+                ],
+            }),
         }),
         // 启用 CLS 上下文
         ClsModule.forRoot({
@@ -70,26 +54,23 @@ import { SharedModule } from './shared/shared.module'
                 },
             },
         }),
-
-        // 共享模块
         SharedModule,
-
-        // RBAC
-        UserModule,
-        RoleModule,
-        MenuModule,
+        DatabaseModule,
         AuthModule,
+        SystemModule,
     ],
-    controllers: [],
     providers: [
         { provide: APP_FILTER, useClass: HttpExceptionFilter },
 
         { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
         { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
+        { provide: APP_INTERCEPTOR, useFactory: () => new TimeoutInterceptor(15 * 1000) },
+        { provide: APP_INTERCEPTOR, useClass: IdempotenceInterceptor },
 
         { provide: APP_GUARD, useClass: JwtAuthGuard },
         { provide: APP_GUARD, useClass: RbacGuard },
         { provide: APP_GUARD, useClass: ThrottlerGuard },
+
     ],
 })
 export class AppModule {}
