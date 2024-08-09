@@ -6,11 +6,11 @@ import { concat, isEmpty, isNil, uniq } from 'lodash'
 
 import { In, IsNull, Like, Not, Repository } from 'typeorm'
 
-import { ApiException } from '~/common/exceptions/api.exception'
+import { HttpApiException } from '~/common/exceptions/http.api.exception'
 import { RedisKeys } from '~/constants/cache.constant'
 import { ErrorEnum } from '~/constants/error-code.constant'
 import { genAuthPermKey, genAuthTokenKey } from '~/helper/genRedisKey'
-
+import { SseService } from '~/modules/sse/sse.service'
 import { MenuEntity } from '~/modules/system/menu/menu.entity'
 
 import { deleteEmptyChildren, generatorMenu, generatorRouters } from '~/utils'
@@ -26,6 +26,7 @@ export class MenuService {
     @InjectRepository(MenuEntity)
     private menuRepository: Repository<MenuEntity>,
     private roleService: RoleService,
+    private sseService: SseService,
     ) {}
 
     /**
@@ -60,10 +61,12 @@ export class MenuService {
 
     async create(menu: MenuDto): Promise<void> {
         const result = await this.menuRepository.save(menu)
+        this.sseService.noticeClientToUpdateMenusByMenuIds([result.id])
     }
 
     async update(id: number, menu: MenuUpdateDto): Promise<void> {
         await this.menuRepository.update(id, menu)
+        this.sseService.noticeClientToUpdateMenusByMenuIds([id])
     }
 
     /**
@@ -98,16 +101,16 @@ export class MenuService {
     async check(dto: Partial<MenuDto>): Promise<void | never> {
         if (dto.type === 2 && !dto.parentId) {
             // 无法直接创建权限，必须有parent
-            throw new ApiException(ErrorEnum.PERMISSION_REQUIRES_PARENT)
+            throw new HttpApiException(ErrorEnum.PERMISSION_REQUIRES_PARENT)
         }
         if (dto.type === 1 && dto.parentId) {
             const parent = await this.getMenuItemInfo(dto.parentId)
             if (isEmpty(parent))
-                throw new ApiException(ErrorEnum.PARENT_MENU_NOT_FOUND)
+                throw new HttpApiException(ErrorEnum.PARENT_MENU_NOT_FOUND)
 
             if (parent && parent.type === 1) {
                 // 当前新增为菜单但父节点也为菜单时为非法操作
-                throw new ApiException(
+                throw new HttpApiException(
                     ErrorEnum.ILLEGAL_OPERATION_DIRECTORY_PARENT,
                 )
             }
@@ -216,6 +219,8 @@ export class MenuService {
             // 判断是否在线
             await this.redis.set(genAuthPermKey(uid), JSON.stringify(perms))
             console.log('refreshPerms')
+
+            this.sseService.noticeClientToUpdateMenusByUserIds([uid])
         }
     }
 
@@ -235,6 +240,8 @@ export class MenuService {
                 })
             const uids = await Promise.all(promiseArr)
             console.log('refreshOnlineUserPerms')
+            if (isNoticeUser)
+                this.sseService.noticeClientToUpdateMenusByUserIds(uids)
         }
     }
 

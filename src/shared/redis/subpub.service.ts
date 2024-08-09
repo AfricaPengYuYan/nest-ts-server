@@ -5,17 +5,17 @@ import { REDIS_PUBSUB } from './redis.constant'
 
 @Injectable()
 export class RedisPubSubService {
-  constructor(@Inject(REDIS_PUBSUB) private readonly redisSubPub: RedisSubPub) {}
+    constructor(@Inject(REDIS_PUBSUB) private readonly redisSubPub: RedisSubPub) {}
 
-  public async publish(event: string, data: any) {
-    return this.redisSubPub.publish(event, data)
-  }
+    public async publish(event: string, data: any) {
+        return this.redisSubPub.publish(event, data)
+    }
 
-  public async subscribe(event: string, callback: (data: any) => void) {
-    return this.redisSubPub.subscribe(event, callback)
-  }
+    public async subscribe(event: string, callback: (data: any) => void) {
+        return this.redisSubPub.subscribe(event, callback)
+    }
 
-  public async unsubscribe(event: string, callback: (data: any) => void) {
-    return this.redisSubPub.unsubscribe(event, callback)
-  }
+    public async unsubscribe(event: string, callback: (data: any) => void) {
+        return this.redisSubPub.unsubscribe(event, callback)
+    }
 }

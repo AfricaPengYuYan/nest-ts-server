@@ -3,7 +3,7 @@ import { HttpException, HttpStatus } from '@nestjs/common'
 import { ErrorEnum } from '~/constants/error-code.constant'
 import { RESPONSE_SUCCESS_CODE } from '~/constants/response.constant'
 
-export class ApiException extends HttpException {
+export class HttpApiException extends HttpException {
     private errorCode: number
 
     constructor(error: ErrorEnum | string) {

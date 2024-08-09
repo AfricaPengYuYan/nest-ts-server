@@ -2,11 +2,11 @@ import { ApiHideProperty } from '@nestjs/swagger'
 import { Exclude } from 'class-transformer'
 
 export class OperatorDto {
-  @ApiHideProperty()
-  @Exclude()
+    @ApiHideProperty()
+    @Exclude()
     createBy: number
 
-  @ApiHideProperty()
-  @Exclude()
+    @ApiHideProperty()
+    @Exclude()
     updateBy: number
 }

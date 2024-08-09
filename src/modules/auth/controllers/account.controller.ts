@@ -22,59 +22,59 @@ import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 @UseGuards(JwtAuthGuard)
 @Controller('account')
 export class AccountController {
-  constructor(
-    private userService: UserService,
-    private authService: AuthService,
-  ) {}
+    constructor(
+        private userService: UserService,
+        private authService: AuthService,
+    ) {}
 
-  @Get('profile')
-  @ApiOperation({ summary: '获取账户资料' })
-  @ApiResult({ type: AccountInfo })
-  @AllowAnon()
-  async profile(@AuthUser() user: IAuthUser): Promise<AccountInfo> {
-    return this.userService.getAccountInfo(user.uid)
-  }
+    @Get('profile')
+    @ApiOperation({ summary: '获取账户资料' })
+    @ApiResult({ type: AccountInfo })
+    @AllowAnon()
+    async profile(@AuthUser() user: IAuthUser): Promise<AccountInfo> {
+        return this.userService.getAccountInfo(user.uid)
+    }
 
-  @Get('logout')
-  @ApiOperation({ summary: '账户登出' })
-  @AllowAnon()
-  async logout(@AuthUser() user: IAuthUser, @Req() req: FastifyRequest): Promise<void> {
-    await this.authService.clearLoginStatus(user, req.accessToken)
-  }
+    @Get('logout')
+    @ApiOperation({ summary: '账户登出' })
+    @AllowAnon()
+    async logout(@AuthUser() user: IAuthUser, @Req() req: FastifyRequest): Promise<void> {
+        await this.authService.clearLoginStatus(user, req.accessToken)
+    }
 
-  @Get('menus')
-  @ApiOperation({ summary: '获取菜单列表' })
-  @ApiResult({ type: [AccountMenus] })
-  @AllowAnon()
-  async menu(@AuthUser() user: IAuthUser) {
-    return this.authService.getMenus(user.uid)
-  }
+    @Get('menus')
+    @ApiOperation({ summary: '获取菜单列表' })
+    @ApiResult({ type: [AccountMenus] })
+    @AllowAnon()
+    async menu(@AuthUser() user: IAuthUser) {
+        return this.authService.getMenus(user.uid)
+    }
 
-  @Get('permissions')
-  @ApiOperation({ summary: '获取权限列表' })
-  @ApiResult({ type: [String] })
-  @AllowAnon()
-  async permissions(@AuthUser() user: IAuthUser): Promise<string[]> {
-    return this.authService.getPermissions(user.uid)
-  }
+    @Get('permissions')
+    @ApiOperation({ summary: '获取权限列表' })
+    @ApiResult({ type: [String] })
+    @AllowAnon()
+    async permissions(@AuthUser() user: IAuthUser): Promise<string[]> {
+        return this.authService.getPermissions(user.uid)
+    }
 
-  @Put('update')
-  @ApiOperation({ summary: '更改账户资料' })
-  @AllowAnon()
-  async update(
+    @Put('update')
+    @ApiOperation({ summary: '更改账户资料' })
+    @AllowAnon()
+    async update(
     @AuthUser() user: IAuthUser, @Body()
 dto: AccountUpdateDto,
-  ): Promise<void> {
-    await this.userService.updateAccountInfo(user.uid, dto)
-  }
+    ): Promise<void> {
+        await this.userService.updateAccountInfo(user.uid, dto)
+    }
 
-  @Post('password')
-  @ApiOperation({ summary: '更改账户密码' })
-  @AllowAnon()
-  async password(
+    @Post('password')
+    @ApiOperation({ summary: '更改账户密码' })
+    @AllowAnon()
+    async password(
     @AuthUser() user: IAuthUser, @Body()
 dto: PasswordUpdateDto,
-  ): Promise<void> {
-    await this.userService.updatePassword(user.uid, dto)
-  }
+    ): Promise<void> {
+        await this.userService.updatePassword(user.uid, dto)
+    }
 }

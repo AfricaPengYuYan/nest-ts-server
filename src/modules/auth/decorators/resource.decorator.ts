@@ -8,5 +8,5 @@ export type Condition<E extends ObjectLiteral = any> = (Repository: Repository<E
 
 export interface ResourceObject { entity: ObjectType<any>, condition: Condition }
 export function Resource<E extends ObjectLiteral = any>(entity: ObjectType<E>, condition?: Condition<E>) {
-  return applyDecorators(SetMetadata(RESOURCE_KEY, { entity, condition }))
+    return applyDecorators(SetMetadata(RESOURCE_KEY, { entity, condition }))
 }

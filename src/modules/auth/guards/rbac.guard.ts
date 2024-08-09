@@ -6,7 +6,7 @@ import {
 import { Reflector } from '@nestjs/core'
 import { FastifyRequest } from 'fastify'
 
-import { ApiException } from '~/common/exceptions/api.exception'
+import { HttpApiException } from '~/common/exceptions/http.api.exception'
 import { ErrorEnum } from '~/constants/error-code.constant'
 import { AuthService } from '~/modules/auth/auth.service'
 
@@ -14,62 +14,62 @@ import { ALLOW_ANON_KEY, PERMISSION_KEY, PUBLIC_KEY, Roles } from '../auth.const
 
 @Injectable()
 export class RbacGuard implements CanActivate {
-  constructor(
-    private reflector: Reflector,
-    private authService: AuthService,
-  ) {}
+    constructor(
+        private reflector: Reflector,
+        private authService: AuthService,
+    ) {}
 
-  async canActivate(context: ExecutionContext): Promise<any> {
-    const isPublic = this.reflector.getAllAndOverride<boolean>(PUBLIC_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ])
+    async canActivate(context: ExecutionContext): Promise<any> {
+        const isPublic = this.reflector.getAllAndOverride<boolean>(PUBLIC_KEY, [
+            context.getHandler(),
+            context.getClass(),
+        ])
 
-    if (isPublic)
-      return true
+        if (isPublic)
+            return true
 
-    const request = context.switchToHttp().getRequest<FastifyRequest>()
+        const request = context.switchToHttp().getRequest<FastifyRequest>()
 
-    const { user } = request
-    if (!user)
-      throw new ApiException(ErrorEnum.INVALID_LOGIN)
+        const { user } = request
+        if (!user)
+            throw new HttpApiException(ErrorEnum.INVALID_LOGIN)
 
-    // allowAnon 是需要登录后可访问(无需权限), Public 则是无需登录也可访问.
-    const allowAnon = this.reflector.get<boolean>(
-      ALLOW_ANON_KEY,
-      context.getHandler(),
-    )
-    if (allowAnon)
-      return true
+        // allowAnon 是需要登录后可访问(无需权限), Public 则是无需登录也可访问.
+        const allowAnon = this.reflector.get<boolean>(
+            ALLOW_ANON_KEY,
+            context.getHandler(),
+        )
+        if (allowAnon)
+            return true
 
-    const payloadPermission = this.reflector.getAllAndOverride<
+        const payloadPermission = this.reflector.getAllAndOverride<
       string | string[]
-    >(PERMISSION_KEY, [context.getHandler(), context.getClass()])
+        >(PERMISSION_KEY, [context.getHandler(), context.getClass()])
 
-    // 控制器没有设置接口权限，则默认通过
-    if (!payloadPermission)
-      return true
+        // 控制器没有设置接口权限，则默认通过
+        if (!payloadPermission)
+            return true
 
-    // 管理员放开所有权限
-    if (user.roles.includes(Roles.ADMIN))
-      return true
+        // 管理员放开所有权限
+        if (user.roles.includes(Roles.ADMIN))
+            return true
 
-    const allPermissions = await this.authService.getPermissionsCache(user.uid) ?? await this.authService.getPermissions(user.uid)
-    // console.log(allPermissions)
-    let canNext = false
+        const allPermissions = await this.authService.getPermissionsCache(user.uid) ?? await this.authService.getPermissions(user.uid)
+        // console.log(allPermissions)
+        let canNext = false
 
-    // handle permission strings
-    if (Array.isArray(payloadPermission)) {
-      // 只要有一个权限满足即可
-      canNext = payloadPermission.every(i => allPermissions.includes(i))
+        // handle permission strings
+        if (Array.isArray(payloadPermission)) {
+            // 只要有一个权限满足即可
+            canNext = payloadPermission.every(i => allPermissions.includes(i))
+        }
+
+        if (typeof payloadPermission === 'string')
+            canNext = allPermissions.includes(payloadPermission)
+
+        if (!canNext)
+            throw new HttpApiException(ErrorEnum.NO_PERMISSION)
+
+        return true
     }
-
-    if (typeof payloadPermission === 'string')
-      canNext = allPermissions.includes(payloadPermission)
-
-    if (!canNext)
-      throw new ApiException(ErrorEnum.NO_PERMISSION)
-
-    return true
-  }
 }

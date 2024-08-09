@@ -9,7 +9,7 @@ import {
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { QueryFailedError } from 'typeorm'
 
-import { ApiException } from '~/common/exceptions/api.exception'
+import { HttpApiException } from '~/common/exceptions/http.api.exception'
 import { ErrorEnum } from '~/constants/error-code.constant'
 
 import { isDev } from '~/global/env'
@@ -42,7 +42,7 @@ export class HttpExceptionsFilter implements ExceptionFilter {
         // 系统内部错误时
         if (
             status === HttpStatus.INTERNAL_SERVER_ERROR
-            && !(exception instanceof ApiException)
+            && !(exception instanceof HttpApiException)
         ) {
             Logger.error(exception, undefined, 'Catch')
 
@@ -56,7 +56,7 @@ export class HttpExceptionsFilter implements ExceptionFilter {
             )
         }
 
-        const apiErrorCode = exception instanceof ApiException ? exception.getErrorCode() : status
+        const apiErrorCode = exception instanceof HttpApiException ? exception.getErrorCode() : status
 
         // 返回基础响应结果
         const resBody: IBaseResponse = {

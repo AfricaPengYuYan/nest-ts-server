@@ -15,23 +15,23 @@ export * from './mailer.config'
 export * from './oss.config'
 
 export interface AllConfigType {
-  [appRegToken]: IAppConfig
-  [dbRegToken]: IDatabaseConfig
-  [mailerRegToken]: IMailerConfig
-  [redisRegToken]: IRedisConfig
-  [securityRegToken]: ISecurityConfig
-  [swaggerRegToken]: ISwaggerConfig
-  [ossRegToken]: IOssConfig
+    [appRegToken]: IAppConfig
+    [dbRegToken]: IDatabaseConfig
+    [mailerRegToken]: IMailerConfig
+    [redisRegToken]: IRedisConfig
+    [securityRegToken]: ISecurityConfig
+    [swaggerRegToken]: ISwaggerConfig
+    [ossRegToken]: IOssConfig
 }
 
 export type ConfigKeyPaths = RecordNamePaths<AllConfigType>
 
 export default {
-  AppConfig,
-  DatabaseConfig,
-  MailerConfig,
-  OssConfig,
-  RedisConfig,
-  SecurityConfig,
-  SwaggerConfig,
+    AppConfig,
+    DatabaseConfig,
+    MailerConfig,
+    OssConfig,
+    RedisConfig,
+    SecurityConfig,
+    SwaggerConfig,
 }

@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigKeyPaths, ISecurityConfig } from '~/config'
 import { isDev } from '~/global/env'
 
+import { LogModule } from '../system/log/log.module'
 import { MenuModule } from '../system/menu/menu.module'
 import { RoleModule } from '../system/role/role.module'
 import { UserModule } from '../user/user.module'
@@ -56,6 +57,7 @@ const strategies = [LocalStrategy, JwtStrategy]
         UserModule,
         RoleModule,
         MenuModule,
+        LogModule,
     ],
     controllers: [...controllers],
     providers: [...providers, ...strategies],

@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@nestjs/common'
 import Redis from 'ioredis'
 import { isEmpty } from 'lodash'
 
-import { ApiException } from '~/common/exceptions/api.exception'
+import { HttpApiException } from '~/common/exceptions/http.api.exception'
 
 import { AppConfig, IAppConfig, ISecurityConfig, SecurityConfig } from '~/config'
 import { ErrorEnum } from '~/constants/error-code.constant'
@@ -14,6 +14,7 @@ import { UserService } from '~/modules/user/user.service'
 
 import { md5 } from '~/utils'
 
+import { LoginLogService } from '../system/log/services/login-log.service'
 import { MenuService } from '../system/menu/menu.service'
 import { RoleService } from '../system/role/role.service'
 
@@ -26,7 +27,7 @@ export class AuthService {
     private menuService: MenuService,
     private roleService: RoleService,
     private userService: UserService,
-
+    private loginLogService: LoginLogService,
     private tokenService: TokenService,
     @Inject(SecurityConfig.KEY) private securityConfig: ISecurityConfig,
     @Inject(AppConfig.KEY) private appConfig: IAppConfig,
@@ -36,11 +37,11 @@ export class AuthService {
         const user = await this.userService.findUserByUserName(credential)
 
         if (isEmpty(user))
-            throw new ApiException(ErrorEnum.USER_NOT_FOUND)
+            throw new HttpApiException(ErrorEnum.USER_NOT_FOUND)
 
         const comparePassword = md5(`${password}${user.psalt}`)
         if (user.password !== comparePassword)
-            throw new ApiException(ErrorEnum.INVALID_USERNAME_PASSWORD)
+            throw new HttpApiException(ErrorEnum.INVALID_USERNAME_PASSWORD)
 
         if (user) {
             const { password, ...result } = user
@@ -62,11 +63,11 @@ export class AuthService {
     ): Promise<string> {
         const user = await this.userService.findUserByUserName(username)
         if (isEmpty(user))
-            throw new ApiException(ErrorEnum.INVALID_USERNAME_PASSWORD)
+            throw new HttpApiException(ErrorEnum.INVALID_USERNAME_PASSWORD)
 
         const comparePassword = md5(`${password}${user.psalt}`)
         if (user.password !== comparePassword)
-            throw new ApiException(ErrorEnum.INVALID_USERNAME_PASSWORD)
+            throw new HttpApiException(ErrorEnum.INVALID_USERNAME_PASSWORD)
 
         const roleIds = await this.roleService.getRoleIdsByUser(user.id)
 
@@ -84,6 +85,8 @@ export class AuthService {
         const permissions = await this.menuService.getPermissions(user.id)
         await this.setPermissionsCache(user.id, permissions)
 
+        await this.loginLogService.create(user.id, ip, ua)
+
         return token.accessToken
     }
 
@@ -95,7 +98,11 @@ export class AuthService {
 
         const comparePassword = md5(`${password}${user.psalt}`)
         if (user.password !== comparePassword)
-            throw new ApiException(ErrorEnum.INVALID_USERNAME_PASSWORD)
+            throw new HttpApiException(ErrorEnum.INVALID_USERNAME_PASSWORD)
+    }
+
+    async loginLog(uid: number, ip: string, ua: string) {
+        await this.loginLogService.create(uid, ip, ua)
     }
 
     /**

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { MenuModule } from '../system/menu/menu.module'
+import { ParamConfigModule } from '../system/param-config/param-config.module'
 
 import { RoleModule } from '../system/role/role.module'
 
@@ -16,6 +17,7 @@ const providers = [UserService]
         TypeOrmModule.forFeature([UserEntity]),
         RoleModule,
         MenuModule,
+        ParamConfigModule,
     ],
     controllers: [UserController],
     providers: [...providers],

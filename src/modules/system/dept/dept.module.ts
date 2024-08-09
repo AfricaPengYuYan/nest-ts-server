@@ -11,9 +11,9 @@ import { DeptService } from './dept.service'
 const services = [DeptService]
 
 @Module({
-  imports: [TypeOrmModule.forFeature([DeptEntity]), UserModule, RoleModule],
-  controllers: [DeptController],
-  providers: [...services],
-  exports: [TypeOrmModule, ...services],
+    imports: [TypeOrmModule.forFeature([DeptEntity]), UserModule, RoleModule],
+    controllers: [DeptController],
+    providers: [...services],
+    exports: [TypeOrmModule, ...services],
 })
 export class DeptModule {}

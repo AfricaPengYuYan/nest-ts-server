@@ -18,11 +18,16 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
 import { AuthModule } from './modules/auth/auth.module'
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard'
 import { RbacGuard } from './modules/auth/guards/rbac.guard'
-
-
+import { HealthModule } from './modules/health/health.module'
+import { NetdiskModule } from './modules/netdisk/netdisk.module'
+import { SseModule } from './modules/sse/sse.module'
 import { SystemModule } from './modules/system/system.module'
-
+import { TasksModule } from './modules/tasks/tasks.module'
+import { TodoModule } from './modules/todo/todo.module'
+import { ToolsModule } from './modules/tools/tools.module'
 import { DatabaseModule } from './shared/database/database.module'
+
+import { SocketModule } from './socket/socket.module'
 
 @Module({
     imports: [
@@ -62,6 +67,18 @@ import { DatabaseModule } from './shared/database/database.module'
 
         AuthModule,
         SystemModule,
+        TasksModule.forRoot(),
+        ToolsModule,
+        SocketModule,
+        HealthModule,
+        SseModule,
+        NetdiskModule,
+
+        // biz
+
+        // end biz
+
+        TodoModule,
     ],
     providers: [
         { provide: APP_FILTER, useClass: HttpExceptionsFilter },

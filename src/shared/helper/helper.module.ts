@@ -4,14 +4,14 @@ import { CronService } from './cron.service'
 import { QQService } from './qq.service'
 
 const providers: Provider[] = [
-  CronService,
-  QQService,
+    CronService,
+    QQService,
 ]
 
 @Global()
 @Module({
-  imports: [],
-  providers,
-  exports: providers,
+    imports: [],
+    providers,
+    exports: providers,
 })
 export class HelperModule {}

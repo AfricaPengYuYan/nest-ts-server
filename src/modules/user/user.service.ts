@@ -6,9 +6,9 @@ import { isEmpty, isNil } from 'lodash'
 
 import { EntityManager, In, Like, Repository } from 'typeorm'
 
-import { ApiException } from '~/common/exceptions/api.exception'
+import { HttpApiException } from '~/common/exceptions/http.api.exception'
 import { ErrorEnum } from '~/constants/error-code.constant'
-import { ROOT_ROLE_ID } from '~/constants/system.constant'
+import { ROOT_ROLE_ID, SYS_USER_INITPASSWORD } from '~/constants/system.constant'
 import { genAuthPVKey, genAuthPermKey, genAuthTokenKey, genOnlineUserKey } from '~/helper/genRedisKey'
 
 import { paginate } from '~/helper/paginate'
@@ -21,6 +21,7 @@ import { md5, randomValue } from '~/utils'
 
 import { AccessTokenEntity } from '../auth/entities/access-token.entity'
 import { DeptEntity } from '../system/dept/dept.entity'
+import { ParamConfigService } from '../system/param-config/param-config.service'
 import { RoleEntity } from '../system/role/role.entity'
 
 import { UserStatus } from './constant'
@@ -39,6 +40,7 @@ export class UserService {
     @InjectRepository(RoleEntity)
     private readonly roleRepository: Repository<RoleEntity>,
     @InjectEntityManager() private entityManager: EntityManager,
+    private readonly paramConfigService: ParamConfigService,
     private readonly qqService: QQService,
     ) {}
 
@@ -74,7 +76,7 @@ export class UserService {
             .getOne()
 
         if (isEmpty(user))
-            throw new ApiException(ErrorEnum.USER_NOT_FOUND)
+            throw new HttpApiException(ErrorEnum.USER_NOT_FOUND)
 
         delete user?.psalt
 
@@ -87,7 +89,7 @@ export class UserService {
     async updateAccountInfo(uid: number, info: AccountUpdateDto): Promise<void> {
         const user = await this.userRepository.findOneBy({ id: uid })
         if (isEmpty(user))
-            throw new ApiException(ErrorEnum.USER_NOT_FOUND)
+            throw new HttpApiException(ErrorEnum.USER_NOT_FOUND)
 
         const data = {
             ...(info.nickname ? { nickname: info.nickname } : null),
@@ -113,12 +115,12 @@ export class UserService {
     async updatePassword(uid: number, dto: PasswordUpdateDto): Promise<void> {
         const user = await this.userRepository.findOneBy({ id: uid })
         if (isEmpty(user))
-            throw new ApiException(ErrorEnum.USER_NOT_FOUND)
+            throw new HttpApiException(ErrorEnum.USER_NOT_FOUND)
 
         const comparePassword = md5(`${dto.oldPassword}${user.psalt}`)
         // 原密码不一致，不允许更改
         if (user.password !== comparePassword)
-            throw new ApiException(ErrorEnum.PASSWORD_MISMATCH)
+            throw new HttpApiException(ErrorEnum.PASSWORD_MISMATCH)
 
         const password = md5(`${dto.newPassword}${user.psalt}`)
         await this.userRepository.update({ id: uid }, { password })
@@ -150,11 +152,20 @@ export class UserService {
             username,
         })
         if (!isEmpty(exists))
-            throw new ApiException(ErrorEnum.SYSTEM_USER_EXISTS)
+            throw new HttpApiException(ErrorEnum.SYSTEM_USER_EXISTS)
 
         await this.entityManager.transaction(async (manager) => {
             const salt = randomValue(32)
 
+            if (!password) {
+                const initPassword = await this.paramConfigService.findValueByKey(
+                    SYS_USER_INITPASSWORD,
+                )
+                password = md5(`${initPassword ?? '123456'}${salt}`)
+            }
+            else {
+                password = md5(`${password ?? '123456'}${salt}`)
+            }
             const u = manager.create(UserEntity, {
                 username,
                 password,
@@ -335,7 +346,7 @@ export class UserService {
     async exist(username: string) {
         const user = await this.userRepository.findOneBy({ username })
         if (isNil(user))
-            throw new ApiException(ErrorEnum.SYSTEM_USER_EXISTS)
+            throw new HttpApiException(ErrorEnum.SYSTEM_USER_EXISTS)
 
         return true
     }
@@ -348,7 +359,7 @@ export class UserService {
             username,
         })
         if (!isEmpty(exists))
-            throw new ApiException(ErrorEnum.SYSTEM_USER_EXISTS)
+            throw new HttpApiException(ErrorEnum.SYSTEM_USER_EXISTS)
 
         await this.entityManager.transaction(async (manager) => {
             const salt = randomValue(32)
