@@ -4,11 +4,11 @@ import { ApiExtraModels, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { FastifyRequest } from 'fastify'
 
 import { ApiResult } from '~/common/decorators/api-result.decorator'
-import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 
 import { AuthUser } from '~/common/decorators/auth-user.decorator'
 
 import { Perm, definePermission } from '~/common/decorators/permission.decorator'
+import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 
 import { KickDto } from './online.dto'
 import { OnlineUserInfo } from './online.model'

@@ -45,6 +45,6 @@ export class CaptchaLogService {
     }
 
     async clearLogBeforeTime(time: Date): Promise<void> {
-        await this.captchaLogRepository.delete({ createdAt: LessThan(time) })
+        await this.captchaLogRepository.delete({ createdTime: LessThan(time) })
     }
 }

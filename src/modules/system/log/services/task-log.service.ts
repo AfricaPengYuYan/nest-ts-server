@@ -47,6 +47,6 @@ export class TaskLogService {
     }
 
     async clearLogBeforeTime(time: Date): Promise<void> {
-        await this.taskLogRepository.delete({ createdAt: LessThan(time) })
+        await this.taskLogRepository.delete({ createdTime: LessThan(time) })
     }
 }

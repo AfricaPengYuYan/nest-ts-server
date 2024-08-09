@@ -37,12 +37,6 @@ export class NetDiskManageService {
         this.bucketManager = new qiniu.rs.BucketManager(this.mac, this.config)
     }
 
-    /**
-     * 获取文件列表
-     * @param prefix 当前文件夹路径，搜索模式下会被忽略
-     * @param marker 下一页标识
-     * @returns iFileListResult
-     */
     async getFileList(prefix = '', marker = '', skey = ''): Promise<SFileList> {
     // 是否需要搜索
         const searching = !isEmpty(skey)
@@ -150,9 +144,6 @@ export class NetDiskManageService {
         })
     }
 
-    /**
-     * 获取文件信息
-     */
     async getFileInfo(name: string, path: string): Promise<SFileInfoDetail> {
         return new Promise((resolve, reject) => {
             this.bucketManager.stat(
@@ -203,9 +194,6 @@ export class NetDiskManageService {
         })
     }
 
-    /**
-     * 修改文件MimeType
-     */
     async changeFileHeaders(
         name: string,
         path: string,
@@ -236,10 +224,6 @@ export class NetDiskManageService {
         })
     }
 
-    /**
-     * 创建文件夹
-     * @returns true创建成功
-     */
     async createDir(dirName: string): Promise<void> {
         const safeDirName = dirName.endsWith('/') ? dirName : `${dirName}/`
         return new Promise((resolve, reject) => {
@@ -271,9 +255,6 @@ export class NetDiskManageService {
         })
     }
 
-    /**
-     * 检查文件是否存在，同可检查目录
-     */
     async checkFileExist(filePath: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
             // fix path end must a /
@@ -307,10 +288,6 @@ export class NetDiskManageService {
         })
     }
 
-    /**
-     * 创建Upload Token, 默认过期时间一小时
-     * @returns upload token
-     */
     createUploadToken(endUser: string): string {
         const policy = new qiniu.rs.PutPolicy({
             scope: this.qiniuConfig.bucket,
@@ -322,11 +299,6 @@ export class NetDiskManageService {
         return uploadToken
     }
 
-    /**
-     * 重命名文件
-     * @param dir 文件路径
-     * @param name 文件名称
-     */
     async renameFile(dir: string, name: string, toName: string): Promise<void> {
         const fileName = `${dir}${name}`
         const toFileName = `${dir}${toName}`
@@ -361,9 +333,6 @@ export class NetDiskManageService {
         })
     }
 
-    /**
-     * 移动文件
-     */
     async moveFile(dir: string, toDir: string, name: string): Promise<void> {
         const fileName = `${dir}${name}`
         const toFileName = `${toDir}${name}`
@@ -398,9 +367,6 @@ export class NetDiskManageService {
         })
     }
 
-    /**
-     * 复制文件
-     */
     async copyFile(dir: string, toDir: string, name: string): Promise<void> {
         const fileName = `${dir}${name}`
         // 拼接文件名
@@ -438,9 +404,6 @@ export class NetDiskManageService {
         })
     }
 
-    /**
-     * 重命名文件夹
-     */
     async renameDir(path: string, name: string, toName: string): Promise<void> {
         const dirName = `${path}${name}`
         const toDirName = `${path}${toName}`
@@ -515,11 +478,6 @@ export class NetDiskManageService {
         }
     }
 
-    /**
-     * 获取七牛下载的文件url链接
-     * @param key 文件路径
-     * @returns 连接
-     */
     getDownloadLink(key: string): string {
         if (this.qiniuConfig.access === 'public') {
             return this.bucketManager.publicDownloadUrl(this.qiniuConfig.domain, key)
@@ -534,11 +492,6 @@ export class NetDiskManageService {
         throw new Error('qiniu config access type not support')
     }
 
-    /**
-     * 删除文件
-     * @param dir 删除的文件夹目录
-     * @param name 文件名
-     */
     async deleteFile(dir: string, name: string): Promise<void> {
         return new Promise((resolve, reject) => {
             this.bucketManager.delete(
@@ -564,11 +517,6 @@ export class NetDiskManageService {
         })
     }
 
-    /**
-     * 删除文件夹
-     * @param fileList 需要操作的文件或文件夹
-     * @param dir 文件目录名称
-     */
     async deleteMultiFileOrDir(
         fileList: FileOpItem[],
         dir: string,
@@ -670,9 +618,6 @@ export class NetDiskManageService {
         }
     }
 
-    /**
-     * 复制文件，含文件夹
-     */
     async copyMultiFileOrDir(
         fileList: FileOpItem[],
         dir: string,
@@ -796,9 +741,6 @@ export class NetDiskManageService {
         }
     }
 
-    /**
-     * 移动文件，含文件夹
-     */
     async moveMultiFileOrDir(
         fileList: FileOpItem[],
         dir: string,

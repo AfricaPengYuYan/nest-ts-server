@@ -65,14 +65,14 @@ export class LoginLogService {
             .where({
                 ...(ip && { ip: Like(`%${ip}%`) }),
                 ...(address && { address: Like(`%${address}%`) }),
-                ...(time && { createdAt: Between(time[0], time[1]) }),
+                ...(time && { createdTime: Between(time[0], time[1]) }),
                 ...(username && {
                     user: {
                         username: Like(`%${username}%`),
                     },
                 }),
             })
-            .orderBy('login_log.created_at', 'DESC')
+            .orderBy('login_log.created_time', 'DESC')
 
         const { items, ...rest } = await paginateRaw<LoginLogEntity>(queryBuilder, {
             page,
@@ -95,6 +95,6 @@ export class LoginLogService {
     }
 
     async clearLogBeforeTime(time: Date): Promise<void> {
-        await this.loginLogRepository.delete({ createdAt: LessThan(time) })
+        await this.loginLogRepository.delete({ createdTime: LessThan(time) })
     }
 }

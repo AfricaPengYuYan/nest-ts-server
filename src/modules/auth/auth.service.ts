@@ -4,9 +4,9 @@ import { Inject, Injectable } from '@nestjs/common'
 import Redis from 'ioredis'
 import { isEmpty } from 'lodash'
 
+import { ErrorEnum } from '~/common/constants/error-code.constant'
 import { HttpApiException } from '~/common/exceptions/http.api.exception'
 
-import { ErrorEnum } from '~/common/constants/error-code.constant'
 import { AppConfig, IAppConfig, ISecurityConfig, SecurityConfig } from '~/config'
 import { genAuthPVKey, genAuthPermKey, genAuthTokenKey, genTokenBlacklistKey } from '~/helper/genRedisKey'
 
@@ -51,10 +51,6 @@ export class AuthService {
         return null
     }
 
-    /**
-     * 获取登录JWT
-     * 返回null则账号密码有误，不存在该用户
-     */
     async login(
         username: string,
         password: string,
@@ -90,9 +86,6 @@ export class AuthService {
         return token.accessToken
     }
 
-    /**
-     * 效验账号密码
-     */
     async checkPassword(username: string, password: string) {
         const user = await this.userService.findUserByUserName(username)
 
@@ -105,18 +98,12 @@ export class AuthService {
         await this.loginLogService.create(uid, ip, ua)
     }
 
-    /**
-     * 重置密码
-     */
     async resetPassword(username: string, password: string) {
         const user = await this.userService.findUserByUserName(username)
 
         await this.userService.forceUpdatePassword(user.id, password)
     }
 
-    /**
-     * 清除登录状态信息
-     */
     async clearLoginStatus(user: IAuthUser, accessToken: string): Promise<void> {
         const exp = user.exp ? (user.exp - Date.now() / 1000).toFixed(0) : this.securityConfig.jwtExprire
         await this.redis.set(genTokenBlacklistKey(accessToken), accessToken, 'EX', exp)
@@ -126,16 +113,10 @@ export class AuthService {
             await this.userService.forbidden(user.uid, accessToken)
     }
 
-    /**
-     * 获取菜单列表
-     */
     async getMenus(uid: number) {
         return this.menuService.getMenus(uid)
     }
 
-    /**
-     * 获取权限列表
-     */
     async getPermissions(uid: number): Promise<string[]> {
         return this.menuService.getPermissions(uid)
     }

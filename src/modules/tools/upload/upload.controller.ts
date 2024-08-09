@@ -3,9 +3,8 @@ import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { FastifyRequest } from 'fastify'
 
 import { AuthUser } from '~/common/decorators/auth-user.decorator'
-import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
-
 import { Perm, definePermission } from '~/common/decorators/permission.decorator'
+import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 
 import { FileUploadDto } from './upload.dto'
 import { UploadService } from './upload.service'

@@ -9,7 +9,7 @@ import {
     VirtualColumn,
 } from 'typeorm'
 
-// 如果觉得前端转换时间太麻烦，并且不考虑通用性的话，可以在服务端进行转换，eg: @UpdateDateColumn({ name: 'updated_at', transformer })
+// 如果觉得前端转换时间太麻烦，并且不考虑通用性的话，可以在服务端进行转换，eg: @UpdateDateColumn({ name: 'updated_time', transformer })
 // const transformer: ValueTransformer = {
 //   to(value) {
 //     return value
@@ -23,11 +23,11 @@ export abstract class CommonEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
 
-    @CreateDateColumn({ name: 'created_at' })
-    createdAt: Date
+    @CreateDateColumn({ name: 'created_time', comment: '创建时间' })
+    createdTime: Date
 
-    @UpdateDateColumn({ name: 'updated_at' })
-    updatedAt: Date
+    @UpdateDateColumn({ name: 'updated_time', comment: '更新时间' })
+    updatedTime: Date
 }
 
 export abstract class CompleteEntity extends CommonEntity {

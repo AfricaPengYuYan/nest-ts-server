@@ -29,12 +29,12 @@ export class CronService {
         let deleteCount = 0
         await Promise.all(
             expiredTokens.map(async (token) => {
-                const { value, created_at } = token
+                const { value, created_time } = token
 
                 await AccessTokenEntity.remove(token)
 
                 this.logger.debug(
-            `--> 删除过期的 token：${value}, 签发于 ${dayjs(created_at).format(
+            `--> 删除过期的 token：${value}, 签发于 ${dayjs(created_time).format(
               'YYYY-MM-DD H:mm:ss',
             )}`,
                 )

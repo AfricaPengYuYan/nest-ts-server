@@ -7,9 +7,8 @@ import {
 
 import { ErrorEnum } from '~/common/constants/error-code.constant'
 import { AuthUser } from '~/common/decorators/auth-user.decorator'
-import { HttpApiException } from '~/common/exceptions/http.api.exception'
-
 import { Perm, definePermission } from '~/common/decorators/permission.decorator'
+import { HttpApiException } from '~/common/exceptions/http.api.exception'
 
 import { checkIsDemoMode } from '~/utils'
 

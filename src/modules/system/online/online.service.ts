@@ -65,7 +65,7 @@ export class OnlineService {
             os: `${`${uaResult.os.name ?? ''} `}${uaResult.os.version}`,
             browser: `${`${uaResult.browser.name ?? ''} `}${uaResult.browser.version}`,
             username: token.user.username,
-            time: token.created_at.toString(),
+            time: token.created_time.toString(),
         }
         await this.redis.set(genOnlineUserKey(token.id), JSON.stringify(result), 'EX', exp)
         this.updateOnlineUserCount()

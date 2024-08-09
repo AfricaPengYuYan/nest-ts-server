@@ -58,12 +58,12 @@ export class StorageService {
                 ...(type && { type }),
                 ...(extName && { extName }),
                 ...(size && { size: Between(size[0], size[1]) }),
-                ...(time && { createdAt: Between(time[0], time[1]) }),
+                ...(time && { createdTime: Between(time[0], time[1]) }),
                 ...(username && {
                     userId: await (await this.userRepository.findOneBy({ username })).id,
                 }),
             })
-            .orderBy('storage.created_at', 'DESC')
+            .orderBy('storage.created_time', 'DESC')
 
         const { items, ...rest } = await paginateRaw<Storage>(queryBuilder, {
             page,
@@ -80,7 +80,7 @@ export class StorageService {
                     path: e.storage_path,
                     type: e.storage_type,
                     size: e.storage_size,
-                    createdAt: e.storage_created_at,
+                    createdTime: e.storage_created_at,
                     username: e.user_username,
                 }
             })

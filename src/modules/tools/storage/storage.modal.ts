@@ -20,7 +20,7 @@ export class StorageInfo {
     size: string
 
     @ApiProperty({ description: '上传时间' })
-    createdAt: string
+    createdTime: string
 
     @ApiProperty({ description: '上传者' })
     username: string

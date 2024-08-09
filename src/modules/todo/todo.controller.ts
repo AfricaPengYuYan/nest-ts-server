@@ -15,9 +15,9 @@ import { IdParam } from '~/common/decorators/id-param.decorator'
 
 import { Perm, definePermission } from '~/common/decorators/permission.decorator'
 import { Resource } from '~/common/decorators/resource.decorator'
+import { ResourceGuard } from '~/common/guards/resource.guard'
 import { Pagination } from '~/helper/paginate/pagination'
 
-import { ResourceGuard } from '~/common/guards/resource.guard'
 import { TodoEntity } from '~/modules/todo/todo.entity'
 
 import { TodoDto, TodoQueryDto, TodoUpdateDto } from './todo.dto'

@@ -25,7 +25,7 @@ export class AccessTokenEntity extends BaseEntity {
     expired_at!: Date
 
     @CreateDateColumn({ comment: '令牌创建时间' })
-    created_at!: Date
+    created_time!: Date
 
     @OneToOne(() => RefreshTokenEntity, refreshToken => refreshToken.accessToken, {
         cascade: true,
