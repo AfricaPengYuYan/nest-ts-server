@@ -9,7 +9,7 @@ import {
     TreeParent,
 } from 'typeorm'
 
-import { CompleteEntity } from '~/common/entity/common.entity'
+import { CompleteEntity } from '~/entity/common.entity'
 
 import { UserEntity } from '~/modules/system/user/user.entity'
 

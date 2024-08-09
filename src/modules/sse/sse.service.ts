@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { Subscriber } from 'rxjs'
 import { In } from 'typeorm'
 
-import { ROOT_ROLE_ID } from '~/constants/system.constant'
+import { ROOT_ROLE_ID } from '~/common/constants/system.constant'
 
 import { RoleEntity } from '~/modules/system/role/role.entity'
 import { UserEntity } from '~/modules/system/user/user.entity'

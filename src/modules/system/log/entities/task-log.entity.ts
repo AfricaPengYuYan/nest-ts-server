@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Column, Entity, JoinColumn, ManyToOne, Relation } from 'typeorm'
 
-import { CommonEntity } from '~/common/entity/common.entity'
+import { CommonEntity } from '~/entity/common.entity'
 
 import { TaskEntity } from '../../task/task.entity'
 

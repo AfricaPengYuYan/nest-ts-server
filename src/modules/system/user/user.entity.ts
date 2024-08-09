@@ -10,7 +10,7 @@ import {
     Relation,
 } from 'typeorm'
 
-import { CommonEntity } from '~/common/entity/common.entity'
+import { CommonEntity } from '~/entity/common.entity'
 
 import { AccessTokenEntity } from '~/modules/token/access-token.entity'
 

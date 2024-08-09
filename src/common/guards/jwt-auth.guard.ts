@@ -13,9 +13,9 @@ import { isEmpty, isNil } from 'lodash'
 
 import { ExtractJwt } from 'passport-jwt'
 
+import { ErrorEnum } from '~/common/constants/error-code.constant'
 import { HttpApiException } from '~/common/exceptions/http.api.exception'
 import { AppConfig, IAppConfig } from '~/config'
-import { ErrorEnum } from '~/constants/error-code.constant'
 import { genTokenBlacklistKey } from '~/helper/genRedisKey'
 import { AuthService } from '~/modules/auth/auth.service'
 

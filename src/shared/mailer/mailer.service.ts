@@ -6,9 +6,9 @@ import dayjs from 'dayjs'
 
 import Redis from 'ioredis'
 
+import { ErrorEnum } from '~/common/constants/error-code.constant'
 import { HttpApiException } from '~/common/exceptions/http.api.exception'
 import { AppConfig, IAppConfig } from '~/config'
-import { ErrorEnum } from '~/constants/error-code.constant'
 import { randomValue } from '~/utils'
 
 @Injectable()

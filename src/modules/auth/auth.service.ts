@@ -6,8 +6,8 @@ import { isEmpty } from 'lodash'
 
 import { HttpApiException } from '~/common/exceptions/http.api.exception'
 
+import { ErrorEnum } from '~/common/constants/error-code.constant'
 import { AppConfig, IAppConfig, ISecurityConfig, SecurityConfig } from '~/config'
-import { ErrorEnum } from '~/constants/error-code.constant'
 import { genAuthPVKey, genAuthPermKey, genAuthTokenKey, genTokenBlacklistKey } from '~/helper/genRedisKey'
 
 import { UserService } from '~/modules/system/user/user.service'

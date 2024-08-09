@@ -6,8 +6,8 @@ import Redis from 'ioredis'
 import { throttle } from 'lodash'
 import { UAParser } from 'ua-parser-js'
 
+import { ErrorEnum } from '~/common/constants/error-code.constant'
 import { HttpApiException } from '~/common/exceptions/http.api.exception'
-import { ErrorEnum } from '~/constants/error-code.constant'
 
 import { genOnlineUserKey } from '~/helper/genRedisKey'
 import { AuthService } from '~/modules/auth/auth.service'

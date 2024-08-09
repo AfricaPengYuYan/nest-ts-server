@@ -5,9 +5,9 @@ import {
     ApiTags,
 } from '@nestjs/swagger'
 
+import { ErrorEnum } from '~/common/constants/error-code.constant'
 import { AuthUser } from '~/common/decorators/auth-user.decorator'
 import { HttpApiException } from '~/common/exceptions/http.api.exception'
-import { ErrorEnum } from '~/constants/error-code.constant'
 
 import { Perm, definePermission } from '~/common/decorators/permission.decorator'
 

@@ -15,7 +15,7 @@ import {
 } from 'class-validator'
 import { isEmpty } from 'lodash'
 
-import { NETDISK_HANDLE_MAX_ITEM } from '~/constants/oss.constant'
+import { NETDISK_HANDLE_MAX_ITEM } from '~/common/constants/oss.constant'
 
 @ValidatorConstraint({ name: 'IsLegalNameExpression', async: false })
 export class IsLegalNameExpression implements ValidatorConstraintInterface {

@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToMany, Relation } from 'typeorm'
 
-import { CompleteEntity } from '~/common/entity/common.entity'
+import { CompleteEntity } from '~/entity/common.entity'
 
 import { RoleEntity } from '../role/role.entity'
 

@@ -2,7 +2,7 @@ import { HttpStatus, RequestMethod, Type, applyDecorators } from '@nestjs/common
 import { METHOD_METADATA } from '@nestjs/common/constants'
 import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger'
 
-import { Result } from '~/common/model/result.model'
+import { Result } from '~/models/result.model'
 
 const baseTypeNames = ['String', 'Number', 'Boolean']
 

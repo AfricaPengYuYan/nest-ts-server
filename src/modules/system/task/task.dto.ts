@@ -18,7 +18,7 @@ import {
 import * as parser from 'cron-parser'
 import { isEmpty } from 'lodash'
 
-import { PagerDto } from '~/common/dto/pager.dto'
+import { PagerDto } from '~/dto/pager.dto'
 import { IsUnique } from '~/shared/database/constraints/unique.constraint'
 
 import { TaskEntity } from './task.entity'

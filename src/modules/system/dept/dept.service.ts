@@ -3,8 +3,8 @@ import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm'
 import { isEmpty } from 'lodash'
 import { EntityManager, Repository, TreeRepository } from 'typeorm'
 
+import { ErrorEnum } from '~/common/constants/error-code.constant'
 import { HttpApiException } from '~/common/exceptions/http.api.exception'
-import { ErrorEnum } from '~/constants/error-code.constant'
 import { DeptEntity } from '~/modules/system/dept/dept.entity'
 import { UserEntity } from '~/modules/system/user/user.entity'
 

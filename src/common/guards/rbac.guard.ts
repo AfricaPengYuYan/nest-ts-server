@@ -6,8 +6,8 @@ import {
 import { Reflector } from '@nestjs/core'
 import { FastifyRequest } from 'fastify'
 
+import { ErrorEnum } from '~/common/constants/error-code.constant'
 import { HttpApiException } from '~/common/exceptions/http.api.exception'
-import { ErrorEnum } from '~/constants/error-code.constant'
 import { AuthService } from '~/modules/auth/auth.service'
 
 import { ALLOW_ANON_KEY, PERMISSION_KEY, PUBLIC_KEY, Roles } from '../../modules/auth/auth.constant'

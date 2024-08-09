@@ -6,7 +6,7 @@ import type { Redis } from 'ioredis'
 
 import { RedisIoAdapterKey } from '~/common/adapters/socket.adapter'
 
-import { API_CACHE_PREFIX } from '~/constants/cache.constant'
+import { API_CACHE_PREFIX } from '~/common/constants/cache.constant'
 import { getRedisKey } from '~/utils/redis.util'
 
 // 获取器

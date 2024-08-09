@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Post, Put, Query } from '@nestjs/common'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 
+import { ErrorEnum } from '~/common/constants/error-code.constant'
 import { ApiResult } from '~/common/decorators/api-result.decorator'
 import { AuthUser } from '~/common/decorators/auth-user.decorator'
 import { IdParam } from '~/common/decorators/id-param.decorator'
@@ -9,7 +10,6 @@ import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { HttpApiException } from '~/common/exceptions/http.api.exception'
 import { CreatorPipe } from '~/common/pipes/creator.pipe'
 import { UpdaterPipe } from '~/common/pipes/updater.pipe'
-import { ErrorEnum } from '~/constants/error-code.constant'
 import { DeptEntity } from '~/modules/system/dept/dept.entity'
 
 import { DeptDto, DeptQueryDto } from './dept.dto'

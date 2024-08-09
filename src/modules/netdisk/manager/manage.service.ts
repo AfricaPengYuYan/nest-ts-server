@@ -5,8 +5,8 @@ import { isEmpty } from 'lodash'
 import * as qiniu from 'qiniu'
 import { auth, conf, rs } from 'qiniu'
 
+import { NETDISK_COPY_SUFFIX, NETDISK_DELIMITER, NETDISK_HANDLE_MAX_ITEM, NETDISK_LIMIT } from '~/common/constants/oss.constant'
 import { IOssConfig, OssConfig } from '~/config'
-import { NETDISK_COPY_SUFFIX, NETDISK_DELIMITER, NETDISK_HANDLE_MAX_ITEM, NETDISK_LIMIT } from '~/constants/oss.constant'
 
 import { AccountInfo } from '~/modules/system/user/user.model'
 import { UserService } from '~/modules/system/user/user.service'

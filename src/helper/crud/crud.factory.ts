@@ -16,7 +16,7 @@ import pluralize from 'pluralize'
 
 import { ApiResult } from '~/common/decorators/api-result.decorator'
 import { IdParam } from '~/common/decorators/id-param.decorator'
-import { PagerDto } from '~/common/dto/pager.dto'
+import { PagerDto } from '~/dto/pager.dto'
 
 import { BaseService } from './base.service'
 
