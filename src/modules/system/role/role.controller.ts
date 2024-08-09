@@ -14,9 +14,9 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger'
 
 import { ApiResult } from '~/common/decorators/api-result.decorator'
 import { IdParam } from '~/common/decorators/id-param.decorator'
+import { Perm, definePermission } from '~/common/decorators/permission.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { UpdaterPipe } from '~/common/pipes/updater.pipe'
-import { Perm, definePermission } from '~/modules/auth/decorators/permission.decorator'
 import { SseService } from '~/modules/sse/sse.service'
 import { RoleEntity } from '~/modules/system/role/role.entity'
 

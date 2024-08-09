@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common'
 
 import { RouterModule } from '@nestjs/core'
 
-import { UserModule } from '../user/user.module'
+import { UserModule } from '~/modules/system/user/user.module'
 
 import { NetDiskManageController } from './manager/manage.controller'
 import { NetDiskManageService } from './manager/manage.service'

@@ -3,10 +3,9 @@ import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger'
 
 import { ApiResult } from '~/common/decorators/api-result.decorator'
 import { IdParam } from '~/common/decorators/id-param.decorator'
+import { Perm, definePermission } from '~/common/decorators/permission.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { MenuService } from '~/modules/system/menu/menu.service'
-
-import { Perm, definePermission } from '../auth/decorators/permission.decorator'
 
 import { UserPasswordDto } from './dto/password.dto'
 import { UserDto, UserQueryDto, UserUpdateDto } from './dto/user.dto'

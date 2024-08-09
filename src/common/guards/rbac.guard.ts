@@ -10,7 +10,7 @@ import { HttpApiException } from '~/common/exceptions/http.api.exception'
 import { ErrorEnum } from '~/constants/error-code.constant'
 import { AuthService } from '~/modules/auth/auth.service'
 
-import { ALLOW_ANON_KEY, PERMISSION_KEY, PUBLIC_KEY, Roles } from '../auth.constant'
+import { ALLOW_ANON_KEY, PERMISSION_KEY, PUBLIC_KEY, Roles } from '../../modules/auth/auth.constant'
 
 @Injectable()
 export class RbacGuard implements CanActivate {

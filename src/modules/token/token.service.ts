@@ -8,11 +8,11 @@ import Redis from 'ioredis'
 import { ISecurityConfig, SecurityConfig } from '~/config'
 import { genOnlineUserKey } from '~/helper/genRedisKey'
 import { RoleService } from '~/modules/system/role/role.service'
-import { UserEntity } from '~/modules/user/user.entity'
+import { UserEntity } from '~/modules/system/user/user.entity'
 import { generateUUID } from '~/utils'
 
-import { AccessTokenEntity } from '../entities/access-token.entity'
-import { RefreshTokenEntity } from '../entities/refresh-token.entity'
+import { AccessTokenEntity } from './access-token.entity'
+import { RefreshTokenEntity } from './refresh-token.entity'
 
 /**
  * 令牌服务

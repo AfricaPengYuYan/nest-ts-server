@@ -21,8 +21,8 @@ import { AuthService } from '~/modules/auth/auth.service'
 
 import { checkIsDemoMode } from '~/utils'
 
-import { AuthStrategy, PUBLIC_KEY } from '../auth.constant'
-import { TokenService } from '../services/token.service'
+import { AuthStrategy, PUBLIC_KEY } from '../../modules/auth/auth.constant'
+import { TokenService } from '../../modules/token/token.service'
 
 /** @type {import('fastify').RequestGenericInterface} */
 interface RequestType {

@@ -15,14 +15,13 @@ import { paginate } from '~/helper/paginate'
 import { Pagination } from '~/helper/paginate/pagination'
 import { AccountUpdateDto } from '~/modules/auth/dto/account.dto'
 import { RegisterDto } from '~/modules/auth/dto/auth.dto'
+import { DeptEntity } from '~/modules/system/dept/dept.entity'
+import { ParamConfigService } from '~/modules/system/param-config/param-config.service'
+import { RoleEntity } from '~/modules/system/role/role.entity'
+import { AccessTokenEntity } from '~/modules/token/access-token.entity'
 import { QQService } from '~/shared/helper/qq.service'
 
 import { md5, randomValue } from '~/utils'
-
-import { AccessTokenEntity } from '../auth/entities/access-token.entity'
-import { DeptEntity } from '../system/dept/dept.entity'
-import { ParamConfigService } from '../system/param-config/param-config.service'
-import { RoleEntity } from '../system/role/role.entity'
 
 import { UserStatus } from './constant'
 import { PasswordUpdateDto } from './dto/password.dto'

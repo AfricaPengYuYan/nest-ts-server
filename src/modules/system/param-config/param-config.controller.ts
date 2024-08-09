@@ -3,9 +3,9 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger'
 
 import { ApiResult } from '~/common/decorators/api-result.decorator'
 import { IdParam } from '~/common/decorators/id-param.decorator'
+import { Perm, definePermission } from '~/common/decorators/permission.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { Pagination } from '~/helper/paginate/pagination'
-import { Perm, definePermission } from '~/modules/auth/decorators/permission.decorator'
 import { ParamConfigEntity } from '~/modules/system/param-config/param-config.entity'
 
 import { ParamConfigDto, ParamConfigQueryDto } from './param-config.dto'

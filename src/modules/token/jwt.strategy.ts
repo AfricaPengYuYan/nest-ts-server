@@ -4,7 +4,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt'
 
 import { ISecurityConfig, SecurityConfig } from '~/config'
 
-import { AuthStrategy } from '../auth.constant'
+import { AuthStrategy } from '../auth/auth.constant'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, AuthStrategy.JWT) {

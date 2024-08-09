@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { UserModule } from '../../user/user.module'
+import { UserModule } from '~/modules/system/user/user.module'
+
 import { RoleModule } from '../role/role.module'
 
 import { DeptController } from './dept.controller'

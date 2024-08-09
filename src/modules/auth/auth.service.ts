@@ -10,7 +10,7 @@ import { AppConfig, IAppConfig, ISecurityConfig, SecurityConfig } from '~/config
 import { ErrorEnum } from '~/constants/error-code.constant'
 import { genAuthPVKey, genAuthPermKey, genAuthTokenKey, genTokenBlacklistKey } from '~/helper/genRedisKey'
 
-import { UserService } from '~/modules/user/user.service'
+import { UserService } from '~/modules/system/user/user.service'
 
 import { md5 } from '~/utils'
 
@@ -18,7 +18,7 @@ import { LoginLogService } from '../system/log/services/login-log.service'
 import { MenuService } from '../system/menu/menu.service'
 import { RoleService } from '../system/role/role.service'
 
-import { TokenService } from './services/token.service'
+import { TokenService } from '../token/token.service'
 
 @Injectable()
 export class AuthService {

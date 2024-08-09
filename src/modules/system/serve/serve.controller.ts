@@ -6,7 +6,7 @@ import { ApiResult } from '~/common/decorators/api-result.decorator'
 
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 
-import { AllowAnon } from '~/modules/auth/decorators/allow-anon.decorator'
+import { AllowAnon } from '~/common/decorators/allow-anon.decorator'
 
 import { ServeStatInfo } from './serve.model'
 import { ServeService } from './serve.service'

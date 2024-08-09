@@ -3,7 +3,8 @@ import { Column, Entity, JoinTable, ManyToMany, Relation } from 'typeorm'
 
 import { CompleteEntity } from '~/common/entity/common.entity'
 
-import { UserEntity } from '../../user/user.entity'
+import { UserEntity } from '~/modules/system/user/user.entity'
+
 import { MenuEntity } from '../menu/menu.entity'
 
 @Entity({ name: 'sys_role' })

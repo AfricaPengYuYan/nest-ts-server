@@ -2,19 +2,20 @@ import { Body, Controller, Get, Post, Put, Req, UseGuards } from '@nestjs/common
 import { ApiExtraModels, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { FastifyRequest } from 'fastify'
 
+import { AllowAnon } from '~/common/decorators/allow-anon.decorator'
 import { ApiResult } from '~/common/decorators/api-result.decorator'
 
+import { AuthUser } from '~/common/decorators/auth-user.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
-import { AllowAnon } from '~/modules/auth/decorators/allow-anon.decorator'
-import { AuthUser } from '~/modules/auth/decorators/auth-user.decorator'
 
-import { PasswordUpdateDto } from '~/modules/user/dto/password.dto'
+import { PasswordUpdateDto } from '~/modules/system/user/dto/password.dto'
 
-import { AccountInfo } from '../../user/user.model'
-import { UserService } from '../../user/user.service'
+import { AccountInfo } from '~/modules/system/user/user.model'
+import { UserService } from '~/modules/system/user/user.service'
+
+import { JwtAuthGuard } from '../../../common/guards/jwt-auth.guard'
 import { AuthService } from '../auth.service'
 import { AccountMenus, AccountUpdateDto } from '../dto/account.dto'
-import { JwtAuthGuard } from '../guards/jwt-auth.guard'
 
 @ApiTags('Account - 账户模块')
 @ApiSecurityAuth()

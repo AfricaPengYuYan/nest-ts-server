@@ -13,10 +13,10 @@ import { flattenDeep } from 'lodash'
 
 import { ApiResult } from '~/common/decorators/api-result.decorator'
 import { IdParam } from '~/common/decorators/id-param.decorator'
+import { Perm, definePermission, getDefinePermissions } from '~/common/decorators/permission.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { CreatorPipe } from '~/common/pipes/creator.pipe'
 import { UpdaterPipe } from '~/common/pipes/updater.pipe'
-import { Perm, definePermission, getDefinePermissions } from '~/modules/auth/decorators/permission.decorator'
 
 import { MenuDto, MenuQueryDto, MenuUpdateDto } from './menu.dto'
 import { MenuItemInfo } from './menu.model'

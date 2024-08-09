@@ -6,7 +6,7 @@ import { EntityManager, Repository, TreeRepository } from 'typeorm'
 import { HttpApiException } from '~/common/exceptions/http.api.exception'
 import { ErrorEnum } from '~/constants/error-code.constant'
 import { DeptEntity } from '~/modules/system/dept/dept.entity'
-import { UserEntity } from '~/modules/user/user.entity'
+import { UserEntity } from '~/modules/system/user/user.entity'
 
 import { deleteEmptyChildren } from '~/utils/list2tree.util'
 

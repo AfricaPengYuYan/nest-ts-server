@@ -10,7 +10,7 @@ import { HttpApiException } from '~/common/exceptions/http.api.exception'
 
 import { ErrorEnum } from '~/constants/error-code.constant'
 
-import { PUBLIC_KEY, RESOURCE_KEY, Roles } from '../auth.constant'
+import { PUBLIC_KEY, RESOURCE_KEY, Roles } from '../../modules/auth/auth.constant'
 import { ResourceObject } from '../decorators/resource.decorator'
 
 @Injectable()

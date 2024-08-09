@@ -11,13 +11,12 @@ import { ErrorEnum } from '~/constants/error-code.constant'
 
 import { genOnlineUserKey } from '~/helper/genRedisKey'
 import { AuthService } from '~/modules/auth/auth.service'
-import { AccessTokenEntity } from '~/modules/auth/entities/access-token.entity'
-
-import { TokenService } from '~/modules/auth/services/token.service'
 import { SseService } from '~/modules/sse/sse.service'
-import { getIpAddress } from '~/utils'
+import { UserService } from '~/modules/system/user/user.service'
+import { AccessTokenEntity } from '~/modules/token/access-token.entity'
+import { TokenService } from '~/modules/token/token.service'
 
-import { UserService } from '../../user/user.service'
+import { getIpAddress } from '~/utils'
 
 import { OnlineUserInfo } from './online.model'
 

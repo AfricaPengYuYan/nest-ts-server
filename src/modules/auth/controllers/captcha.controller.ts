@@ -10,7 +10,7 @@ import { ApiResult } from '~/common/decorators/api-result.decorator'
 import { genCaptchaImgKey } from '~/helper/genRedisKey'
 import { generateUUID } from '~/utils'
 
-import { Public } from '../decorators/public.decorator'
+import { Public } from '../../../common/decorators/public.decorator'
 
 import { ImageCaptchaDto } from '../dto/captcha.dto'
 import { ImageCaptcha } from '../models/auth.model'

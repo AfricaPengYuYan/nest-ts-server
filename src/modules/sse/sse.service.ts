@@ -5,7 +5,7 @@ import { In } from 'typeorm'
 import { ROOT_ROLE_ID } from '~/constants/system.constant'
 
 import { RoleEntity } from '~/modules/system/role/role.entity'
-import { UserEntity } from '~/modules/user/user.entity'
+import { UserEntity } from '~/modules/system/user/user.entity'
 
 export interface MessageEvent {
     data?: string | number | object
