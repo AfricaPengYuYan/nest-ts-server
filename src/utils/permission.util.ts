@@ -18,7 +18,7 @@ export interface RouteRecordRaw {
         isExt: boolean
         extOpenMode: number
         type: number
-        orderNo: number
+        order_no: number
         show: number
         activeMenu: string
         status: number
@@ -34,7 +34,7 @@ function createRoute(menu: MenuEntity, _isRoot): RouteRecordRaw {
         isExt: menu.isExt,
         extOpenMode: menu.extOpenMode,
         type: menu.type,
-        orderNo: menu.orderNo,
+        order_no: menu.order_no,
         show: menu.show,
         activeMenu: menu.activeMenu,
         status: menu.status,
@@ -137,7 +137,7 @@ export function generatorRouters(menus: MenuEntity[]) {
 function filterMenuToTable(menus: MenuEntity[], parentMenu) {
     const res = []
     menus.forEach((menu) => {
-    // 根级别菜单渲染
+        // 根级别菜单渲染
         let realMenu
         if (!parentMenu && !menu.parentId && menu.type === 1) {
             // 根菜单，查找该跟菜单下子菜单，因为可能会包含权限

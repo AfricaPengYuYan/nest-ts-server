@@ -22,7 +22,7 @@ import { HealthModule } from './modules/health/health.module'
 import { NetdiskModule } from './modules/netdisk/netdisk.module'
 import { SseModule } from './modules/sse/sse.module'
 import { SystemModule } from './modules/system/system.module'
-import { TasksModule } from './modules/tasks/tasks.module'
+import { TasksModule } from './modules/task/task.module'
 import { TodoModule } from './modules/todo/todo.module'
 import { ToolsModule } from './modules/tools/tools.module'
 import { DatabaseModule } from './shared/database/database.module'
@@ -35,7 +35,7 @@ import { SocketModule } from './socket/socket.module'
             isGlobal: true,
             expandVariables: true,
             // 指定多个 env 文件时，第一个优先级最高
-            envFilePath: ['.env.local', `.env.${process.env.NODE_ENV}`, '.env'],
+            envFilePath: [`.env.${process.env.NODE_ENV}`, '.env'],
             load: [...Object.values(config)],
         }),
         // 避免暴力请求，限制同一个接口 10 秒内不能超过 7 次请求
@@ -74,10 +74,6 @@ import { SocketModule } from './socket/socket.module'
         SseModule,
         NetdiskModule,
 
-        // biz
-
-        // end biz
-
         TodoModule,
     ],
     providers: [
@@ -94,4 +90,4 @@ import { SocketModule } from './socket/socket.module'
 
     ],
 })
-export class AppModule {}
+export class AppModule { }

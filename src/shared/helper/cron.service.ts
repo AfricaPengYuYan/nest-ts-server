@@ -22,7 +22,7 @@ export class CronService {
 
         const expiredTokens = await AccessTokenEntity.find({
             where: {
-                expired_at: LessThan(new Date()),
+                expired_time: LessThan(new Date()),
             },
         })
 

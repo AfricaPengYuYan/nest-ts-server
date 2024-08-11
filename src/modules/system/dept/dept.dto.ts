@@ -27,7 +27,7 @@ export class DeptDto {
     @IsInt()
     @Min(0)
     @IsOptional()
-    orderNo: number
+    order_no: number
 }
 
 export class TransferDeptDto {

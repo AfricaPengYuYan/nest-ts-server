@@ -12,22 +12,22 @@ import { DictItemDto, DictItemQueryDto } from './dict-item.dto'
 @Injectable()
 export class DictItemService {
     constructor(
-    @InjectRepository(DictItemEntity)
-    private dictItemRepository: Repository<DictItemEntity>,
-    ) {}
+        @InjectRepository(DictItemEntity)
+        private dictItemRepository: Repository<DictItemEntity>,
+    ) { }
 
     /**
      * 罗列所有配置
      */
     async page({
         page,
-    pageSize,
-    label,
-    value,
-    typeId,
+        pageSize,
+        label,
+        value,
+        typeId,
     }: DictItemQueryDto): Promise<Pagination<DictItemEntity>> {
         const queryBuilder = this.dictItemRepository.createQueryBuilder('dict_item')
-            .orderBy({ orderNo: 'ASC' })
+            .orderBy({ order_no: 'ASC' })
             .where({
                 ...(label && { label: Like(`%${label}%`) }),
                 ...(value && { value: Like(`%${value}%`) }),

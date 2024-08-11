@@ -51,7 +51,7 @@ export class UserEntity extends CommonEntity {
 
     @ManyToMany(() => RoleEntity, role => role.users)
     @JoinTable({
-        name: 'sys_user_roles',
+        name: 'sys_user_role',
         joinColumn: { name: 'user_id', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' },
     })
@@ -64,5 +64,5 @@ export class UserEntity extends CommonEntity {
     @OneToMany(() => AccessTokenEntity, accessToken => accessToken.user, {
         cascade: true,
     })
-    accessTokens: Relation<AccessTokenEntity[]>
+    access_tokens: Relation<AccessTokenEntity[]>
 }

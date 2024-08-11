@@ -31,12 +31,12 @@ export class TokenService {
      * @param accessToken
      */
     async refreshToken(accessToken: AccessTokenEntity) {
-        const { user, refreshToken } = accessToken
+        const { user, refresh_token } = accessToken
 
-        if (refreshToken) {
+        if (refresh_token) {
             const now = dayjs()
             // 判断refreshToken是否过期
-            if (now.isAfter(refreshToken.expired_at))
+            if (now.isAfter(refresh_token.expired_time))
                 return null
 
             const roleIds = await this.roleService.getRoleIdsByUser(user.id)
@@ -70,7 +70,7 @@ export class TokenService {
         const accessToken = new AccessTokenEntity()
         accessToken.value = jwtSign
         accessToken.user = { id: uid } as UserEntity
-        accessToken.expired_at = dayjs()
+        accessToken.expired_time = dayjs()
             .add(this.securityConfig.jwtExprire, 'second')
             .toDate()
 
@@ -104,10 +104,10 @@ export class TokenService {
 
         const refreshToken = new RefreshTokenEntity()
         refreshToken.value = refreshTokenSign
-        refreshToken.expired_at = now
+        refreshToken.expired_time = now
             .add(this.securityConfig.refreshExpire, 'second')
             .toDate()
-        refreshToken.accessToken = accessToken
+        refreshToken.access_token = accessToken
 
         await refreshToken.save()
 
@@ -158,9 +158,9 @@ export class TokenService {
             relations: ['accessToken'],
         })
         if (refreshToken) {
-            if (refreshToken.accessToken)
-                this.redis.del(genOnlineUserKey(refreshToken.accessToken.id))
-            await refreshToken.accessToken.remove()
+            if (refreshToken.access_token)
+                this.redis.del(genOnlineUserKey(refreshToken.access_token.id))
+            await refreshToken.access_token.remove()
             await refreshToken.remove()
         }
     }

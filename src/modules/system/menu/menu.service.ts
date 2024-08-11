@@ -22,22 +22,22 @@ import { MenuDto, MenuQueryDto, MenuUpdateDto } from './menu.dto'
 @Injectable()
 export class MenuService {
     constructor(
-    @InjectRedis() private redis: Redis,
-    @InjectRepository(MenuEntity)
-    private menuRepository: Repository<MenuEntity>,
-    private roleService: RoleService,
-    private sseService: SseService,
-    ) {}
+        @InjectRedis() private redis: Redis,
+        @InjectRepository(MenuEntity)
+        private menuRepository: Repository<MenuEntity>,
+        private roleService: RoleService,
+        private sseService: SseService,
+    ) { }
 
     /**
      * 获取所有菜单以及权限
      */
     async list({
         name,
-    path,
-    permission,
-    component,
-    status,
+        path,
+        permission,
+        component,
+        status,
     }: MenuQueryDto): Promise<MenuEntity[]> {
         const menus = await this.menuRepository.find({
             where: {
@@ -47,7 +47,7 @@ export class MenuService {
                 ...(component && { component: Like(`%${component}%`) }),
                 ...(!isNil(status) ? { status } : null),
             },
-            order: { orderNo: 'ASC' },
+            order: { order_no: 'ASC' },
         })
         const menuList = generatorMenu(menus)
 
@@ -80,7 +80,7 @@ export class MenuService {
             return generatorRouters([])
 
         if (this.roleService.hasAdminRole(roleIds)) {
-            menus = await this.menuRepository.find({ order: { orderNo: 'ASC' } })
+            menus = await this.menuRepository.find({ order: { order_no: 'ASC' } })
         }
         else {
             menus = await this.menuRepository

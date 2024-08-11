@@ -14,7 +14,7 @@ export class HttpRequestJob {
     constructor(
         private readonly httpService: HttpService,
         private readonly logger: LoggerService,
-    ) {}
+    ) { }
 
     /**
      * 发起请求

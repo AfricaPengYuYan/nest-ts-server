@@ -13,7 +13,7 @@ import { UserEntity } from '~/modules/system/user/user.entity'
 
 import { RefreshTokenEntity } from './refresh-token.entity'
 
-@Entity('user_access_tokens')
+@Entity('user_access_token')
 export class AccessTokenEntity extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id!: string
@@ -22,17 +22,17 @@ export class AccessTokenEntity extends BaseEntity {
     value!: string
 
     @Column({ comment: '令牌过期时间' })
-    expired_at!: Date
+    expired_time!: Date
 
     @CreateDateColumn({ comment: '令牌创建时间' })
     created_time!: Date
 
-    @OneToOne(() => RefreshTokenEntity, refreshToken => refreshToken.accessToken, {
+    @OneToOne(() => RefreshTokenEntity, refreshToken => refreshToken.access_token, {
         cascade: true,
     })
-    refreshToken!: RefreshTokenEntity
+    refresh_token!: RefreshTokenEntity
 
-    @ManyToOne(() => UserEntity, user => user.accessTokens, {
+    @ManyToOne(() => UserEntity, user => user.access_tokens, {
         onDelete: 'CASCADE',
     })
     @JoinColumn({ name: 'user_id' })

@@ -36,7 +36,7 @@ export class RoleEntity extends CompleteEntity {
     @ApiHideProperty()
     @ManyToMany(() => MenuEntity, menu => menu.roles, {})
     @JoinTable({
-        name: 'sys_role_menus',
+        name: 'sys_role_menu',
         joinColumn: { name: 'role_id', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'menu_id', referencedColumnName: 'id' },
     })

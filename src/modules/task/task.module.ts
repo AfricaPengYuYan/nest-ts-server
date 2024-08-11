@@ -33,7 +33,7 @@ function createAliasProviders(): ExistingProvider[] {
 @Module({})
 export class TasksModule {
     static forRoot(): DynamicModule {
-    // 使用Alias定义别名，使得可以通过字符串类型获取定义的Service，否则无法获取
+        // 使用Alias定义别名，使得可以通过字符串类型获取定义的Service，否则无法获取
         const aliasProviders = createAliasProviders()
         return {
             global: true,

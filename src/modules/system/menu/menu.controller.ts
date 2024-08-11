@@ -32,7 +32,7 @@ export const permissions = definePermission('system:menu', {
 
 @ApiTags('System - 菜单权限模块')
 @ApiSecurityAuth()
-@Controller('menus')
+@Controller('menu')
 export class MenuController {
     constructor(private menuService: MenuService) {}
 

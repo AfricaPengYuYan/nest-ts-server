@@ -16,13 +16,13 @@ import { UserEntity } from '~/modules/system/user/user.entity'
 @Entity({ name: 'sys_dept' })
 @Tree('materialized-path')
 export class DeptEntity extends CompleteEntity {
-    @Column()
+    @Column({ comment: '部门名称', length: 50, nullable: true, type: 'varchar' })
     @ApiProperty({ description: '部门名称' })
     name: string
 
-    @Column({ nullable: true, default: 0 })
+    @Column({ nullable: true, default: 0, comment: '排序', type: 'int' })
     @ApiProperty({ description: '排序' })
-    orderNo: number
+    order_no: number
 
     @TreeChildren({ cascade: true })
     children: DeptEntity[]

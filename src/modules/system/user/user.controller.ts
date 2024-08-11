@@ -25,7 +25,7 @@ export const permissions = definePermission('system:user', {
 
 @ApiTags('System - 用户模块')
 @ApiSecurityAuth()
-@Controller('users')
+@Controller('user')
 export class UserController {
     constructor(
         private userService: UserService,

@@ -29,7 +29,7 @@ export class MenuDto extends OperatorDto {
     @ApiProperty({ description: '排序' })
     @IsInt()
     @Min(0)
-    orderNo: number
+    order_no: number
 
     @ApiProperty({ description: '前端路由地址' })
     // @Matches(/^[/]$/)
@@ -85,6 +85,6 @@ export class MenuDto extends OperatorDto {
     component?: string
 }
 
-export class MenuUpdateDto extends PartialType(MenuDto) {}
+export class MenuUpdateDto extends PartialType(MenuDto) { }
 
-export class MenuQueryDto extends PartialType(MenuDto) {}
+export class MenuQueryDto extends PartialType(MenuDto) { }

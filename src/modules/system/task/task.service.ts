@@ -22,7 +22,7 @@ import { paginate } from '~/helper/paginate'
 import { Pagination } from '~/helper/paginate/pagination'
 
 import { TaskEntity } from '~/modules/system/task/task.entity'
-import { MISSION_DECORATOR_KEY } from '~/modules/tasks/mission.decorator'
+import { MISSION_DECORATOR_KEY } from '~/modules/task/mission.decorator'
 
 import {
     SYS_TASK_QUEUE_NAME,
@@ -36,13 +36,13 @@ export class TaskService implements OnModuleInit {
     private logger = new Logger(TaskService.name)
 
     constructor(
-    @InjectRepository(TaskEntity)
-    private taskRepository: Repository<TaskEntity>,
-    @InjectQueue(SYS_TASK_QUEUE_NAME) private taskQueue: Queue,
-    private moduleRef: ModuleRef,
-    private reflector: Reflector,
-    @InjectRedis() private redis: Redis,
-    ) {}
+        @InjectRepository(TaskEntity)
+        private taskRepository: Repository<TaskEntity>,
+        @InjectQueue(SYS_TASK_QUEUE_NAME) private taskQueue: Queue,
+        private moduleRef: ModuleRef,
+        private reflector: Reflector,
+        @InjectRedis() private redis: Redis,
+    ) { }
 
     /**
      * module init
@@ -91,11 +91,11 @@ export class TaskService implements OnModuleInit {
 
     async list({
         page,
-    pageSize,
-    name,
-    service,
-    type,
-    status,
+        pageSize,
+        name,
+        service,
+        type,
+        status,
     }: TaskQueryDto): Promise<Pagination<TaskEntity>> {
         const queryBuilder = this.taskRepository
             .createQueryBuilder('task')
@@ -252,18 +252,18 @@ export class TaskService implements OnModuleInit {
         await this.taskQueue.removeRepeatable(JSON.parse(task.jobOpts))
 
         await this.taskRepository.update(task.id, { status: TaskStatus.Disabled })
-    // if (task.jobOpts) {
-    //   await this.app.queue.sys.removeRepeatable(JSON.parse(task.jobOpts));
-    //   // update status
-    //   await this.getRepo().admin.sys.Task.update(task.id, { status: TaskStatus.Disabled, });
-    // }
+        // if (task.jobOpts) {
+        //   await this.app.queue.sys.removeRepeatable(JSON.parse(task.jobOpts));
+        //   // update status
+        //   await this.getRepo().admin.sys.Task.update(task.id, { status: TaskStatus.Disabled, });
+        // }
     }
 
     /**
      * 查看队列中任务是否存在
      */
     async existJob(jobId: string): Promise<boolean> {
-    // https://github.com/OptimalBits/bull/blob/develop/REFERENCE.md#queueremoverepeatablebykey
+        // https://github.com/OptimalBits/bull/blob/develop/REFERENCE.md#queueremoverepeatablebykey
         const jobs = await this.taskQueue.getRepeatableJobs()
         const ids = jobs.map((e) => {
             return e.id

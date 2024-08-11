@@ -15,15 +15,15 @@ import { DeptDto, DeptQueryDto, MoveDept } from './dept.dto'
 @Injectable()
 export class DeptService {
     constructor(
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
-    @InjectRepository(DeptEntity)
-    private deptRepository: TreeRepository<DeptEntity>,
-    @InjectEntityManager() private entityManager: EntityManager,
-    ) {}
+        @InjectRepository(UserEntity)
+        private userRepository: Repository<UserEntity>,
+        @InjectRepository(DeptEntity)
+        private deptRepository: TreeRepository<DeptEntity>,
+        @InjectEntityManager() private entityManager: EntityManager,
+    ) { }
 
     async list(): Promise<DeptEntity[]> {
-        return this.deptRepository.find({ order: { orderNo: 'DESC' } })
+        return this.deptRepository.find({ order: { order_no: 'DESC' } })
     }
 
     async info(id: number): Promise<DeptEntity> {

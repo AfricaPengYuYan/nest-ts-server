@@ -25,7 +25,7 @@ export class MenuEntity extends CompleteEntity {
     icon: string
 
     @Column({ name: 'order_no', type: 'int', nullable: true, default: 0 })
-    orderNo: number
+    order_no: number
 
     @Column({ name: 'component', nullable: true })
     component: string

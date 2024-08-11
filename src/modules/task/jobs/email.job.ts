@@ -14,7 +14,7 @@ export class EmailJob {
     constructor(
         private readonly emailService: MailerService,
         private readonly logger: LoggerService,
-    ) {}
+    ) { }
 
     async send(config: any): Promise<void> {
         if (config) {

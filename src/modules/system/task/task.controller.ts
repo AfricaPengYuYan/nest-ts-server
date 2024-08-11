@@ -25,7 +25,7 @@ export const permissions = definePermission('system:task', {
 
 @ApiTags('System - 任务调度模块')
 @ApiSecurityAuth()
-@Controller('tasks')
+@Controller('task')
 export class TaskController {
     constructor(private taskService: TaskService) {}
 

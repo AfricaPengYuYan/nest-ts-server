@@ -33,7 +33,7 @@ export const permissions = definePermission('todo', {
 
 @ApiTags('Business - Todo模块')
 @UseGuards(ResourceGuard)
-@Controller('todos')
+@Controller('todo')
 export class TodoController {
     constructor(private readonly todoService: TodoService) {}
 
