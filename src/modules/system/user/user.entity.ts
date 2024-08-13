@@ -1,14 +1,5 @@
 import { Exclude } from 'class-transformer'
-import {
-    Column,
-    Entity,
-    JoinColumn,
-    JoinTable,
-    ManyToMany,
-    ManyToOne,
-    OneToMany,
-    Relation,
-} from 'typeorm'
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, Relation } from 'typeorm'
 
 import { CommonEntity } from '~/entity/common.entity'
 
@@ -18,35 +9,35 @@ import { AccessTokenEntity } from '~/modules/token/access-token.entity'
 
 @Entity({ name: 'sys_user' })
 export class UserEntity extends CommonEntity {
-    @Column({ unique: true })
+    @Column({ unique: true, nullable: true, comment: '用户名', type: 'varchar', length: 30 })
     username: string
 
     @Exclude()
-    @Column()
+    @Column({ nullable: true, comment: '密码', type: 'varchar', length: 50 })
     password: string
 
-    @Column({ length: 32 })
+    @Column({ nullable: true, comment: '密码盐', type: 'varchar', length: 50 })
     psalt: string
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, comment: '昵称', type: 'varchar', length: 30 })
     nickname: string
 
-    @Column({ name: 'avatar', nullable: true })
+    @Column({ nullable: true, comment: '头像', type: 'varchar', length: 255 })
     avatar: string
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, comment: 'QQ号', type: 'varchar', length: 20 })
     qq: string
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, comment: '邮箱', type: 'varchar', length: 30 })
     email: string
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, comment: '手机号', type: 'varchar', length: 20 })
     phone: string
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, comment: '备注', type: 'varchar', length: 255 })
     remark: string
 
-    @Column({ type: 'tinyint', nullable: true, default: 1 })
+    @Column({ nullable: true, comment: '状态：1-启用, 0-禁用', type: 'tinyint', default: 1 })
     status: number
 
     @ManyToMany(() => RoleEntity, role => role.users)

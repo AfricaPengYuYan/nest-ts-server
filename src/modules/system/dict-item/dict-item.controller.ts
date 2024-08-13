@@ -4,7 +4,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ApiResult } from '~/common/decorators/api-result.decorator'
 import { AuthUser } from '~/common/decorators/auth-user.decorator'
 import { IdParam } from '~/common/decorators/id-param.decorator'
-import { Perm, definePermission } from '~/common/decorators/permission.decorator'
+import { Permission, definePermission } from '~/common/decorators/permission.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { UpdaterPipe } from '~/common/pipes/updater.pipe'
 import { Pagination } from '~/helper/paginate/pagination'
@@ -25,19 +25,19 @@ export const permissions = definePermission('system:dict-item', {
 @ApiSecurityAuth()
 @Controller('dict-item')
 export class DictItemController {
-    constructor(private dictItemService: DictItemService) {}
+    constructor(private dictItemService: DictItemService) { }
 
     @Get()
     @ApiOperation({ summary: '获取字典项列表' })
     @ApiResult({ type: [DictItemEntity], isPage: true })
-    @Perm(permissions.LIST)
+    @Permission(permissions.LIST)
     async list(@Query() dto: DictItemQueryDto): Promise<Pagination<DictItemEntity>> {
         return this.dictItemService.page(dto)
     }
 
     @Post()
     @ApiOperation({ summary: '新增字典项' })
-    @Perm(permissions.CREATE)
+    @Permission(permissions.CREATE)
     async create(@Body() dto: DictItemDto, @AuthUser() user: IAuthUser): Promise<void> {
         await this.dictItemService.create(dto)
     }
@@ -45,21 +45,21 @@ export class DictItemController {
     @Get(':id')
     @ApiOperation({ summary: '查询字典项信息' })
     @ApiResult({ type: DictItemEntity })
-    @Perm(permissions.READ)
+    @Permission(permissions.READ)
     async info(@IdParam() id: number): Promise<DictItemEntity> {
         return this.dictItemService.findOne(id)
     }
 
     @Post(':id')
     @ApiOperation({ summary: '更新字典项' })
-    @Perm(permissions.UPDATE)
+    @Permission(permissions.UPDATE)
     async update(@IdParam() id: number, @Body(UpdaterPipe) dto: DictItemDto): Promise<void> {
         await this.dictItemService.update(id, dto)
     }
 
     @Delete(':id')
     @ApiOperation({ summary: '删除指定的字典项' })
-    @Perm(permissions.DELETE)
+    @Permission(permissions.DELETE)
     async delete(@IdParam() id: number): Promise<void> {
         await this.dictItemService.delete(id)
     }

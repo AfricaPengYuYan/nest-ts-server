@@ -13,7 +13,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ApiResult } from '~/common/decorators/api-result.decorator'
 import { IdParam } from '~/common/decorators/id-param.decorator'
 
-import { Perm, definePermission } from '~/common/decorators/permission.decorator'
+import { Permission, definePermission } from '~/common/decorators/permission.decorator'
 import { Resource } from '~/common/decorators/resource.decorator'
 import { ResourceGuard } from '~/common/guards/resource.guard'
 import { Pagination } from '~/helper/paginate/pagination'
@@ -35,12 +35,12 @@ export const permissions = definePermission('todo', {
 @UseGuards(ResourceGuard)
 @Controller('todo')
 export class TodoController {
-    constructor(private readonly todoService: TodoService) {}
+    constructor(private readonly todoService: TodoService) { }
 
     @Get()
     @ApiOperation({ summary: '获取Todo列表' })
     @ApiResult({ type: [TodoEntity] })
-    @Perm(permissions.LIST)
+    @Permission(permissions.LIST)
     async list(@Query() dto: TodoQueryDto): Promise<Pagination<TodoEntity>> {
         return this.todoService.list(dto)
     }
@@ -48,29 +48,29 @@ export class TodoController {
     @Get(':id')
     @ApiOperation({ summary: '获取Todo详情' })
     @ApiResult({ type: TodoEntity })
-    @Perm(permissions.READ)
+    @Permission(permissions.READ)
     async info(@IdParam() id: number): Promise<TodoEntity> {
         return this.todoService.detail(id)
     }
 
     @Post()
     @ApiOperation({ summary: '创建Todo' })
-    @Perm(permissions.CREATE)
+    @Permission(permissions.CREATE)
     async create(@Body() dto: TodoDto): Promise<void> {
         await this.todoService.create(dto)
     }
 
     @Put(':id')
     @ApiOperation({ summary: '更新Todo' })
-    @Perm(permissions.UPDATE)
+    @Permission(permissions.UPDATE)
     @Resource(TodoEntity)
-    async update(@IdParam() id: number, @Body()dto: TodoUpdateDto): Promise<void> {
+    async update(@IdParam() id: number, @Body() dto: TodoUpdateDto): Promise<void> {
         await this.todoService.update(id, dto)
     }
 
     @Delete(':id')
     @ApiOperation({ summary: '删除Todo' })
-    @Perm(permissions.DELETE)
+    @Permission(permissions.DELETE)
     @Resource(TodoEntity)
     async delete(@IdParam() id: number): Promise<void> {
         await this.todoService.delete(id)

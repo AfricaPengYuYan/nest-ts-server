@@ -10,7 +10,7 @@ import {
     ApiTags,
 } from '@nestjs/swagger'
 
-import { Perm, definePermission } from '~/common/decorators/permission.decorator'
+import { Permission, definePermission } from '~/common/decorators/permission.decorator'
 
 import { OverviewSpaceInfo } from './overview.dto'
 import { NetDiskOverviewService } from './overview.service'
@@ -22,7 +22,7 @@ export const permissions = definePermission('netdisk:overview', {
 @ApiTags('NetDiskOverview - 网盘概览模块')
 @Controller('overview')
 export class NetDiskOverviewController {
-    constructor(private overviewService: NetDiskOverviewService) {}
+    constructor(private overviewService: NetDiskOverviewService) { }
 
     @Get('desc')
     @CacheKey('netdisk_overview_desc')
@@ -30,7 +30,7 @@ export class NetDiskOverviewController {
     @UseInterceptors(CacheInterceptor)
     @ApiOperation({ summary: '获取网盘空间数据统计' })
     @ApiOkResponse({ type: OverviewSpaceInfo })
-    @Perm(permissions.DESC)
+    @Permission(permissions.DESC)
     async space(): Promise<OverviewSpaceInfo> {
         const date = this.overviewService.getZeroHourAnd1Day(new Date())
         const hit = await this.overviewService.getHit(date)

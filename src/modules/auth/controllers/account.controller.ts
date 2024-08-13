@@ -8,7 +8,7 @@ import { ApiResult } from '~/common/decorators/api-result.decorator'
 import { AuthUser } from '~/common/decorators/auth-user.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 
-import { PasswordUpdateDto } from '~/modules/system/user/dto/password.dto'
+import { UpdatePasswordDto } from '~/modules/system/user/user.dto'
 
 import { AccountInfo } from '~/modules/system/user/user.model'
 import { UserService } from '~/modules/system/user/user.service'
@@ -26,7 +26,7 @@ export class AccountController {
     constructor(
         private userService: UserService,
         private authService: AuthService,
-    ) {}
+    ) { }
 
     @Get('profile')
     @ApiOperation({ summary: '获取账户资料' })
@@ -63,8 +63,8 @@ export class AccountController {
     @ApiOperation({ summary: '更改账户资料' })
     @AllowAnon()
     async update(
-    @AuthUser() user: IAuthUser, @Body()
-dto: AccountUpdateDto,
+        @AuthUser() user: IAuthUser, @Body()
+        dto: AccountUpdateDto,
     ): Promise<void> {
         await this.userService.updateAccountInfo(user.uid, dto)
     }
@@ -73,8 +73,8 @@ dto: AccountUpdateDto,
     @ApiOperation({ summary: '更改账户密码' })
     @AllowAnon()
     async password(
-    @AuthUser() user: IAuthUser, @Body()
-dto: PasswordUpdateDto,
+        @AuthUser() user: IAuthUser, @Body()
+        dto: UpdatePasswordDto,
     ): Promise<void> {
         await this.userService.updatePassword(user.uid, dto)
     }

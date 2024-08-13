@@ -7,7 +7,7 @@ import { ApiResult } from '~/common/decorators/api-result.decorator'
 
 import { AuthUser } from '~/common/decorators/auth-user.decorator'
 
-import { Perm, definePermission } from '~/common/decorators/permission.decorator'
+import { Permission, definePermission } from '~/common/decorators/permission.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 
 import { KickDto } from './online.dto'
@@ -21,19 +21,19 @@ export const permissions = definePermission('system:online', ['list', 'kick'] as
 @ApiExtraModels(OnlineUserInfo)
 @Controller('online')
 export class OnlineController {
-    constructor(private onlineService: OnlineService) {}
+    constructor(private onlineService: OnlineService) { }
 
     @Get('list')
     @ApiOperation({ summary: '查询当前在线用户' })
     @ApiResult({ type: [OnlineUserInfo] })
-    @Perm(permissions.LIST)
+    @Permission(permissions.LIST)
     async list(@Req() req: FastifyRequest): Promise<OnlineUserInfo[]> {
         return this.onlineService.listOnlineUser(req.accessToken)
     }
 
     @Post('kick')
     @ApiOperation({ summary: '下线指定在线用户' })
-    @Perm(permissions.KICK)
+    @Permission(permissions.KICK)
     async kick(@Body() dto: KickDto, @AuthUser() user: IAuthUser): Promise<void> {
         await this.onlineService.kickUser(dto.tokenId, user)
     }

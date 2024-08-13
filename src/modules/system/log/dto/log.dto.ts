@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsArray, IsOptional, IsString } from 'class-validator'
 
-import { PagerDto } from '~/dto/pager.dto'
+import { PageDto } from '~/dto/pager.dto'
 
-export class LoginLogQueryDto extends PagerDto {
+export class LoginLogQueryDto extends PageDto {
     @ApiProperty({ description: '用户名' })
     @IsString()
     @IsOptional()
@@ -25,7 +25,7 @@ export class LoginLogQueryDto extends PagerDto {
     time?: string[]
 }
 
-export class TaskLogQueryDto extends PagerDto {
+export class TaskLogQueryDto extends PageDto {
     @ApiProperty({ description: '用户名' })
     @IsOptional()
     @IsString()
@@ -41,7 +41,7 @@ export class TaskLogQueryDto extends PagerDto {
     time?: string[]
 }
 
-export class CaptchaLogQueryDto extends PagerDto {
+export class CaptchaLogQueryDto extends PageDto {
     @ApiProperty({ description: '用户名' })
     @IsOptional()
     @IsString()

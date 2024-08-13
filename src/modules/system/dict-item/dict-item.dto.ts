@@ -1,7 +1,7 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger'
 import { IsInt, IsOptional, IsString, MinLength } from 'class-validator'
 
-import { PagerDto } from '~/dto/pager.dto'
+import { PageDto } from '~/dto/pager.dto'
 
 import { DictItemEntity } from './dict-item.entity'
 
@@ -31,7 +31,7 @@ export class DictItemDto extends PartialType(DictItemEntity) {
     remark?: string
 }
 
-export class DictItemQueryDto extends PagerDto {
+export class DictItemQueryDto extends PageDto {
     @ApiProperty({ description: '字典类型 ID', required: true })
     @IsInt()
     typeId: number

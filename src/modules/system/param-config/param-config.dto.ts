@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsOptional, IsString, MinLength } from 'class-validator'
 
-import { PagerDto } from '~/dto/pager.dto'
+import { PageDto } from '~/dto/pager.dto'
 import { IsUnique } from '~/shared/database/constraints/unique.constraint'
 
 import { ParamConfigEntity } from './param-config.entity'
@@ -27,7 +27,7 @@ export class ParamConfigDto {
     remark?: string
 }
 
-export class ParamConfigQueryDto extends PagerDto {
+export class ParamConfigQueryDto extends PageDto {
     @ApiProperty({ description: '参数名称' })
     @IsString()
     @IsOptional()

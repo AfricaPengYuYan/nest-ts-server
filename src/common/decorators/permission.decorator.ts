@@ -4,15 +4,15 @@ import { isPlainObject } from 'lodash'
 
 import { PERMISSION_KEY } from '../../modules/auth/auth.constant'
 
- type TupleToObject<T extends string, P extends ReadonlyArray<string>> = {
-     [K in Uppercase<P[number]>]: `${T}:${Lowercase<K>}`
- }
- type AddPrefixToObjectValue<T extends string, P extends Record<string, string>> = {
-     [K in keyof P]: K extends string ? `${T}:${P[K]}` : never
- }
+type TupleToObject<T extends string, P extends ReadonlyArray<string>> = {
+    [K in Uppercase<P[number]>]: `${T}:${Lowercase<K>}`
+}
+type AddPrefixToObjectValue<T extends string, P extends Record<string, string>> = {
+    [K in keyof P]: K extends string ? `${T}:${P[K]}` : never
+}
 
 /** 资源操作需要特定的权限 */
-export function Perm(permission: string | string[]) {
+export function Permission(permission: string | string[]) {
     return applyDecorators(SetMetadata(PERMISSION_KEY, permission))
 }
 

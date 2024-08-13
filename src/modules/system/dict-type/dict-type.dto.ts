@@ -1,7 +1,7 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger'
 import { IsInt, IsOptional, IsString, MinLength } from 'class-validator'
 
-import { PagerDto } from '~/dto/pager.dto'
+import { PageDto } from '~/dto/pager.dto'
 
 import { IsUnique } from '~/shared/database/constraints/unique.constraint'
 
@@ -31,7 +31,7 @@ export class DictTypeDto extends PartialType(DictTypeEntity) {
     remark?: string
 }
 
-export class DictTypeQueryDto extends PagerDto {
+export class DictTypeQueryDto extends PageDto {
     @ApiProperty({ description: '字典类型名称' })
     @IsString()
     @IsOptional()

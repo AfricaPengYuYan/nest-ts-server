@@ -9,7 +9,7 @@ import {
 } from 'class-validator'
 
 import { OperatorDto } from '~/dto/operator.dto'
-import { PagerDto } from '~/dto/pager.dto'
+import { PageDto } from '~/dto/pager.dto'
 import { IsUnique } from '~/shared/database/constraints/unique.constraint'
 
 import { RoleEntity } from './role.entity'
@@ -42,9 +42,9 @@ export class RoleDto extends OperatorDto {
     menuIds?: number[]
 }
 
-export class RoleUpdateDto extends PartialType(RoleDto) {}
+export class RoleUpdateDto extends PartialType(RoleDto) { }
 
-export class RoleQueryDto extends IntersectionType(PagerDto<RoleDto>, PartialType(RoleDto)) {
+export class RoleQueryDto extends IntersectionType(PageDto<RoleDto>, PartialType(RoleDto)) {
     @ApiProperty({ description: '角色名称', required: false })
     @IsString()
     name?: string

@@ -1,24 +1,10 @@
 import { BadRequestException } from '@nestjs/common'
 import { ApiProperty, ApiPropertyOptional, IntersectionType, PartialType } from '@nestjs/swagger'
-import {
-    IsDateString,
-    IsIn,
-    IsInt,
-    IsOptional,
-    IsString,
-    MaxLength,
-    Min,
-    MinLength,
-    Validate,
-    ValidateIf,
-    ValidationArguments,
-    ValidatorConstraint,
-    ValidatorConstraintInterface,
-} from 'class-validator'
+import { IsDateString, IsIn, IsInt, IsOptional, IsString, MaxLength, Min, MinLength, Validate, ValidateIf, ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator'
 import * as parser from 'cron-parser'
 import { isEmpty } from 'lodash'
 
-import { PagerDto } from '~/dto/pager.dto'
+import { PageDto } from '~/dto/pager.dto'
 import { IsUnique } from '~/shared/database/constraints/unique.constraint'
 
 import { TaskEntity } from './task.entity'
@@ -104,6 +90,6 @@ export class TaskDto {
     remark?: string
 }
 
-export class TaskUpdateDto extends PartialType(TaskDto) {}
+export class TaskUpdateDto extends PartialType(TaskDto) { }
 
-export class TaskQueryDto extends IntersectionType(PagerDto, PartialType(TaskDto)) {}
+export class TaskQueryDto extends IntersectionType(PageDto, PartialType(TaskDto)) { }

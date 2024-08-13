@@ -5,19 +5,19 @@ import { CommonEntity } from '~/entity/common.entity'
 
 @Entity({ name: 'sys_task' })
 export class TaskEntity extends CommonEntity {
-    @Column({ type: 'varchar', length: 50, unique: true })
+    @Column({ type: 'varchar', length: 50, unique: true, comment: '任务名' })
     @ApiProperty({ description: '任务名' })
     name: string
 
-    @Column()
+    @Column({ type: 'varchar', length: 50, unique: true, comment: '任务标识' })
     @ApiProperty({ description: '任务标识' })
     service: string
 
-    @Column({ type: 'tinyint', default: 0 })
+    @Column({ type: 'tinyint', default: 0, unique: true, comment: '任务类型 0cron 1间隔' })
     @ApiProperty({ description: '任务类型 0cron 1间隔' })
     type: number
 
-    @Column({ type: 'tinyint', default: 1 })
+    @Column({ type: 'tinyint', default: 1, unique: true, comment: '任务状态 0禁用 1启用' })
     @ApiProperty({ description: '任务状态 0禁用 1启用' })
     status: number
 

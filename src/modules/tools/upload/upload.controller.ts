@@ -3,7 +3,7 @@ import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { FastifyRequest } from 'fastify'
 
 import { AuthUser } from '~/common/decorators/auth-user.decorator'
-import { Perm, definePermission } from '~/common/decorators/permission.decorator'
+import { Permission, definePermission } from '~/common/decorators/permission.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 
 import { FileUploadDto } from './upload.dto'
@@ -17,10 +17,10 @@ export const permissions = definePermission('upload', {
 @ApiTags('Tools - 上传模块')
 @Controller('upload')
 export class UploadController {
-    constructor(private uploadService: UploadService) {}
+    constructor(private uploadService: UploadService) { }
 
     @Post()
-    @Perm(permissions.UPLOAD)
+    @Permission(permissions.UPLOAD)
     @ApiOperation({ summary: '上传' })
     @ApiConsumes('multipart/form-data')
     @ApiBody({

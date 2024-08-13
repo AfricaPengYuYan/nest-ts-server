@@ -16,7 +16,7 @@ import pluralize from 'pluralize'
 
 import { ApiResult } from '~/common/decorators/api-result.decorator'
 import { IdParam } from '~/common/decorators/id-param.decorator'
-import { PagerDto } from '~/dto/pager.dto'
+import { PageDto } from '~/dto/pager.dto'
 
 import { BaseService } from './base.service'
 
@@ -26,7 +26,7 @@ export function BaseCrudFactory<
     const prefix = entity.name.toLowerCase().replace(/entity$/, '')
     const pluralizeName = pluralize(prefix) as string
 
-    dto = dto ?? class extends entity {}
+    dto = dto ?? class extends entity { }
 
     class Dto extends dto {
         static readonly name = upperFirst(`${pluralizeName}Dto`)
@@ -34,7 +34,7 @@ export function BaseCrudFactory<
     class UpdateDto extends PartialType(Dto) {
         static readonly name = upperFirst(`${pluralizeName}UpdateDto`)
     }
-    class QueryDto extends IntersectionType(PagerDto, PartialType(Dto)) {
+    class QueryDto extends IntersectionType(PageDto, PartialType(Dto)) {
         static readonly name = upperFirst(`${pluralizeName}QueryDto`)
     }
 

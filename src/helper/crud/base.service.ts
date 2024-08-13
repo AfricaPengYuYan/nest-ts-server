@@ -1,7 +1,7 @@
 import { NotFoundException } from '@nestjs/common'
 import { ObjectLiteral, Repository } from 'typeorm'
 
-import { PagerDto } from '~/dto/pager.dto'
+import { PageDto } from '~/dto/pager.dto'
 
 import { paginate } from '../paginate'
 import { Pagination } from '../paginate/pagination'
@@ -12,8 +12,8 @@ export class BaseService<E extends ObjectLiteral, R extends Repository<E> = Repo
 
     async list({
         page,
-    pageSize,
-    }: PagerDto): Promise<Pagination<E>> {
+        pageSize,
+    }: PageDto): Promise<Pagination<E>> {
         return paginate(this.repository, { page, pageSize })
     }
 

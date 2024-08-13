@@ -13,7 +13,7 @@ import { flattenDeep } from 'lodash'
 
 import { ApiResult } from '~/common/decorators/api-result.decorator'
 import { IdParam } from '~/common/decorators/id-param.decorator'
-import { Perm, definePermission, getDefinePermissions } from '~/common/decorators/permission.decorator'
+import { Permission, definePermission, getDefinePermissions } from '~/common/decorators/permission.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { CreatorPipe } from '~/common/pipes/creator.pipe'
 import { UpdaterPipe } from '~/common/pipes/updater.pipe'
@@ -34,28 +34,28 @@ export const permissions = definePermission('system:menu', {
 @ApiSecurityAuth()
 @Controller('menu')
 export class MenuController {
-    constructor(private menuService: MenuService) {}
+    constructor(private menuService: MenuService) { }
 
     @Get()
     @ApiOperation({ summary: '获取所有菜单列表' })
     @ApiResult({ type: [MenuItemInfo] })
-    @Perm(permissions.LIST)
+    @Permission(permissions.LIST)
     async list(@Query() dto: MenuQueryDto) {
         return this.menuService.list(dto)
     }
 
     @Get(':id')
     @ApiOperation({ summary: '获取菜单或权限信息' })
-    @Perm(permissions.READ)
+    @Permission(permissions.READ)
     async info(@IdParam() id: number) {
         return this.menuService.getMenuItemAndParentInfo(id)
     }
 
     @Post()
     @ApiOperation({ summary: '新增菜单或权限' })
-    @Perm(permissions.CREATE)
+    @Permission(permissions.CREATE)
     async create(@Body(CreatorPipe) dto: MenuDto): Promise<void> {
-    // check
+        // check
         await this.menuService.check(dto)
         if (!dto.parentId)
             dto.parentId = null
@@ -69,9 +69,9 @@ export class MenuController {
 
     @Put(':id')
     @ApiOperation({ summary: '更新菜单或权限' })
-    @Perm(permissions.UPDATE)
+    @Permission(permissions.UPDATE)
     async update(@IdParam() id: number, @Body(UpdaterPipe) dto: MenuUpdateDto): Promise<void> {
-    // check
+        // check
         await this.menuService.check(dto)
         if (dto.parentId === -1 || !dto.parentId)
             dto.parentId = null
@@ -85,7 +85,7 @@ export class MenuController {
 
     @Delete(':id')
     @ApiOperation({ summary: '删除菜单或权限' })
-    @Perm(permissions.DELETE)
+    @Permission(permissions.DELETE)
     async delete(@IdParam() id: number): Promise<void> {
         if (await this.menuService.checkRoleByMenuId(id))
             throw new BadRequestException('该菜单存在关联角色，无法删除')

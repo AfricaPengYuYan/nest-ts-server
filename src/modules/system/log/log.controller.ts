@@ -2,7 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 
 import { ApiResult } from '~/common/decorators/api-result.decorator'
-import { Perm, definePermission } from '~/common/decorators/permission.decorator'
+import { Permission, definePermission } from '~/common/decorators/permission.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { Pagination } from '~/helper/paginate/pagination'
 
@@ -32,14 +32,14 @@ export class LogController {
         private loginLogService: LoginLogService,
         private taskService: TaskLogService,
         private captchaLogService: CaptchaLogService,
-    ) {}
+    ) { }
 
     @Get('login/list')
     @ApiOperation({ summary: '查询登录日志列表' })
     @ApiResult({ type: [LoginLogInfo], isPage: true })
-    @Perm(permissions.TaskList)
+    @Permission(permissions.TaskList)
     async loginLogPage(
-    @Query() dto: LoginLogQueryDto,
+        @Query() dto: LoginLogQueryDto,
     ): Promise<Pagination<LoginLogInfo>> {
         return this.loginLogService.list(dto)
     }
@@ -47,7 +47,7 @@ export class LogController {
     @Get('task/list')
     @ApiOperation({ summary: '查询任务日志列表' })
     @ApiResult({ type: [TaskLogEntity], isPage: true })
-    @Perm(permissions.LogList)
+    @Permission(permissions.LogList)
     async taskList(@Query() dto: TaskLogQueryDto) {
         return this.taskService.list(dto)
     }
@@ -55,9 +55,9 @@ export class LogController {
     @Get('captcha/list')
     @ApiOperation({ summary: '查询验证码日志列表' })
     @ApiResult({ type: [CaptchaLogEntity], isPage: true })
-    @Perm(permissions.CaptchaList)
+    @Permission(permissions.CaptchaList)
     async captchaList(
-    @Query() dto: CaptchaLogQueryDto,
+        @Query() dto: CaptchaLogQueryDto,
     ): Promise<Pagination<CaptchaLogEntity>> {
         return this.captchaLogService.paginate(dto)
     }

@@ -5,7 +5,7 @@ import { ErrorEnum } from '~/common/constants/error-code.constant'
 import { ApiResult } from '~/common/decorators/api-result.decorator'
 import { AuthUser } from '~/common/decorators/auth-user.decorator'
 import { IdParam } from '~/common/decorators/id-param.decorator'
-import { Perm, definePermission } from '~/common/decorators/permission.decorator'
+import { Permission, definePermission } from '~/common/decorators/permission.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { HttpApiException } from '~/common/exceptions/http.api.exception'
 import { CreatorPipe } from '~/common/pipes/creator.pipe'
@@ -27,42 +27,42 @@ export const permissions = definePermission('system:dept', {
 @ApiTags('System - 部门模块')
 @Controller('dept')
 export class DeptController {
-    constructor(private deptService: DeptService) {}
+    constructor(private deptService: DeptService) { }
 
     @Get()
     @ApiOperation({ summary: '获取部门列表' })
     @ApiResult({ type: [DeptEntity] })
-    @Perm(permissions.LIST)
-    async list(@Query() dto: DeptQueryDto, @AuthUser('uid')uid: number): Promise<DeptEntity[]> {
+    @Permission(permissions.LIST)
+    async list(@Query() dto: DeptQueryDto, @AuthUser('uid') uid: number): Promise<DeptEntity[]> {
         return this.deptService.getDeptTree(uid, dto)
     }
 
     @Post()
     @ApiOperation({ summary: '创建部门' })
-    @Perm(permissions.CREATE)
+    @Permission(permissions.CREATE)
     async create(@Body(CreatorPipe) dto: DeptDto): Promise<void> {
         await this.deptService.create(dto)
     }
 
     @Get(':id')
     @ApiOperation({ summary: '查询部门信息' })
-    @Perm(permissions.READ)
+    @Permission(permissions.READ)
     async info(@IdParam() id: number) {
         return this.deptService.info(id)
     }
 
     @Put(':id')
     @ApiOperation({ summary: '更新部门' })
-    @Perm(permissions.UPDATE)
+    @Permission(permissions.UPDATE)
     async update(@IdParam() id: number, @Body(UpdaterPipe) updateDeptDto: DeptDto): Promise<void> {
         await this.deptService.update(id, updateDeptDto)
     }
 
     @Delete(':id')
     @ApiOperation({ summary: '删除部门' })
-    @Perm(permissions.DELETE)
+    @Permission(permissions.DELETE)
     async delete(@IdParam() id: number): Promise<void> {
-    // 查询是否有关联用户或者部门，如果含有则无法删除
+        // 查询是否有关联用户或者部门，如果含有则无法删除
         const count = await this.deptService.countUserByDeptId(id)
         if (count > 0)
             throw new HttpApiException(ErrorEnum.DEPARTMENT_HAS_ASSOCIATED_USERS)

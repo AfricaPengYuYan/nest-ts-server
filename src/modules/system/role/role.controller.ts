@@ -14,7 +14,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger'
 
 import { ApiResult } from '~/common/decorators/api-result.decorator'
 import { IdParam } from '~/common/decorators/id-param.decorator'
-import { Perm, definePermission } from '~/common/decorators/permission.decorator'
+import { Permission, definePermission } from '~/common/decorators/permission.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { UpdaterPipe } from '~/common/pipes/updater.pipe'
 import { SseService } from '~/modules/sse/sse.service'
@@ -41,14 +41,14 @@ export class RoleController {
     constructor(
         private roleService: RoleService,
         private menuService: MenuService,
-    @Inject(forwardRef(() => SseService))
-    private sseService: SseService,
-    ) {}
+        @Inject(forwardRef(() => SseService))
+        private sseService: SseService,
+    ) { }
 
     @Get()
     @ApiOperation({ summary: '获取角色列表' })
     @ApiResult({ type: [RoleEntity], isPage: true })
-    @Perm(permissions.LIST)
+    @Permission(permissions.LIST)
     async list(@Query() dto: RoleQueryDto) {
         return this.roleService.list(dto)
     }
@@ -56,22 +56,22 @@ export class RoleController {
     @Get(':id')
     @ApiOperation({ summary: '获取角色信息' })
     @ApiResult({ type: RoleInfo })
-    @Perm(permissions.READ)
+    @Permission(permissions.READ)
     async info(@IdParam() id: number) {
         return this.roleService.info(id)
     }
 
     @Post()
     @ApiOperation({ summary: '新增角色' })
-    @Perm(permissions.CREATE)
+    @Permission(permissions.CREATE)
     async create(@Body() dto: RoleDto): Promise<void> {
         await this.roleService.create(dto)
     }
 
     @Put(':id')
     @ApiOperation({ summary: '更新角色' })
-    @Perm(permissions.UPDATE)
-    async update(@IdParam() id: number, @Body(UpdaterPipe)dto: RoleUpdateDto): Promise<void> {
+    @Permission(permissions.UPDATE)
+    async update(@IdParam() id: number, @Body(UpdaterPipe) dto: RoleUpdateDto): Promise<void> {
         await this.roleService.update(id, dto)
         await this.menuService.refreshOnlineUserPerms(false)
         this.sseService.noticeClientToUpdateMenusByRoleIds([id])
@@ -79,7 +79,7 @@ export class RoleController {
 
     @Delete(':id')
     @ApiOperation({ summary: '删除角色' })
-    @Perm(permissions.DELETE)
+    @Permission(permissions.DELETE)
     async delete(@IdParam() id: number): Promise<void> {
         if (await this.roleService.checkUserByRoleId(id))
             throw new BadRequestException('该角色存在关联用户，无法删除')

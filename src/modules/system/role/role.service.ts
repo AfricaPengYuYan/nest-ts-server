@@ -4,7 +4,7 @@ import { isEmpty, isNil } from 'lodash'
 import { EntityManager, In, Like, Repository } from 'typeorm'
 
 import { ROOT_ROLE_ID } from '~/common/constants/system.constant'
-import { PagerDto } from '~/dto/pager.dto'
+import { PageDto } from '~/dto/pager.dto'
 import { paginate } from '~/helper/paginate'
 import { Pagination } from '~/helper/paginate/pagination'
 import { MenuEntity } from '~/modules/system/menu/menu.entity'
@@ -15,20 +15,20 @@ import { RoleDto, RoleQueryDto, RoleUpdateDto } from './role.dto'
 @Injectable()
 export class RoleService {
     constructor(
-    @InjectRepository(RoleEntity)
-    private roleRepository: Repository<RoleEntity>,
-    @InjectRepository(MenuEntity)
-    private menuRepository: Repository<MenuEntity>,
-    @InjectEntityManager() private entityManager: EntityManager,
-    ) {}
+        @InjectRepository(RoleEntity)
+        private roleRepository: Repository<RoleEntity>,
+        @InjectRepository(MenuEntity)
+        private menuRepository: Repository<MenuEntity>,
+        @InjectEntityManager() private entityManager: EntityManager,
+    ) { }
 
     /**
      * 列举所有角色：除去超级管理员
      */
     async findAll({
         page,
-    pageSize,
-    }: PagerDto): Promise<Pagination<RoleEntity>> {
+        pageSize,
+    }: PageDto): Promise<Pagination<RoleEntity>> {
         return paginate(this.roleRepository, { page, pageSize })
     }
 
@@ -37,11 +37,11 @@ export class RoleService {
      */
     async list({
         page,
-    pageSize,
-    name,
-    value,
-    remark,
-    status,
+        pageSize,
+        name,
+        value,
+        remark,
+        status,
     }: RoleQueryDto): Promise<Pagination<RoleEntity>> {
         const queryBuilder = await this.roleRepository
             .createQueryBuilder('role')

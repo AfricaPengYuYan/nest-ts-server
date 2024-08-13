@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsString } from 'class-validator'
 
-import { PagerDto } from '~/dto/pager.dto'
+import { PageDto } from '~/dto/pager.dto'
 
 export class KickDto {
     @ApiProperty({ description: 'tokenId' })
@@ -9,4 +9,4 @@ export class KickDto {
     tokenId: string
 }
 
-export class OnlineQueryDto extends PagerDto {}
+export class OnlineQueryDto extends PageDto { }

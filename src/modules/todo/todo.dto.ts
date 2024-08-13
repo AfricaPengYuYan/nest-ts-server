@@ -1,7 +1,7 @@
 import { ApiProperty, IntersectionType, PartialType } from '@nestjs/swagger'
 import { IsString } from 'class-validator'
 
-import { PagerDto } from '~/dto/pager.dto'
+import { PageDto } from '~/dto/pager.dto'
 
 export class TodoDto {
     @ApiProperty({ description: '名称' })
@@ -9,6 +9,6 @@ export class TodoDto {
     value: string
 }
 
-export class TodoUpdateDto extends PartialType(TodoDto) {}
+export class TodoUpdateDto extends PartialType(TodoDto) { }
 
-export class TodoQueryDto extends IntersectionType(PagerDto, TodoDto) {}
+export class TodoQueryDto extends IntersectionType(PageDto, TodoDto) { }

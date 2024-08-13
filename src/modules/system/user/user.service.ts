@@ -24,24 +24,25 @@ import { QQService } from '~/shared/helper/qq.service'
 import { md5, randomValue } from '~/utils'
 
 import { UserStatus } from './constant'
-import { PasswordUpdateDto } from './dto/password.dto'
-import { UserDto, UserQueryDto, UserUpdateDto } from './dto/user.dto'
+import { QueryUserDto, UpdatePasswordDto, UpdateUserDto, UserDto } from './user.dto'
 import { UserEntity } from './user.entity'
 import { AccountInfo } from './user.model'
 
 @Injectable()
 export class UserService {
     constructor(
-    @InjectRedis()
-    private readonly redis: Redis,
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
-    @InjectRepository(RoleEntity)
-    private readonly roleRepository: Repository<RoleEntity>,
-    @InjectEntityManager() private entityManager: EntityManager,
-    private readonly paramConfigService: ParamConfigService,
-    private readonly qqService: QQService,
-    ) {}
+        @InjectRedis()
+        private readonly redis: Redis,
+        @InjectRepository(UserEntity)
+        private readonly userRepository: Repository<UserEntity>,
+        @InjectRepository(RoleEntity)
+        private readonly roleRepository: Repository<RoleEntity>,
+        @InjectEntityManager()
+        private entityManager: EntityManager,
+
+        private readonly paramConfigService: ParamConfigService,
+        private readonly qqService: QQService,
+    ) { }
 
     async findUserById(id: number): Promise<UserEntity | undefined> {
         return this.userRepository
@@ -63,10 +64,6 @@ export class UserService {
             .getOne()
     }
 
-    /**
-     * 获取用户信息
-     * @param uid user id
-     */
     async getAccountInfo(uid: number): Promise<AccountInfo> {
         const user: UserEntity = await this.userRepository
             .createQueryBuilder('user')
@@ -82,9 +79,6 @@ export class UserService {
         return user
     }
 
-    /**
-     * 更新个人信息
-     */
     async updateAccountInfo(uid: number, info: AccountUpdateDto): Promise<void> {
         const user = await this.userRepository.findOneBy({ id: uid })
         if (isEmpty(user))
@@ -108,10 +102,7 @@ export class UserService {
         await this.userRepository.update(uid, data)
     }
 
-    /**
-     * 更改密码
-     */
-    async updatePassword(uid: number, dto: PasswordUpdateDto): Promise<void> {
+    async updatePassword(uid: number, dto: UpdatePasswordDto): Promise<void> {
         const user = await this.userRepository.findOneBy({ id: uid })
         if (isEmpty(user))
             throw new HttpApiException(ErrorEnum.USER_NOT_FOUND)
@@ -126,9 +117,6 @@ export class UserService {
         await this.upgradePasswordV(user.id)
     }
 
-    /**
-     * 直接更改密码
-     */
     async forceUpdatePassword(uid: number, password: string): Promise<void> {
         const user = await this.userRepository.findOneBy({ id: uid })
 
@@ -137,16 +125,7 @@ export class UserService {
         await this.upgradePasswordV(user.id)
     }
 
-    /**
-     * 增加系统用户，如果返回false则表示已存在该用户
-     */
-    async create({
-        username,
-    password,
-    roleIds,
-    deptId,
-    ...data
-    }: UserDto): Promise<void> {
+    async create({ username, password, roleIds, deptId, ...data }: UserDto): Promise<void> {
         const exists = await this.userRepository.findOneBy({
             username,
         })
@@ -179,13 +158,7 @@ export class UserService {
         })
     }
 
-    /**
-     * 更新用户信息
-     */
-    async update(
-        id: number,
-        { password, deptId, roleIds, status, ...data }: UserUpdateDto,
-    ): Promise<void> {
+    async update(id: number, { password, deptId, roleIds, status, ...data }: UpdateUserDto): Promise<void> {
         await this.entityManager.transaction(async (manager) => {
             if (password)
                 await this.forceUpdatePassword(id, password)
@@ -223,10 +196,6 @@ export class UserService {
         })
     }
 
-    /**
-     * 查找用户信息
-     * @param id 用户id
-     */
     async info(id: number): Promise<UserEntity> {
         const user = await this.userRepository
             .createQueryBuilder('user')
@@ -241,9 +210,6 @@ export class UserService {
         return user
     }
 
-    /**
-     * 根据ID列表删除用户
-     */
     async delete(userIds: number[]): Promise<void | never> {
         const rootUserId = await this.findRootUserId()
         if (userIds.includes(rootUserId))
@@ -252,9 +218,6 @@ export class UserService {
         await this.userRepository.delete(userIds)
     }
 
-    /**
-     * 查找超管的用户ID
-     */
     async findRootUserId(): Promise<number> {
         const user = await this.userRepository.findOneBy({
             roles: { id: ROOT_ROLE_ID },
@@ -262,23 +225,11 @@ export class UserService {
         return user.id
     }
 
-    /**
-     * 查询用户列表
-     */
-    async list({
-        page,
-    pageSize,
-    username,
-    nickname,
-    deptId,
-    email,
-    status,
-    }: UserQueryDto): Promise<Pagination<UserEntity>> {
+    async list({ page, pageSize, username, nickname, deptId, email, status }: QueryUserDto): Promise<Pagination<UserEntity>> {
         const queryBuilder = this.userRepository
             .createQueryBuilder('user')
             .leftJoinAndSelect('user.dept', 'dept')
             .leftJoinAndSelect('user.roles', 'role')
-        // .where('user.id NOT IN (:...ids)', { ids: [rootUserId, uid] })
             .where({
                 ...(username ? { username: Like(`%${username}%`) } : null),
                 ...(nickname ? { nickname: Like(`%${nickname}%`) } : null),
@@ -295,9 +246,6 @@ export class UserService {
         })
     }
 
-    /**
-     * 禁用用户
-     */
     async forbidden(uid: number, accessToken?: string): Promise<void> {
         await this.redis.del(genAuthPVKey(uid))
         await this.redis.del(genAuthTokenKey(uid))
@@ -310,9 +258,6 @@ export class UserService {
         }
     }
 
-    /**
-     * 禁用多个用户
-     */
     async multiForbidden(uids: number[]): Promise<void> {
         if (uids) {
             const pvs: string[] = []
@@ -329,19 +274,12 @@ export class UserService {
         }
     }
 
-    /**
-     * 升级用户版本密码
-     */
     async upgradePasswordV(id: number): Promise<void> {
-    // admin:passwordVersion:${param.id}
         const v = await this.redis.get(genAuthPVKey(id))
         if (!isEmpty(v))
             await this.redis.set(genAuthPVKey(id), Number.parseInt(v) + 1)
     }
 
-    /**
-     * 判断用户名是否存在
-     */
     async exist(username: string) {
         const user = await this.userRepository.findOneBy({ username })
         if (isNil(user))
@@ -350,9 +288,6 @@ export class UserService {
         return true
     }
 
-    /**
-     * 注册
-     */
     async register({ username, ...data }: RegisterDto): Promise<void> {
         const exists = await this.userRepository.findOneBy({
             username,
