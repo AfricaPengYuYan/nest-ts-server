@@ -15,10 +15,10 @@ export interface RouteRecordRaw {
     meta: {
         title: string
         icon: string
-        isExt: boolean
+        isExt: number
         extOpenMode: number
         type: number
-        order_no: number
+        sort: number
         show: number
         activeMenu: string
         status: number
@@ -27,14 +27,14 @@ export interface RouteRecordRaw {
     children?: RouteRecordRaw[]
 }
 
-function createRoute(menu: MenuEntity, _isRoot): RouteRecordRaw {
+function createRoute(menu: MenuEntity, _isRoot: boolean): RouteRecordRaw {
     const commonMeta: RouteRecordRaw['meta'] = {
         title: menu.name,
         icon: menu.icon,
         isExt: menu.isExt,
         extOpenMode: menu.extOpenMode,
         type: menu.type,
-        order_no: menu.order_no,
+        sort: menu.sort,
         show: menu.show,
         activeMenu: menu.activeMenu,
         status: menu.status,

@@ -17,7 +17,7 @@ import { deleteEmptyChildren, generatorMenu, generatorRouters } from '~/utils'
 
 import { RoleService } from '../role/role.service'
 
-import { MenuDto, MenuQueryDto, MenuUpdateDto } from './menu.dto'
+import { MenuDto, QueryMenuDto, UpdateMenuDto } from './menu.dto'
 
 @Injectable()
 export class MenuService {
@@ -38,7 +38,7 @@ export class MenuService {
         permission,
         component,
         status,
-    }: MenuQueryDto): Promise<MenuEntity[]> {
+    }: QueryMenuDto): Promise<MenuEntity[]> {
         const menus = await this.menuRepository.find({
             where: {
                 ...(name && { name: Like(`%${name}%`) }),
@@ -47,7 +47,7 @@ export class MenuService {
                 ...(component && { component: Like(`%${component}%`) }),
                 ...(!isNil(status) ? { status } : null),
             },
-            order: { order_no: 'ASC' },
+            order: { sort: 'ASC' },
         })
         const menuList = generatorMenu(menus)
 
@@ -64,7 +64,7 @@ export class MenuService {
         this.sseService.noticeClientToUpdateMenusByMenuIds([result.id])
     }
 
-    async update(id: number, menu: MenuUpdateDto): Promise<void> {
+    async update(id: number, menu: UpdateMenuDto): Promise<void> {
         await this.menuRepository.update(id, menu)
         this.sseService.noticeClientToUpdateMenusByMenuIds([id])
     }
@@ -80,14 +80,14 @@ export class MenuService {
             return generatorRouters([])
 
         if (this.roleService.hasAdminRole(roleIds)) {
-            menus = await this.menuRepository.find({ order: { order_no: 'ASC' } })
+            menus = await this.menuRepository.find({ order: { sort: 'ASC' } })
         }
         else {
             menus = await this.menuRepository
                 .createQueryBuilder('menu')
                 .innerJoinAndSelect('menu.roles', 'role')
                 .andWhere('role.id IN (:...roleIds)', { roleIds })
-                .orderBy('menu.order_no', 'ASC')
+                .orderBy('menu.sort', 'ASC')
                 .getMany()
         }
 

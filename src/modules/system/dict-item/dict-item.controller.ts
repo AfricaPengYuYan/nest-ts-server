@@ -10,7 +10,7 @@ import { UpdaterPipe } from '~/common/pipes/updater.pipe'
 import { Pagination } from '~/helper/paginate/pagination'
 import { DictItemEntity } from '~/modules/system/dict-item/dict-item.entity'
 
-import { DictItemDto, DictItemQueryDto } from './dict-item.dto'
+import { DictItemDto, QueryDictItemDto } from './dict-item.dto'
 import { DictItemService } from './dict-item.service'
 
 export const permissions = definePermission('system:dict-item', {
@@ -31,7 +31,7 @@ export class DictItemController {
     @ApiOperation({ summary: '获取字典项列表' })
     @ApiResult({ type: [DictItemEntity], isPage: true })
     @Permission(permissions.LIST)
-    async list(@Query() dto: DictItemQueryDto): Promise<Pagination<DictItemEntity>> {
+    async list(@Query() dto: QueryDictItemDto): Promise<Pagination<DictItemEntity>> {
         return this.dictItemService.page(dto)
     }
 

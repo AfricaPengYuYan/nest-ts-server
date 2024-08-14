@@ -27,7 +27,7 @@ export class ParamConfigDto {
     remark?: string
 }
 
-export class ParamConfigQueryDto extends PageDto {
+export class QueryParamConfigDto extends PageDto {
     @ApiProperty({ description: '参数名称' })
     @IsString()
     @IsOptional()

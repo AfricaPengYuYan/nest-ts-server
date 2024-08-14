@@ -6,14 +6,14 @@ import { Permission, definePermission } from '~/common/decorators/permission.dec
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { Pagination } from '~/helper/paginate/pagination'
 
-import {
-    CaptchaLogQueryDto,
-    LoginLogQueryDto,
-    TaskLogQueryDto,
-} from './dto/log.dto'
 import { CaptchaLogEntity } from './entities/captcha-log.entity'
 import { TaskLogEntity } from './entities/task-log.entity'
-import { LoginLogInfo } from './models/log.model'
+import {
+    QueryCaptchaLogDto,
+    QueryLoginLogDto,
+    QueryTaskLogDto,
+} from './log.dto'
+import { LoginLogInfo } from './log.model'
 import { CaptchaLogService } from './services/captcha-log.service'
 import { LoginLogService } from './services/login-log.service'
 import { TaskLogService } from './services/task-log.service'
@@ -22,7 +22,7 @@ export const permissions = definePermission('system:log', {
     TaskList: 'task:list',
     LogList: 'login:list',
     CaptchaList: 'captcha:list',
-} as const)
+})
 
 @ApiSecurityAuth()
 @ApiTags('System - 日志模块')
@@ -39,7 +39,7 @@ export class LogController {
     @ApiResult({ type: [LoginLogInfo], isPage: true })
     @Permission(permissions.TaskList)
     async loginLogPage(
-        @Query() dto: LoginLogQueryDto,
+        @Query() dto: QueryLoginLogDto,
     ): Promise<Pagination<LoginLogInfo>> {
         return this.loginLogService.list(dto)
     }
@@ -48,7 +48,7 @@ export class LogController {
     @ApiOperation({ summary: '查询任务日志列表' })
     @ApiResult({ type: [TaskLogEntity], isPage: true })
     @Permission(permissions.LogList)
-    async taskList(@Query() dto: TaskLogQueryDto) {
+    async taskList(@Query() dto: QueryTaskLogDto) {
         return this.taskService.list(dto)
     }
 
@@ -57,7 +57,7 @@ export class LogController {
     @ApiResult({ type: [CaptchaLogEntity], isPage: true })
     @Permission(permissions.CaptchaList)
     async captchaList(
-        @Query() dto: CaptchaLogQueryDto,
+        @Query() dto: QueryCaptchaLogDto,
     ): Promise<Pagination<CaptchaLogEntity>> {
         return this.captchaLogService.paginate(dto)
     }

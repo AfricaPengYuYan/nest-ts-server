@@ -5,15 +5,15 @@ import { LessThan, Repository } from 'typeorm'
 
 import { paginate } from '~/helper/paginate'
 
-import { TaskLogQueryDto } from '../dto/log.dto'
 import { TaskLogEntity } from '../entities/task-log.entity'
+import { QueryTaskLogDto } from '../log.dto'
 
 @Injectable()
 export class TaskLogService {
     constructor(
-    @InjectRepository(TaskLogEntity)
-    private taskLogRepository: Repository<TaskLogEntity>,
-    ) {}
+        @InjectRepository(TaskLogEntity)
+        private taskLogRepository: Repository<TaskLogEntity>,
+    ) { }
 
     async create(
         tid: number,
@@ -30,7 +30,7 @@ export class TaskLogService {
         return result.id
     }
 
-    async list({ page, pageSize }: TaskLogQueryDto) {
+    async list({ page, pageSize }: QueryTaskLogDto) {
         const queryBuilder = await this.taskLogRepository
             .createQueryBuilder('task_log')
             .leftJoinAndSelect('task_log.task', 'task')

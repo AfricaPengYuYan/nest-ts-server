@@ -1,10 +1,4 @@
-import {
-    FindManyOptions,
-    FindOptionsWhere,
-    ObjectLiteral,
-    Repository,
-    SelectQueryBuilder,
-} from 'typeorm'
+import { FindManyOptions, FindOptionsWhere, ObjectLiteral, Repository, SelectQueryBuilder } from 'typeorm'
 
 import { createPaginationObject } from './create-pagination'
 import { IPaginationOptions, PaginationTypeEnum } from './interface'
@@ -13,9 +7,7 @@ import { Pagination } from './pagination'
 const DEFAULT_LIMIT = 10
 const DEFAULT_PAGE = 1
 
-function resolveOptions(
-    options: IPaginationOptions,
-): [number, number, PaginationTypeEnum] {
+function resolveOptions(options: IPaginationOptions): [number, number, PaginationTypeEnum] {
     const { page, pageSize, paginationType } = options
 
     return [
@@ -25,11 +17,7 @@ function resolveOptions(
     ]
 }
 
-async function paginateRepository<T>(
-    repository: Repository<T>,
-    options: IPaginationOptions,
-    searchOptions?: FindOptionsWhere<T> | FindManyOptions<T>,
-): Promise<Pagination<T>> {
+async function paginateRepository<T>(repository: Repository<T>, options: IPaginationOptions, searchOptions?: FindOptionsWhere<T> | FindManyOptions<T>): Promise<Pagination<T>> {
     const [page, limit] = resolveOptions(options)
 
     const promises: [Promise<T[]>, Promise<number> | undefined] = [
@@ -51,10 +39,7 @@ async function paginateRepository<T>(
     })
 }
 
-async function paginateQueryBuilder<T>(
-    queryBuilder: SelectQueryBuilder<T>,
-    options: IPaginationOptions,
-): Promise<Pagination<T>> {
+async function paginateQueryBuilder<T>(queryBuilder: SelectQueryBuilder<T>, options: IPaginationOptions): Promise<Pagination<T>> {
     const [page, limit, paginationType] = resolveOptions(options)
 
     if (paginationType === PaginationTypeEnum.TAKE_AND_SKIP)
@@ -72,10 +57,7 @@ async function paginateQueryBuilder<T>(
     })
 }
 
-export async function paginateRaw<T>(
-    queryBuilder: SelectQueryBuilder<T>,
-    options: IPaginationOptions,
-): Promise<Pagination<T>> {
+export async function paginateRaw<T>(queryBuilder: SelectQueryBuilder<T>, options: IPaginationOptions): Promise<Pagination<T>> {
     const [page, limit, paginationType] = resolveOptions(options)
 
     const promises: [Promise<T[]>, Promise<number> | undefined] = [
@@ -96,16 +78,10 @@ export async function paginateRaw<T>(
     })
 }
 
-export async function paginateRawAndEntities<T>(
-    queryBuilder: SelectQueryBuilder<T>,
-    options: IPaginationOptions,
-): Promise<[Pagination<T>, Partial<T>[]]> {
+export async function paginateRawAndEntities<T>(queryBuilder: SelectQueryBuilder<T>, options: IPaginationOptions): Promise<[Pagination<T>, Partial<T>[]]> {
     const [page, limit, paginationType] = resolveOptions(options)
 
-    const promises: [
-        Promise<{ entities: T[], raw: T[] }>,
-    Promise<number> | undefined,
-    ] = [
+    const promises: [Promise<{ entities: T[], raw: T[] }>, Promise<number> | undefined] = [
         (paginationType === PaginationTypeEnum.LIMIT_AND_OFFSET
             ? queryBuilder.limit(limit).offset((page - 1) * limit)
             : queryBuilder.take(limit).skip((page - 1) * limit)
@@ -131,6 +107,7 @@ export async function paginate<T extends ObjectLiteral>(
     options: IPaginationOptions,
     searchOptions?: FindOptionsWhere<T> | FindManyOptions<T>,
 ): Promise<Pagination<T>>
+
 export async function paginate<T>(
     queryBuilder: SelectQueryBuilder<T>,
     options: IPaginationOptions,

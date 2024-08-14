@@ -9,9 +9,9 @@ import { paginateRaw } from '~/helper/paginate'
 
 import { getIpAddress } from '~/utils/ip.util'
 
-import { LoginLogQueryDto } from '../dto/log.dto'
 import { LoginLogEntity } from '../entities/login-log.entity'
-import { LoginLogInfo } from '../models/log.model'
+import { QueryLoginLogDto } from '../log.dto'
+import { LoginLogInfo } from '../log.model'
 
 async function parseLoginLog(e: any, parser: UAParser): Promise<LoginLogInfo> {
     const uaResult = parser.setUA(e.login_log_ua).getResult()
@@ -30,10 +30,10 @@ async function parseLoginLog(e: any, parser: UAParser): Promise<LoginLogInfo> {
 @Injectable()
 export class LoginLogService {
     constructor(
-    @InjectRepository(LoginLogEntity)
-    private loginLogRepository: Repository<LoginLogEntity>,
+        @InjectRepository(LoginLogEntity)
+        private loginLogRepository: Repository<LoginLogEntity>,
 
-    ) {}
+    ) { }
 
     async create(uid: number, ip: string, ua: string): Promise<void> {
         try {
@@ -53,12 +53,12 @@ export class LoginLogService {
 
     async list({
         page,
-    pageSize,
-    username,
-    ip,
-    address,
-    time,
-    }: LoginLogQueryDto) {
+        pageSize,
+        username,
+        ip,
+        address,
+        time,
+    }: QueryLoginLogDto) {
         const queryBuilder = await this.loginLogRepository
             .createQueryBuilder('login_log')
             .innerJoinAndSelect('login_log.user', 'user')

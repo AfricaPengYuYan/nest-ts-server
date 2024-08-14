@@ -20,9 +20,9 @@ export class DeptEntity extends CompleteEntity {
     @ApiProperty({ description: '部门名称' })
     name: string
 
-    @Column({ nullable: true, default: 0, comment: '排序', type: 'int' })
+    @Column({ default: 0, comment: '排序', type: 'int' })
     @ApiProperty({ description: '排序' })
-    order_no: number
+    sort: number
 
     @TreeChildren({ cascade: true })
     children: DeptEntity[]

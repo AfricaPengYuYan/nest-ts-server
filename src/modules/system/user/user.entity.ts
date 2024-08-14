@@ -9,7 +9,7 @@ import { AccessTokenEntity } from '~/modules/token/access-token.entity'
 
 @Entity({ name: 'sys_user' })
 export class UserEntity extends CommonEntity {
-    @Column({ unique: true, nullable: true, comment: '用户名', type: 'varchar', length: 30 })
+    @Column({ unique: true, comment: '用户名', type: 'varchar', length: 50 })
     username: string
 
     @Exclude()
@@ -19,25 +19,25 @@ export class UserEntity extends CommonEntity {
     @Column({ nullable: true, comment: '密码盐', type: 'varchar', length: 50 })
     psalt: string
 
-    @Column({ nullable: true, comment: '昵称', type: 'varchar', length: 30 })
+    @Column({ nullable: true, comment: '昵称', type: 'varchar', length: 50 })
     nickname: string
 
     @Column({ nullable: true, comment: '头像', type: 'varchar', length: 255 })
     avatar: string
 
-    @Column({ nullable: true, comment: 'QQ号', type: 'varchar', length: 20 })
+    @Column({ nullable: true, comment: 'QQ号', type: 'varchar', length: 50 })
     qq: string
 
-    @Column({ nullable: true, comment: '邮箱', type: 'varchar', length: 30 })
+    @Column({ nullable: true, comment: '邮箱', type: 'varchar', length: 50 })
     email: string
 
-    @Column({ nullable: true, comment: '手机号', type: 'varchar', length: 20 })
+    @Column({ nullable: true, comment: '手机号', type: 'varchar', length: 50 })
     phone: string
 
     @Column({ nullable: true, comment: '备注', type: 'varchar', length: 255 })
     remark: string
 
-    @Column({ nullable: true, comment: '状态：1-启用, 0-禁用', type: 'tinyint', default: 1 })
+    @Column({ comment: '状态：1-启用, 0-禁用', type: 'tinyint', default: 1 })
     status: number
 
     @ManyToMany(() => RoleEntity, role => role.users)

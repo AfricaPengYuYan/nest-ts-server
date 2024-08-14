@@ -31,7 +31,7 @@ export class DictTypeDto extends PartialType(DictTypeEntity) {
     remark?: string
 }
 
-export class DictTypeQueryDto extends PageDto {
+export class QueryDictTypeDto extends PageDto {
     @ApiProperty({ description: '字典类型名称' })
     @IsString()
     @IsOptional()

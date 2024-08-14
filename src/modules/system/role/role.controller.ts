@@ -22,7 +22,7 @@ import { RoleEntity } from '~/modules/system/role/role.entity'
 
 import { MenuService } from '../menu/menu.service'
 
-import { RoleDto, RoleQueryDto, RoleUpdateDto } from './role.dto'
+import { QueryRoleDto, RoleDto, UpdateRoleDto } from './role.dto'
 import { RoleInfo } from './role.model'
 import { RoleService } from './role.service'
 
@@ -49,7 +49,7 @@ export class RoleController {
     @ApiOperation({ summary: '获取角色列表' })
     @ApiResult({ type: [RoleEntity], isPage: true })
     @Permission(permissions.LIST)
-    async list(@Query() dto: RoleQueryDto) {
+    async list(@Query() dto: QueryRoleDto) {
         return this.roleService.list(dto)
     }
 
@@ -71,7 +71,7 @@ export class RoleController {
     @Put(':id')
     @ApiOperation({ summary: '更新角色' })
     @Permission(permissions.UPDATE)
-    async update(@IdParam() id: number, @Body(UpdaterPipe) dto: RoleUpdateDto): Promise<void> {
+    async update(@IdParam() id: number, @Body(UpdaterPipe) dto: UpdateRoleDto): Promise<void> {
         await this.roleService.update(id, dto)
         await this.menuService.refreshOnlineUserPerms(false)
         this.sseService.noticeClientToUpdateMenusByRoleIds([id])

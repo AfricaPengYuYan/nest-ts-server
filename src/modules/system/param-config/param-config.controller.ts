@@ -8,7 +8,7 @@ import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { Pagination } from '~/helper/paginate/pagination'
 import { ParamConfigEntity } from '~/modules/system/param-config/param-config.entity'
 
-import { ParamConfigDto, ParamConfigQueryDto } from './param-config.dto'
+import { ParamConfigDto, QueryParamConfigDto } from './param-config.dto'
 import { ParamConfigService } from './param-config.service'
 
 export const permissions = definePermission('system:param-config', {
@@ -29,7 +29,7 @@ export class ParamConfigController {
     @ApiOperation({ summary: '获取参数配置列表' })
     @ApiResult({ type: [ParamConfigEntity], isPage: true })
     @Permission(permissions.LIST)
-    async list(@Query() dto: ParamConfigQueryDto): Promise<Pagination<ParamConfigEntity>> {
+    async list(@Query() dto: QueryParamConfigDto): Promise<Pagination<ParamConfigEntity>> {
         return this.paramConfigService.page(dto)
     }
 

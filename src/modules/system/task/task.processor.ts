@@ -3,7 +3,7 @@ import { Job } from 'bull'
 
 import { TaskLogService } from '../log/services/task-log.service'
 
-import { SYS_TASK_QUEUE_NAME } from './constant'
+import { SYS_TASK_QUEUE_NAME } from './task.constant'
 
 import { TaskService } from './task.service'
 
@@ -18,7 +18,7 @@ export class TaskConsumer {
     constructor(
         private taskService: TaskService,
         private taskLogService: TaskLogService,
-    ) {}
+    ) { }
 
     @Process()
     async handle(job: Job<ExecuteData>): Promise<void> {

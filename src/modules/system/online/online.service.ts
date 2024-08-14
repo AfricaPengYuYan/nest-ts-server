@@ -23,12 +23,12 @@ import { OnlineUserInfo } from './online.model'
 @Injectable()
 export class OnlineService {
     constructor(
-    @InjectRedis() private redis: Redis,
-    private readonly userService: UserService,
-    private authService: AuthService,
-    private tokenService: TokenService,
-    private sseService: SseService,
-    ) {}
+        @InjectRedis() private redis: Redis,
+        private readonly userService: UserService,
+        private authService: AuthService,
+        private tokenService: TokenService,
+        private sseService: SseService,
+    ) { }
 
     /** 在线用户数量变动时，通知前端实时更新在线用户数量或列表, 3 秒内最多推送一次，避免频繁触发 */
     updateOnlineUserCount = throttle(async () => {

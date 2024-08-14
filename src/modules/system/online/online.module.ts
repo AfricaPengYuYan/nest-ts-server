@@ -21,4 +21,4 @@ const providers = [OnlineService]
     providers,
     exports: [...providers],
 })
-export class OnlineModule {}
+export class OnlineModule { }

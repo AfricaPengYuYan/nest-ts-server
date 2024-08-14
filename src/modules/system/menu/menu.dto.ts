@@ -1,6 +1,5 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger'
 import {
-    IsBoolean,
     IsIn,
     IsInt,
     IsOptional,
@@ -29,7 +28,7 @@ export class MenuDto extends OperatorDto {
     @ApiProperty({ description: '排序' })
     @IsInt()
     @Min(0)
-    order_no: number
+    sort: number
 
     @ApiProperty({ description: '前端路由地址' })
     // @Matches(/^[/]$/)
@@ -38,11 +37,11 @@ export class MenuDto extends OperatorDto {
 
     @ApiProperty({ description: '是否外链', default: false })
     @ValidateIf(o => o.type !== 2)
-    @IsBoolean()
-    isExt: boolean
+    @IsIn([0, 1])
+    isExt: number
 
     @ApiProperty({ description: '外链打开方式', default: 1 })
-    @ValidateIf((o: MenuDto) => o.isExt)
+    @ValidateIf((o: MenuDto) => o.isExt !== 0)
     @IsIn([1, 2])
     extOpenMode: number
 
@@ -85,6 +84,6 @@ export class MenuDto extends OperatorDto {
     component?: string
 }
 
-export class MenuUpdateDto extends PartialType(MenuDto) { }
+export class UpdateMenuDto extends PartialType(MenuDto) { }
 
-export class MenuQueryDto extends PartialType(MenuDto) { }
+export class QueryMenuDto extends PartialType(MenuDto) { }

@@ -20,7 +20,7 @@ import { Pagination } from '~/helper/paginate/pagination'
 
 import { TodoEntity } from '~/modules/todo/todo.entity'
 
-import { TodoDto, TodoQueryDto, TodoUpdateDto } from './todo.dto'
+import { QueryTodoDto, TodoDto, UpdateTodoDto } from './todo.dto'
 import { TodoService } from './todo.service'
 
 export const permissions = definePermission('todo', {
@@ -41,7 +41,7 @@ export class TodoController {
     @ApiOperation({ summary: '获取Todo列表' })
     @ApiResult({ type: [TodoEntity] })
     @Permission(permissions.LIST)
-    async list(@Query() dto: TodoQueryDto): Promise<Pagination<TodoEntity>> {
+    async list(@Query() dto: QueryTodoDto): Promise<Pagination<TodoEntity>> {
         return this.todoService.list(dto)
     }
 
@@ -64,7 +64,7 @@ export class TodoController {
     @ApiOperation({ summary: '更新Todo' })
     @Permission(permissions.UPDATE)
     @Resource(TodoEntity)
-    async update(@IdParam() id: number, @Body() dto: TodoUpdateDto): Promise<void> {
+    async update(@IdParam() id: number, @Body() dto: UpdateTodoDto): Promise<void> {
         await this.todoService.update(id, dto)
     }
 

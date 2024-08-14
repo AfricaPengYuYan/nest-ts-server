@@ -23,7 +23,7 @@ export class DeptService {
     ) { }
 
     async list(): Promise<DeptEntity[]> {
-        return this.deptRepository.find({ order: { order_no: 'DESC' } })
+        return this.deptRepository.find({ order: { sort: 'DESC' } })
     }
 
     async info(id: number): Promise<DeptEntity> {

@@ -5,15 +5,15 @@ import { LessThan, Repository } from 'typeorm'
 
 import { paginate } from '~/helper/paginate'
 
-import { CaptchaLogQueryDto } from '../dto/log.dto'
 import { CaptchaLogEntity } from '../entities/captcha-log.entity'
+import { QueryCaptchaLogDto } from '../log.dto'
 
 @Injectable()
 export class CaptchaLogService {
     constructor(
-    @InjectRepository(CaptchaLogEntity)
-    private captchaLogRepository: Repository<CaptchaLogEntity>,
-    ) {}
+        @InjectRepository(CaptchaLogEntity)
+        private captchaLogRepository: Repository<CaptchaLogEntity>,
+    ) { }
 
     async create(
         account: string,
@@ -29,7 +29,7 @@ export class CaptchaLogService {
         })
     }
 
-    async paginate({ page, pageSize }: CaptchaLogQueryDto) {
+    async paginate({ page, pageSize }: QueryCaptchaLogDto) {
         const queryBuilder = await this.captchaLogRepository
             .createQueryBuilder('captcha_log')
             .orderBy('captcha_log.id', 'DESC')

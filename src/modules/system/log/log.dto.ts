@@ -3,7 +3,7 @@ import { IsArray, IsOptional, IsString } from 'class-validator'
 
 import { PageDto } from '~/dto/pager.dto'
 
-export class LoginLogQueryDto extends PageDto {
+export class QueryLoginLogDto extends PageDto {
     @ApiProperty({ description: '用户名' })
     @IsString()
     @IsOptional()
@@ -25,7 +25,7 @@ export class LoginLogQueryDto extends PageDto {
     time?: string[]
 }
 
-export class TaskLogQueryDto extends PageDto {
+export class QueryTaskLogDto extends PageDto {
     @ApiProperty({ description: '用户名' })
     @IsOptional()
     @IsString()
@@ -41,7 +41,7 @@ export class TaskLogQueryDto extends PageDto {
     time?: string[]
 }
 
-export class CaptchaLogQueryDto extends PageDto {
+export class QueryCaptchaLogDto extends PageDto {
     @ApiProperty({ description: '用户名' })
     @IsOptional()
     @IsString()

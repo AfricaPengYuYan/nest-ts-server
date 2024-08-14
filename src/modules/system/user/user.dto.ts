@@ -99,7 +99,7 @@ export class UpdatePasswordDto {
     newPassword: string
 }
 
-export class UserPasswordDto {
+export class EditPasswordDto {
     @ApiProperty({ description: '更改后的密码' })
     @Matches(/^\S*(?=\S{6})(?=\S*\d)(?=\S*[A-Z])\S*$/i, {
         message: '密码格式不正确',

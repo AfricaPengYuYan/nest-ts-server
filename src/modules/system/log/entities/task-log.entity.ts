@@ -15,7 +15,7 @@ export class TaskLogEntity extends CommonEntity {
     @ApiProperty({ description: '任务日志信息' })
     detail: string
 
-    @Column({ type: 'int', nullable: true, name: 'consume_time', default: 0 })
+    @Column({ type: 'int', name: 'consume_time', default: 0 })
     @ApiProperty({ description: '任务耗时' })
     consumeTime: number
 

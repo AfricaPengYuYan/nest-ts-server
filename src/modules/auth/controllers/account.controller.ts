@@ -9,7 +9,6 @@ import { AuthUser } from '~/common/decorators/auth-user.decorator'
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 
 import { UpdatePasswordDto } from '~/modules/system/user/user.dto'
-
 import { AccountInfo } from '~/modules/system/user/user.model'
 import { UserService } from '~/modules/system/user/user.service'
 

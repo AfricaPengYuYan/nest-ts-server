@@ -28,7 +28,7 @@ import {
     SYS_TASK_QUEUE_NAME,
     SYS_TASK_QUEUE_PREFIX,
     TaskStatus,
-} from './constant'
+} from './task.constant'
 import { TaskDto, TaskQueryDto, TaskUpdateDto } from './task.dto'
 
 @Injectable()

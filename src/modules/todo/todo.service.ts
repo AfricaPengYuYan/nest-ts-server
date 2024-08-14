@@ -6,19 +6,19 @@ import { paginate } from '~/helper/paginate'
 import { Pagination } from '~/helper/paginate/pagination'
 import { TodoEntity } from '~/modules/todo/todo.entity'
 
-import { TodoDto, TodoQueryDto, TodoUpdateDto } from './todo.dto'
+import { QueryTodoDto, TodoDto, UpdateTodoDto } from './todo.dto'
 
 @Injectable()
 export class TodoService {
     constructor(
-    @InjectRepository(TodoEntity)
-    private todoRepository: Repository<TodoEntity>,
-    ) {}
+        @InjectRepository(TodoEntity)
+        private todoRepository: Repository<TodoEntity>,
+    ) { }
 
     async list({
         page,
-    pageSize,
-    }: TodoQueryDto): Promise<Pagination<TodoEntity>> {
+        pageSize,
+    }: QueryTodoDto): Promise<Pagination<TodoEntity>> {
         return paginate(this.todoRepository, { page, pageSize })
     }
 
@@ -34,7 +34,7 @@ export class TodoService {
         await this.todoRepository.save(dto)
     }
 
-    async update(id: number, dto: TodoUpdateDto) {
+    async update(id: number, dto: UpdateTodoDto) {
         await this.todoRepository.update(id, dto)
     }
 

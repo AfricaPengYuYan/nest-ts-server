@@ -23,7 +23,7 @@ import { QQService } from '~/shared/helper/qq.service'
 
 import { md5, randomValue } from '~/utils'
 
-import { UserStatus } from './constant'
+import { UserStatus } from './user.constant'
 import { QueryUserDto, UpdatePasswordDto, UpdateUserDto, UserDto } from './user.dto'
 import { UserEntity } from './user.entity'
 import { AccountInfo } from './user.model'

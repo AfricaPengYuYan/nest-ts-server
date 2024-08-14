@@ -11,22 +11,22 @@ export class DictItemEntity extends CompleteEntity {
     @JoinColumn({ name: 'type_id' })
     type: DictTypeEntity
 
-    @Column({ type: 'varchar', length: 50 })
+    @Column({ nullable: true, comment: '字典项排序', type: 'int' })
+    sort: number
+
+    @Column({ type: 'varchar', length: 50, comment: '字典项键名', nullable: true })
     @ApiProperty({ description: '字典项键名' })
     label: string
 
-    @Column({ type: 'varchar', length: 50 })
+    @Column({ type: 'varchar', length: 50, comment: '字典项键值', nullable: true })
     @ApiProperty({ description: '字典项值' })
     value: string
 
-    @Column({ nullable: true, comment: '字典项排序', type: 'int' })
-    order_no: number
-
-    @Column({ type: 'tinyint', default: 1 })
+    @Column({ type: 'tinyint', default: 1, comment: '字典项状态：0-禁用，1-启用' })
     @ApiProperty({ description: ' 状态' })
     status: number
 
-    @Column({ type: 'varchar', nullable: true })
+    @Column({ type: 'varchar', nullable: true, comment: '备注' })
     @ApiProperty({ description: '备注' })
     remark: string
 }

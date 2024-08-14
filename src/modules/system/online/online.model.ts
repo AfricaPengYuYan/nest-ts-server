@@ -1,6 +1,6 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger'
 
-import { LoginLogInfo } from '../log/models/log.model'
+import { LoginLogInfo } from '../log/log.model'
 
 export class OnlineUserInfo extends OmitType(LoginLogInfo, ['id'] as const) {
     @ApiProperty({ description: 'tokenId' })

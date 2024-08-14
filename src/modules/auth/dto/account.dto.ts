@@ -1,12 +1,5 @@
 import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger'
-import {
-    IsEmail,
-    IsOptional,
-    IsString,
-    Matches,
-    MaxLength,
-    MinLength,
-} from 'class-validator'
+import { IsEmail, IsOptional, IsString, Matches, MaxLength, MinLength } from 'class-validator'
 
 import { MenuEntity } from '~/modules/system/menu/menu.entity'
 

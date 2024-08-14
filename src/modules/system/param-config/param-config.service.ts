@@ -7,23 +7,23 @@ import { paginate } from '~/helper/paginate'
 import { Pagination } from '~/helper/paginate/pagination'
 import { ParamConfigEntity } from '~/modules/system/param-config/param-config.entity'
 
-import { ParamConfigDto, ParamConfigQueryDto } from './param-config.dto'
+import { ParamConfigDto, QueryParamConfigDto } from './param-config.dto'
 
 @Injectable()
 export class ParamConfigService {
     constructor(
-    @InjectRepository(ParamConfigEntity)
-    private paramConfigRepository: Repository<ParamConfigEntity>,
-    ) {}
+        @InjectRepository(ParamConfigEntity)
+        private paramConfigRepository: Repository<ParamConfigEntity>,
+    ) { }
 
     /**
      * 罗列所有配置
      */
     async page({
         page,
-    pageSize,
-    name,
-    }: ParamConfigQueryDto): Promise<Pagination<ParamConfigEntity>> {
+        pageSize,
+        name,
+    }: QueryParamConfigDto): Promise<Pagination<ParamConfigEntity>> {
         const queryBuilder = this.paramConfigRepository.createQueryBuilder('config')
 
         if (name) {

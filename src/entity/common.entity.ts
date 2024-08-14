@@ -23,10 +23,10 @@ export abstract class CommonEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
 
-    @CreateDateColumn({ name: 'created_time', comment: '创建时间', type: 'datetime', nullable: true })
+    @CreateDateColumn({ name: 'created_time', comment: '创建时间', type: 'datetime' })
     createdTime: Date
 
-    @UpdateDateColumn({ name: 'updated_time', comment: '更新时间', type: 'datetime', nullable: true })
+    @UpdateDateColumn({ name: 'updated_time', comment: '更新时间', type: 'datetime' })
     updatedTime: Date
 }
 

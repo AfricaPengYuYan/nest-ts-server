@@ -18,7 +18,7 @@ import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { CreatorPipe } from '~/common/pipes/creator.pipe'
 import { UpdaterPipe } from '~/common/pipes/updater.pipe'
 
-import { MenuDto, MenuQueryDto, MenuUpdateDto } from './menu.dto'
+import { MenuDto, QueryMenuDto, UpdateMenuDto } from './menu.dto'
 import { MenuItemInfo } from './menu.model'
 import { MenuService } from './menu.service'
 
@@ -40,7 +40,7 @@ export class MenuController {
     @ApiOperation({ summary: '获取所有菜单列表' })
     @ApiResult({ type: [MenuItemInfo] })
     @Permission(permissions.LIST)
-    async list(@Query() dto: MenuQueryDto) {
+    async list(@Query() dto: QueryMenuDto) {
         return this.menuService.list(dto)
     }
 
@@ -70,7 +70,7 @@ export class MenuController {
     @Put(':id')
     @ApiOperation({ summary: '更新菜单或权限' })
     @Permission(permissions.UPDATE)
-    async update(@IdParam() id: number, @Body(UpdaterPipe) dto: MenuUpdateDto): Promise<void> {
+    async update(@IdParam() id: number, @Body(UpdaterPipe) dto: UpdateMenuDto): Promise<void> {
         // check
         await this.menuService.check(dto)
         if (dto.parentId === -1 || !dto.parentId)

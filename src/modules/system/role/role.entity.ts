@@ -9,25 +9,25 @@ import { MenuEntity } from '../menu/menu.entity'
 
 @Entity({ name: 'sys_role' })
 export class RoleEntity extends CompleteEntity {
-    @Column({ length: 50, unique: true })
+    @Column({ unique: true, type: 'varchar', length: 50, comment: '角色名' })
     @ApiProperty({ description: '角色名' })
     name: string
 
-    @Column({ unique: true, comment: '角色标识' })
+    @Column({ unique: true, type: 'varchar', length: 50, comment: '角色标识' })
     @ApiProperty({ description: '角色标识' })
     value: string
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, type: 'varchar', length: 255, comment: '角色描述' })
     @ApiProperty({ description: '角色描述' })
     remark: string
 
-    @Column({ type: 'tinyint', nullable: true, default: 1 })
+    @Column({ type: 'tinyint', default: 1, comment: '状态：1启用，0禁用' })
     @ApiProperty({ description: '状态：1启用，0禁用' })
     status: number
 
-    @Column({ nullable: true })
+    @Column({ nullable: true, type: 'tinyint', comment: '是否默认用户' })
     @ApiProperty({ description: '是否默认用户' })
-    default: boolean
+    default: number
 
     @ApiHideProperty()
     @ManyToMany(() => UserEntity, user => user.roles)

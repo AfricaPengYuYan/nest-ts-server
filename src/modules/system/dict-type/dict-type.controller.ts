@@ -10,7 +10,7 @@ import { UpdaterPipe } from '~/common/pipes/updater.pipe'
 import { Pagination } from '~/helper/paginate/pagination'
 import { DictTypeEntity } from '~/modules/system/dict-type/dict-type.entity'
 
-import { DictTypeDto, DictTypeQueryDto } from './dict-type.dto'
+import { DictTypeDto, QueryDictTypeDto } from './dict-type.dto'
 import { DictTypeService } from './dict-type.service'
 
 export const permissions = definePermission('system:dict-type', {
@@ -31,7 +31,7 @@ export class DictTypeController {
     @ApiOperation({ summary: '获取字典类型列表' })
     @ApiResult({ type: [DictTypeEntity], isPage: true })
     @Permission(permissions.LIST)
-    async list(@Query() dto: DictTypeQueryDto): Promise<Pagination<DictTypeEntity>> {
+    async list(@Query() dto: QueryDictTypeDto): Promise<Pagination<DictTypeEntity>> {
         return this.dictTypeService.page(dto)
     }
 

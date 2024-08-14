@@ -7,24 +7,24 @@ import { paginate } from '~/helper/paginate'
 import { Pagination } from '~/helper/paginate/pagination'
 import { DictTypeEntity } from '~/modules/system/dict-type/dict-type.entity'
 
-import { DictTypeDto, DictTypeQueryDto } from './dict-type.dto'
+import { DictTypeDto, QueryDictTypeDto } from './dict-type.dto'
 
 @Injectable()
 export class DictTypeService {
     constructor(
-    @InjectRepository(DictTypeEntity)
-    private dictTypeRepository: Repository<DictTypeEntity>,
-    ) {}
+        @InjectRepository(DictTypeEntity)
+        private dictTypeRepository: Repository<DictTypeEntity>,
+    ) { }
 
     /**
      * 罗列所有配置
      */
     async page({
         page,
-    pageSize,
-    name,
-    code,
-    }: DictTypeQueryDto): Promise<Pagination<DictTypeEntity>> {
+        pageSize,
+        name,
+        code,
+    }: QueryDictTypeDto): Promise<Pagination<DictTypeEntity>> {
         const queryBuilder = this.dictTypeRepository.createQueryBuilder('dict_type')
             .where({
                 ...(name && { name: Like(`%${name}%`) }),

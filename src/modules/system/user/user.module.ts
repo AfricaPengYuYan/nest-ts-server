@@ -22,4 +22,4 @@ const providers = [UserService]
     providers: [...providers],
     exports: [TypeOrmModule, ...providers],
 })
-export class UserModule {}
+export class UserModule { }

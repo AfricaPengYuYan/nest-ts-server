@@ -9,6 +9,6 @@ export class TodoDto {
     value: string
 }
 
-export class TodoUpdateDto extends PartialType(TodoDto) { }
+export class UpdateTodoDto extends PartialType(TodoDto) { }
 
-export class TodoQueryDto extends IntersectionType(PageDto, TodoDto) { }
+export class QueryTodoDto extends IntersectionType(PageDto, TodoDto) { }

@@ -7,7 +7,7 @@ import { paginate } from '~/helper/paginate'
 import { Pagination } from '~/helper/paginate/pagination'
 import { DictItemEntity } from '~/modules/system/dict-item/dict-item.entity'
 
-import { DictItemDto, DictItemQueryDto } from './dict-item.dto'
+import { DictItemDto, QueryDictItemDto } from './dict-item.dto'
 
 @Injectable()
 export class DictItemService {
@@ -25,9 +25,9 @@ export class DictItemService {
         label,
         value,
         typeId,
-    }: DictItemQueryDto): Promise<Pagination<DictItemEntity>> {
+    }: QueryDictItemDto): Promise<Pagination<DictItemEntity>> {
         const queryBuilder = this.dictItemRepository.createQueryBuilder('dict_item')
-            .orderBy({ order_no: 'ASC' })
+            .orderBy({ sort: 'ASC' })
             .where({
                 ...(label && { label: Like(`%${label}%`) }),
                 ...(value && { value: Like(`%${value}%`) }),

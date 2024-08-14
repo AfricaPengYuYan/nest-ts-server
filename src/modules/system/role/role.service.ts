@@ -10,7 +10,7 @@ import { Pagination } from '~/helper/paginate/pagination'
 import { MenuEntity } from '~/modules/system/menu/menu.entity'
 import { RoleEntity } from '~/modules/system/role/role.entity'
 
-import { RoleDto, RoleQueryDto, RoleUpdateDto } from './role.dto'
+import { QueryRoleDto, RoleDto, UpdateRoleDto } from './role.dto'
 
 @Injectable()
 export class RoleService {
@@ -22,27 +22,11 @@ export class RoleService {
         @InjectEntityManager() private entityManager: EntityManager,
     ) { }
 
-    /**
-     * 列举所有角色：除去超级管理员
-     */
-    async findAll({
-        page,
-        pageSize,
-    }: PageDto): Promise<Pagination<RoleEntity>> {
+    async findAll({ page, pageSize }: PageDto): Promise<Pagination<RoleEntity>> {
         return paginate(this.roleRepository, { page, pageSize })
     }
 
-    /**
-     * 查询角色列表
-     */
-    async list({
-        page,
-        pageSize,
-        name,
-        value,
-        remark,
-        status,
-    }: RoleQueryDto): Promise<Pagination<RoleEntity>> {
+    async list({ page, pageSize, name, value, remark, status }: QueryRoleDto): Promise<Pagination<RoleEntity>> {
         const queryBuilder = await this.roleRepository
             .createQueryBuilder('role')
             .where({
@@ -58,9 +42,6 @@ export class RoleService {
         })
     }
 
-    /**
-     * 根据角色获取角色信息
-     */
     async info(id: number) {
         const info = await this.roleRepository
             .createQueryBuilder('role')
@@ -83,9 +64,6 @@ export class RoleService {
         await this.roleRepository.delete(id)
     }
 
-    /**
-     * 增加角色
-     */
     async create({ menuIds, ...data }: RoleDto): Promise<{ roleId: number }> {
         const role = await this.roleRepository.save({
             ...data,
@@ -97,11 +75,7 @@ export class RoleService {
         return { roleId: role.id }
     }
 
-    /**
-     * 更新角色信息
-     * 如果传入的menuIds为空，则清空sys_role_menus表中存有的关联数据，参考新增
-     */
-    async update(id, { menuIds, ...data }: RoleUpdateDto): Promise<void> {
+    async update(id: number, { menuIds, ...data }: UpdateRoleDto): Promise<void> {
         await this.roleRepository.update(id, data)
         await this.entityManager.transaction(async (manager) => {
             const role = await this.roleRepository.findOne({ where: { id } })
@@ -112,9 +86,6 @@ export class RoleService {
         })
     }
 
-    /**
-     * 根据用户id查找角色信息
-     */
     async getRoleIdsByUser(id: number): Promise<number[]> {
         const roles = await this.roleRepository.find({
             where: {
@@ -155,9 +126,6 @@ export class RoleService {
         return rids.includes(ROOT_ROLE_ID)
     }
 
-    /**
-     * 根据角色ID查找是否有关联用户
-     */
     async checkUserByRoleId(id: number): Promise<boolean> {
         return this.roleRepository.exist({
             where: {

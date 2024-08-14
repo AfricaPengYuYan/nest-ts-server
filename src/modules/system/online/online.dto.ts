@@ -9,4 +9,4 @@ export class KickDto {
     tokenId: string
 }
 
-export class OnlineQueryDto extends PageDto { }
+export class QueryOnlineDto extends PageDto { }

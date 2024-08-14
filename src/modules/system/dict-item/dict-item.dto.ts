@@ -31,7 +31,7 @@ export class DictItemDto extends PartialType(DictItemEntity) {
     remark?: string
 }
 
-export class DictItemQueryDto extends PageDto {
+export class QueryDictItemDto extends PageDto {
     @ApiProperty({ description: '字典类型 ID', required: true })
     @IsInt()
     typeId: number

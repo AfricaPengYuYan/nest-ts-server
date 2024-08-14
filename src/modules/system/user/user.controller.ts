@@ -7,7 +7,7 @@ import { Permission, definePermission } from '~/common/decorators/permission.dec
 import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
 import { MenuService } from '~/modules/system/menu/menu.service'
 
-import { QueryUserDto, UpdateUserDto, UserDto, UserPasswordDto } from './user.dto'
+import { EditPasswordDto, QueryUserDto, UpdateUserDto, UserDto } from './user.dto'
 
 import { UserEntity } from './user.entity'
 import { UserService } from './user.service'
@@ -73,7 +73,7 @@ export class UserController {
     @Post(':id/password')
     @ApiOperation({ summary: '更改用户密码' })
     @Permission(permissions.PASSWORD_UPDATE)
-    async password(@IdParam() id: number, @Body() dto: UserPasswordDto): Promise<void> {
+    async password(@IdParam() id: number, @Body() dto: EditPasswordDto): Promise<void> {
         await this.userService.forceUpdatePassword(id, dto.password)
     }
 }
