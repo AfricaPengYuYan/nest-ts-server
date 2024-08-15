@@ -1,108 +1,108 @@
-import { ApiProperty, IntersectionType, PartialType } from '@nestjs/swagger'
-import { Type } from 'class-transformer'
-import { ArrayMaxSize, ArrayMinSize, ArrayNotEmpty, IsEmail, IsIn, IsInt, IsOptional, IsString, Matches, MaxLength, MinLength, ValidateIf } from 'class-validator'
-import { isEmpty } from 'lodash'
+import { ApiProperty, IntersectionType, PartialType } from "@nestjs/swagger";
+import { Type } from "class-transformer";
+import { ArrayMaxSize, ArrayMinSize, ArrayNotEmpty, IsEmail, IsIn, IsInt, IsOptional, IsString, Matches, MaxLength, MinLength, ValidateIf } from "class-validator";
+import { isEmpty } from "lodash";
 
-import { PageDto } from '~/dto/pager.dto'
+import { PageDto } from "~/dto/pager.dto";
 
 export class UserDto {
-    @ApiProperty({ description: '头像' })
+    @ApiProperty({ description: "头像" })
     @IsOptional()
     @IsString()
-    avatar?: string
+    avatar?: string;
 
-    @ApiProperty({ description: '登录账号', example: 'admin' })
+    @ApiProperty({ description: "登录账号", example: "admin" })
     @IsString()
     @Matches(/^[\s\S]+$/)
     @MinLength(4)
     @MaxLength(20)
-    username: string
+    username: string;
 
-    @ApiProperty({ description: '登录密码', example: 'a123456' })
+    @ApiProperty({ description: "登录密码", example: "a123456" })
     @IsOptional()
     @Matches(/^\S*(?=\S{6})(?=\S*\d)(?=\S*[A-Z])\S*$/i, {
-        message: '密码必须包含数字、字母，长度为6-16',
+        message: "密码必须包含数字、字母，长度为6-16",
     })
-    password: string
+    password: string;
 
-    @ApiProperty({ description: '归属角色', type: [Number] })
+    @ApiProperty({ description: "归属角色", type: [Number] })
     @ArrayNotEmpty()
     @ArrayMinSize(1)
     @ArrayMaxSize(3)
-    roleIds: number[]
+    roleIds: number[];
 
-    @ApiProperty({ description: '归属大区', type: Number })
+    @ApiProperty({ description: "归属大区", type: Number })
     @Type(() => Number)
     @IsInt()
     @IsOptional()
-    deptId?: number
+    deptId?: number;
 
-    @ApiProperty({ description: '呢称', example: 'admin' })
+    @ApiProperty({ description: "呢称", example: "admin" })
     @IsOptional()
     @IsString()
-    nickname: string
+    nickname: string;
 
-    @ApiProperty({ description: '邮箱', example: 'bqy.dev@qq.com' })
+    @ApiProperty({ description: "邮箱", example: "bqy.dev@qq.com" })
     @IsEmail()
     @ValidateIf(o => !isEmpty(o.email))
-    email: string
+    email: string;
 
-    @ApiProperty({ description: '手机号' })
+    @ApiProperty({ description: "手机号" })
     @IsOptional()
     @IsString()
-    phone?: string
+    phone?: string;
 
-    @ApiProperty({ description: 'QQ' })
+    @ApiProperty({ description: "QQ" })
     @IsOptional()
     @IsString()
     @Matches(/^[1-9]\d{4,10}$/)
     @MinLength(5)
     @MaxLength(11)
-    qq?: string
+    qq?: string;
 
-    @ApiProperty({ description: '备注' })
+    @ApiProperty({ description: "备注" })
     @IsOptional()
     @IsString()
-    remark?: string
+    remark?: string;
 
-    @ApiProperty({ description: '状态' })
+    @ApiProperty({ description: "状态" })
     @IsIn([0, 1])
-    status: number
+    status: number;
 }
 
 export class UpdateUserDto extends PartialType(UserDto) { }
 
 export class QueryUserDto extends IntersectionType(PageDto<UserDto>, PartialType(UserDto)) {
-    @ApiProperty({ description: '归属大区', example: 1, required: false })
+    @ApiProperty({ description: "归属大区", example: 1, required: false })
     @IsInt()
     @IsOptional()
-    deptId?: number
+    deptId?: number;
 
-    @ApiProperty({ description: '状态', example: 0, required: false })
+    @ApiProperty({ description: "状态", example: 0, required: false })
     @IsInt()
     @IsOptional()
-    status?: number
+    status?: number;
 }
 
 export class UpdatePasswordDto {
-    @ApiProperty({ description: '旧密码' })
+    @ApiProperty({ description: "旧密码" })
     @IsString()
     @Matches(/^[\s\S]+$/)
     @MinLength(6)
     @MaxLength(20)
-    oldPassword: string
+    oldPassword: string;
 
-    @ApiProperty({ description: '新密码' })
+    @ApiProperty({ description: "新密码" })
     @Matches(/^\S*(?=\S{6})(?=\S*\d)(?=\S*[A-Z])\S*$/i, {
-        message: '密码必须包含数字、字母，长度为6-16',
+        message: "密码必须包含数字、字母，长度为6-16",
     })
-    newPassword: string
+    newPassword: string;
 }
 
 export class EditPasswordDto {
-    @ApiProperty({ description: '更改后的密码' })
+    @ApiProperty({ description: "更改后的密码" })
     @Matches(/^\S*(?=\S{6})(?=\S*\d)(?=\S*[A-Z])\S*$/i, {
-        message: '密码格式不正确',
+        message: "密码格式不正确",
     })
-    password: string
+    password: string;
 }

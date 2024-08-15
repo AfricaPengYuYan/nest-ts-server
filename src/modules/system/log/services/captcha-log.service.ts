@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 
-import { LessThan, Repository } from 'typeorm'
+import { LessThan, Repository } from "typeorm";
 
-import { paginate } from '~/helper/paginate'
+import { CaptchaLogEntity } from "../entities/captcha-log.entity";
+import { QueryCaptchaLogDto } from "../log.dto";
 
-import { CaptchaLogEntity } from '../entities/captcha-log.entity'
-import { QueryCaptchaLogDto } from '../log.dto'
+import { paginate } from "~/helper/paginate";
 
 @Injectable()
 export class CaptchaLogService {
@@ -18,7 +18,7 @@ export class CaptchaLogService {
     async create(
         account: string,
         code: string,
-        provider: 'sms' | 'email',
+        provider: "sms" | "email",
         uid?: number,
     ): Promise<void> {
         await this.captchaLogRepository.save({
@@ -26,25 +26,25 @@ export class CaptchaLogService {
             code,
             provider,
             userId: uid,
-        })
+        });
     }
 
     async paginate({ page, pageSize }: QueryCaptchaLogDto) {
         const queryBuilder = await this.captchaLogRepository
-            .createQueryBuilder('captcha_log')
-            .orderBy('captcha_log.id', 'DESC')
+            .createQueryBuilder("captcha_log")
+            .orderBy("captcha_log.id", "DESC");
 
         return paginate<CaptchaLogEntity>(queryBuilder, {
             page,
             pageSize,
-        })
+        });
     }
 
     async clearLog(): Promise<void> {
-        await this.captchaLogRepository.clear()
+        await this.captchaLogRepository.clear();
     }
 
     async clearLogBeforeTime(time: Date): Promise<void> {
-        await this.captchaLogRepository.delete({ createdTime: LessThan(time) })
+        await this.captchaLogRepository.delete({ createdTime: LessThan(time) });
     }
 }

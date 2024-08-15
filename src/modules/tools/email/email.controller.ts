@@ -1,22 +1,22 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, Post } from "@nestjs/common";
 
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
-import { MailerService } from '~/shared/mailer/mailer.service'
+import { EmailSendDto } from "./email.dto";
 
-import { EmailSendDto } from './email.dto'
+import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
+import { MailerService } from "~/shared/mailer/mailer.service";
 
-@ApiTags('System - 邮箱模块')
+@ApiTags("System - 邮箱模块")
 @ApiSecurityAuth()
-@Controller('email')
+@Controller("email")
 export class EmailController {
     constructor(private emailService: MailerService) {}
 
-    @ApiOperation({ summary: '发送邮件' })
-    @Post('send')
+    @ApiOperation({ summary: "发送邮件" })
+    @Post("send")
     async send(@Body() dto: EmailSendDto): Promise<void> {
-        const { to, subject, content } = dto
-        await this.emailService.send(to, subject, content, 'html')
+        const { to, subject, content } = dto;
+        await this.emailService.send(to, subject, content, "html");
     }
 }

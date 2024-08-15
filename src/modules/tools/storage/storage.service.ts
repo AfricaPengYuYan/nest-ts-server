@@ -1,16 +1,16 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Between, Like, Repository } from 'typeorm'
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Between, Like, Repository } from "typeorm";
 
-import { paginateRaw } from '~/helper/paginate'
-import { PaginationTypeEnum } from '~/helper/paginate/interface'
-import { Pagination } from '~/helper/paginate/pagination'
-import { UserEntity } from '~/modules/system/user/user.entity'
-import { Storage } from '~/modules/tools/storage/storage.entity'
-import { deleteFile } from '~/utils'
+import { StorageCreateDto, StoragePageDto } from "./storage.dto";
+import { StorageInfo } from "./storage.modal";
 
-import { StorageCreateDto, StoragePageDto } from './storage.dto'
-import { StorageInfo } from './storage.modal'
+import { paginateRaw } from "~/helper/paginate";
+import { PaginationTypeEnum } from "~/helper/paginate/interface";
+import { Pagination } from "~/helper/paginate/pagination";
+import { UserEntity } from "~/modules/system/user/user.entity";
+import { Storage } from "~/modules/tools/storage/storage.entity";
+import { deleteFile } from "~/utils";
 
 @Injectable()
 export class StorageService {
@@ -25,19 +25,19 @@ export class StorageService {
         await this.storageRepository.save({
             ...dto,
             userId,
-        })
+        });
     }
 
     /**
      * 删除文件
      */
     async delete(fileIds: number[]): Promise<void> {
-        const items = await this.storageRepository.findByIds(fileIds)
-        await this.storageRepository.delete(fileIds)
+        const items = await this.storageRepository.findByIds(fileIds);
+        await this.storageRepository.delete(fileIds);
 
         items.forEach((el) => {
-            deleteFile(el.path)
-        })
+            deleteFile(el.path);
+        });
     }
 
     async list({
@@ -51,8 +51,8 @@ export class StorageService {
     username,
     }: StoragePageDto): Promise<Pagination<StorageInfo>> {
         const queryBuilder = this.storageRepository
-            .createQueryBuilder('storage')
-            .leftJoinAndSelect('sys_user', 'user', 'storage.user_id = user.id')
+            .createQueryBuilder("storage")
+            .leftJoinAndSelect("sys_user", "user", "storage.user_id = user.id")
             .where({
                 ...(name && { name: Like(`%${name}%`) }),
                 ...(type && { type }),
@@ -63,13 +63,13 @@ export class StorageService {
                     userId: await (await this.userRepository.findOneBy({ username })).id,
                 }),
             })
-            .orderBy('storage.created_time', 'DESC')
+            .orderBy("storage.created_time", "DESC");
 
         const { items, ...rest } = await paginateRaw<Storage>(queryBuilder, {
             page,
             pageSize,
             paginationType: PaginationTypeEnum.LIMIT_AND_OFFSET,
-        })
+        });
 
         function formatResult(result: Storage[]) {
             return result.map((e: any) => {
@@ -82,17 +82,17 @@ export class StorageService {
                     size: e.storage_size,
                     createdTime: e.storage_created_at,
                     username: e.user_username,
-                }
-            })
+                };
+            });
         }
 
         return {
             items: formatResult(items),
             ...rest,
-        }
+        };
     }
 
     async count(): Promise<number> {
-        return this.storageRepository.count()
+        return this.storageRepository.count();
     }
 }

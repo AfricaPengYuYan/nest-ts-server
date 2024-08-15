@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger'
+import { ApiProperty, PartialType } from "@nestjs/swagger";
 import {
     IsIn,
     IsInt,
@@ -7,81 +7,81 @@ import {
     Min,
     MinLength,
     ValidateIf,
-} from 'class-validator'
+} from "class-validator";
 
-import { OperatorDto } from '~/dto/operator.dto'
+import { OperatorDto } from "~/dto/operator.dto";
 
 export class MenuDto extends OperatorDto {
-    @ApiProperty({ description: '菜单类型' })
+    @ApiProperty({ description: "菜单类型" })
     @IsIn([0, 1, 2])
-    type: number
+    type: number;
 
-    @ApiProperty({ description: '父级菜单' })
+    @ApiProperty({ description: "父级菜单" })
     @IsOptional()
-    parentId: number
+    parentId: number;
 
-    @ApiProperty({ description: '菜单或权限名称' })
+    @ApiProperty({ description: "菜单或权限名称" })
     @IsString()
     @MinLength(2)
-    name: string
+    name: string;
 
-    @ApiProperty({ description: '排序' })
+    @ApiProperty({ description: "排序" })
     @IsInt()
     @Min(0)
-    sort: number
+    sort: number;
 
-    @ApiProperty({ description: '前端路由地址' })
+    @ApiProperty({ description: "前端路由地址" })
     // @Matches(/^[/]$/)
     @ValidateIf(o => o.type !== 2)
-    path: string
+    path: string;
 
-    @ApiProperty({ description: '是否外链', default: false })
+    @ApiProperty({ description: "是否外链", default: false })
     @ValidateIf(o => o.type !== 2)
     @IsIn([0, 1])
-    isExt: number
+    isExt: number;
 
-    @ApiProperty({ description: '外链打开方式', default: 1 })
+    @ApiProperty({ description: "外链打开方式", default: 1 })
     @ValidateIf((o: MenuDto) => o.isExt !== 0)
     @IsIn([1, 2])
-    extOpenMode: number
+    extOpenMode: number;
 
-    @ApiProperty({ description: '菜单是否显示', default: 1 })
+    @ApiProperty({ description: "菜单是否显示", default: 1 })
     @ValidateIf((o: MenuDto) => o.type !== 2)
     @IsIn([0, 1])
-    show: number
+    show: number;
 
-    @ApiProperty({ description: '设置当前路由高亮的菜单项，一般用于详情页' })
+    @ApiProperty({ description: "设置当前路由高亮的菜单项，一般用于详情页" })
     @ValidateIf((o: MenuDto) => o.type !== 2 && o.show === 0)
     @IsString()
     @IsOptional()
-    activeMenu?: string
+    activeMenu?: string;
 
-    @ApiProperty({ description: '是否开启页面缓存', default: 1 })
+    @ApiProperty({ description: "是否开启页面缓存", default: 1 })
     @ValidateIf((o: MenuDto) => o.type === 1)
     @IsIn([0, 1])
-    keepAlive: number
+    keepAlive: number;
 
-    @ApiProperty({ description: '状态', default: 1 })
+    @ApiProperty({ description: "状态", default: 1 })
     @IsIn([0, 1])
-    status: number
+    status: number;
 
-    @ApiProperty({ description: '菜单图标' })
+    @ApiProperty({ description: "菜单图标" })
     @IsOptional()
     @ValidateIf((o: MenuDto) => o.type !== 2)
     @IsString()
-    icon?: string
+    icon?: string;
 
-    @ApiProperty({ description: '对应权限' })
+    @ApiProperty({ description: "对应权限" })
     @ValidateIf((o: MenuDto) => o.type === 2)
     @IsString()
     @IsOptional()
-    permission: string
+    permission: string;
 
-    @ApiProperty({ description: '菜单路由路径或外链' })
+    @ApiProperty({ description: "菜单路由路径或外链" })
     @ValidateIf((o: MenuDto) => o.type !== 2)
     @IsString()
     @IsOptional()
-    component?: string
+    component?: string;
 }
 
 export class UpdateMenuDto extends PartialType(MenuDto) { }

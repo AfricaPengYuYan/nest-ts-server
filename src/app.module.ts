@@ -1,33 +1,30 @@
-import { ClassSerializerInterceptor, Module } from '@nestjs/common'
+import { ClassSerializerInterceptor, Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
+import { ThrottlerGuard, ThrottlerModule, seconds } from "@nestjs/throttler";
+import type { FastifyRequest } from "fastify";
 
-import { ConfigModule } from '@nestjs/config'
-import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core'
+import { ClsModule } from "nestjs-cls";
 
-import { ThrottlerGuard, ThrottlerModule, seconds } from '@nestjs/throttler'
-import type { FastifyRequest } from 'fastify'
-import { ClsModule } from 'nestjs-cls'
+import { HttpExceptionsFilter } from "./common/filters/http.exception.filter";
+import { JwtAuthGuard } from "./common/guards/jwt-auth.guard";
+import { RbacGuard } from "./common/guards/rbac.guard";
+import { IdempotenceInterceptor } from "./common/interceptors/idempotence.interceptor";
+import { TimeoutInterceptor } from "./common/interceptors/timeout.interceptor";
+import { TransformInterceptor } from "./common/interceptors/transform.interceptor";
+import { AuthModule } from "./modules/auth/auth.module";
+import { HealthModule } from "./modules/health/health.module";
+import { NetdiskModule } from "./modules/netdisk/netdisk.module";
+import { SseModule } from "./modules/sse/sse.module";
+import { SystemModule } from "./modules/system/system.module";
+import { TasksModule } from "./modules/task/task.module";
+import { TodoModule } from "./modules/todo/todo.module";
+import { ToolsModule } from "./modules/tools/tools.module";
+import { DatabaseModule } from "./shared/database/database.module";
+import { SocketModule } from "./socket/socket.module";
 
-import config from '~/config'
-import { SharedModule } from '~/shared/shared.module'
-
-import { HttpExceptionsFilter } from './common/filters/http.exception.filter'
-
-import { JwtAuthGuard } from './common/guards/jwt-auth.guard'
-import { RbacGuard } from './common/guards/rbac.guard'
-import { IdempotenceInterceptor } from './common/interceptors/idempotence.interceptor'
-import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor'
-import { TransformInterceptor } from './common/interceptors/transform.interceptor'
-import { AuthModule } from './modules/auth/auth.module'
-import { HealthModule } from './modules/health/health.module'
-import { NetdiskModule } from './modules/netdisk/netdisk.module'
-import { SseModule } from './modules/sse/sse.module'
-import { SystemModule } from './modules/system/system.module'
-import { TasksModule } from './modules/task/task.module'
-import { TodoModule } from './modules/todo/todo.module'
-import { ToolsModule } from './modules/tools/tools.module'
-import { DatabaseModule } from './shared/database/database.module'
-
-import { SocketModule } from './socket/socket.module'
+import config from "~/config";
+import { SharedModule } from "~/shared/shared.module";
 
 @Module({
     imports: [
@@ -35,13 +32,13 @@ import { SocketModule } from './socket/socket.module'
             isGlobal: true,
             expandVariables: true,
             // 指定多个 env 文件时，第一个优先级最高
-            envFilePath: [`.env.${process.env.NODE_ENV}`, '.env'],
+            envFilePath: [`.env.${process.env.NODE_ENV}`, ".env"],
             load: [...Object.values(config)],
         }),
         // 避免暴力请求，限制同一个接口 10 秒内不能超过 7 次请求
         ThrottlerModule.forRootAsync({
             useFactory: () => ({
-                errorMessage: '当前操作过于频繁，请稍后再试！',
+                errorMessage: "当前操作过于频繁，请稍后再试！",
                 throttlers: [
                     { ttl: seconds(10), limit: 7 },
                 ],
@@ -54,10 +51,10 @@ import { SocketModule } from './socket/socket.module'
             interceptor: {
                 mount: true,
                 setup: (cls, context) => {
-                    const req = context.switchToHttp().getRequest<FastifyRequest<{ Params: { id?: string } }>>()
+                    const req = context.switchToHttp().getRequest<FastifyRequest<{ Params: { id?: string } }>>();
                     if (req.params?.id && req.body) {
                         // 供自定义参数验证器(UniqueConstraint)使用
-                        cls.set('operateId', Number.parseInt(req.params.id))
+                        cls.set("operateId", Number.parseInt(req.params.id));
                     }
                 },
             },

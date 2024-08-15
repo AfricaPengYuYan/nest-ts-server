@@ -1,29 +1,24 @@
-import cluster from 'node:cluster'
-import path from 'node:path'
+import cluster from "node:cluster";
+import path from "node:path";
 
-import {
-    HttpStatus,
-    Logger,
-    UnprocessableEntityException,
-    ValidationPipe,
-} from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { NestFactory } from '@nestjs/core'
-import { NestFastifyApplication } from '@nestjs/platform-fastify'
+import { HttpStatus, Logger, UnprocessableEntityException, ValidationPipe } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { NestFactory } from "@nestjs/core";
+import { NestFastifyApplication } from "@nestjs/platform-fastify";
 
-import { useContainer } from 'class-validator'
+import { useContainer } from "class-validator";
 
-import { AppModule } from './app.module'
+import { AppModule } from "./app.module";
 
-import { fastifyApp } from './common/adapters/fastify.adapter'
-import { RedisIoAdapter } from './common/adapters/socket.adapter'
-import { LoggingInterceptor } from './common/interceptors/logging.interceptor'
-import type { ConfigKeyPaths } from './config'
-import { isDev, isMainProcess } from './global/env'
-import { setupSwagger } from './setup-swagger'
-import { LoggerService } from './shared/logger/logger.service'
+import { fastifyApp } from "./common/adapters/fastify.adapter";
+import { RedisIoAdapter } from "./common/adapters/socket.adapter";
+import { LoggingInterceptor } from "./common/interceptors/logging.interceptor";
+import type { ConfigKeyPaths } from "./config";
+import { isDev, isMainProcess } from "./global/env";
+import { setupSwagger } from "./setup-swagger";
+import { LoggerService } from "./shared/logger/logger.service";
 
-declare const module: any
+declare const module: any;
 
 async function bootstrap() {
     const app = await NestFactory.create<NestFastifyApplication>(
@@ -34,23 +29,23 @@ async function bootstrap() {
             snapshot: true,
             // forceCloseConnections: true,
         },
-    )
+    );
 
-    const configService = app.get(ConfigService<ConfigKeyPaths>)
+    const configService = app.get(ConfigService<ConfigKeyPaths>);
 
-    const { port, globalPrefix } = configService.get('app', { infer: true })
+    const { port, globalPrefix } = configService.get("app", { infer: true });
 
     // class-validator 的 DTO 类中注入 nest 容器的依赖 (用于自定义验证器)
-    useContainer(app.select(AppModule), { fallbackOnErrors: true })
+    useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-    app.enableCors({ origin: '*', credentials: true })
-    app.setGlobalPrefix(globalPrefix)
-    app.useStaticAssets({ root: path.join(__dirname, '..', 'public') })
+    app.enableCors({ origin: "*", credentials: true });
+    app.setGlobalPrefix(globalPrefix);
+    app.useStaticAssets({ root: path.join(__dirname, "..", "public") });
     // Starts listening for shutdown hooks
-    !isDev && app.enableShutdownHooks()
+    !isDev && app.enableShutdownHooks();
 
     if (isDev)
-        app.useGlobalInterceptors(new LoggingInterceptor())
+        app.useGlobalInterceptors(new LoggingInterceptor());
 
     app.useGlobalPipes(
         new ValidationPipe({
@@ -63,39 +58,39 @@ async function bootstrap() {
             exceptionFactory: errors =>
                 new UnprocessableEntityException(
                     errors.map((e) => {
-                        const rule = Object.keys(e.constraints!)[0]
-                        const msg = e.constraints![rule]
-                        return msg
+                        const rule = Object.keys(e.constraints!)[0];
+                        const msg = e.constraints![rule];
+                        return msg;
                     })[0],
                 ),
         }),
-    )
+    );
 
-    app.useWebSocketAdapter(new RedisIoAdapter(app))
+    app.useWebSocketAdapter(new RedisIoAdapter(app));
 
-    setupSwagger(app, configService)
+    setupSwagger(app, configService);
 
-    await app.listen(port, '0.0.0.0', async () => {
-        app.useLogger(app.get(LoggerService))
-        const url = await app.getUrl()
-        const { pid } = process
-        const env = cluster.isPrimary
-        const prefix = env ? 'P' : 'W'
+    await app.listen(port, "0.0.0.0", async () => {
+        app.useLogger(app.get(LoggerService));
+        const url = await app.getUrl();
+        const { pid } = process;
+        const env = cluster.isPrimary;
+        const prefix = env ? "P" : "W";
 
         if (!isMainProcess)
-            return
+            return;
 
-        const logger = new Logger('NestApplication')
-        logger.log(`[${prefix + pid}] Server running on ${url}`)
+        const logger = new Logger("NestApplication");
+        logger.log(`[${prefix + pid}] Server running on ${url}`);
 
         if (isDev)
-            logger.log(`[${prefix + pid}] OpenAPI: ${url}/api-docs`)
-    })
+            logger.log(`[${prefix + pid}] OpenAPI: ${url}/api-docs`);
+    });
 
     if (module.hot) {
-        module.hot.accept()
-        module.hot.dispose(() => app.close())
+        module.hot.accept();
+        module.hot.dispose(() => app.close());
     }
 }
 
-bootstrap()
+bootstrap();

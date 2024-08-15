@@ -1,18 +1,11 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common'
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import {
     ApiOkResponse,
     ApiOperation,
     ApiTags,
-} from '@nestjs/swagger'
+} from "@nestjs/swagger";
 
-import { ErrorEnum } from '~/common/constants/error-code.constant'
-import { AuthUser } from '~/common/decorators/auth-user.decorator'
-import { Permission, definePermission } from '~/common/decorators/permission.decorator'
-import { HttpApiException } from '~/common/exceptions/http.api.exception'
-
-import { checkIsDemoMode } from '~/utils'
-
-import { SFileInfoDetail, SFileList, UploadToken } from './manage.class'
+import { SFileInfoDetail, SFileList, UploadToken } from "./manage.class";
 import {
     DeleteDto,
     FileInfoDto,
@@ -21,132 +14,140 @@ import {
     MKDirDto,
     MarkFileDto,
     RenameDto,
-} from './manage.dto'
-import { NetDiskManageService } from './manage.service'
+} from "./manage.dto";
 
-export const permissions = definePermission('netdisk:manage', {
-    LIST: 'list',
-    CREATE: 'create',
-    INFO: 'info',
-    UPDATE: 'update',
-    DELETE: 'delete',
-    MKDIR: 'mkdir',
-    TOKEN: 'token',
-    MARK: 'mark',
-    DOWNLOAD: 'download',
-    RENAME: 'rename',
-    CUT: 'cut',
-    COPY: 'copy',
-} as const)
+import { NetDiskManageService } from "./manage.service";
 
-@ApiTags('NetDiskManage - 网盘管理模块')
-@Controller('manage')
+import { ErrorEnum } from "~/common/constants/error-code.constant";
+import { AuthUser } from "~/common/decorators/auth-user.decorator";
+import { Permission, definePermission } from "~/common/decorators/permission.decorator";
+import { HttpApiException } from "~/common/exceptions/http.api.exception";
+
+import { checkIsDemoMode } from "~/utils";
+
+export const permissions = definePermission("netdisk:manage", {
+    LIST: "list",
+    CREATE: "create",
+    INFO: "info",
+    UPDATE: "update",
+    DELETE: "delete",
+    MKDIR: "mkdir",
+    TOKEN: "token",
+    MARK: "mark",
+    DOWNLOAD: "download",
+    RENAME: "rename",
+    CUT: "cut",
+    COPY: "copy",
+} as const);
+
+@ApiTags("NetDiskManage - 网盘管理模块")
+@Controller("manage")
 export class NetDiskManageController {
     constructor(private manageService: NetDiskManageService) { }
 
-    @Get('list')
-    @ApiOperation({ summary: '获取文件列表' })
+    @Get("list")
+    @ApiOperation({ summary: "获取文件列表" })
     @ApiOkResponse({ type: SFileList })
     @Permission(permissions.LIST)
     async list(@Query() dto: GetFileListDto): Promise<SFileList> {
-        return await this.manageService.getFileList(dto.path, dto.marker, dto.key)
+        return await this.manageService.getFileList(dto.path, dto.marker, dto.key);
     }
 
-    @Post('mkdir')
-    @ApiOperation({ summary: '创建文件夹，支持多级' })
+    @Post("mkdir")
+    @ApiOperation({ summary: "创建文件夹，支持多级" })
     @Permission(permissions.MKDIR)
     async mkdir(@Body() dto: MKDirDto): Promise<void> {
         const result = await this.manageService.checkFileExist(
             `${dto.path}${dto.dirName}/`,
-        )
+        );
         if (result)
-            throw new HttpApiException(ErrorEnum.OSS_FILE_OR_DIR_EXIST)
+            throw new HttpApiException(ErrorEnum.OSS_FILE_OR_DIR_EXIST);
 
-        await this.manageService.createDir(`${dto.path}${dto.dirName}`)
+        await this.manageService.createDir(`${dto.path}${dto.dirName}`);
     }
 
-    @Get('token')
-    @ApiOperation({ summary: '获取上传Token，无Token前端无法上传' })
+    @Get("token")
+    @ApiOperation({ summary: "获取上传Token，无Token前端无法上传" })
     @ApiOkResponse({ type: UploadToken })
     @Permission(permissions.TOKEN)
     async token(@AuthUser() user: IAuthUser): Promise<UploadToken> {
-        checkIsDemoMode()
+        checkIsDemoMode();
 
         return {
             token: this.manageService.createUploadToken(`${user.uid}`),
-        }
+        };
     }
 
-    @Get('info')
-    @ApiOperation({ summary: '获取文件详细信息' })
+    @Get("info")
+    @ApiOperation({ summary: "获取文件详细信息" })
     @ApiOkResponse({ type: SFileInfoDetail })
     @Permission(permissions.INFO)
     async info(@Query() dto: FileInfoDto): Promise<SFileInfoDetail> {
-        return await this.manageService.getFileInfo(dto.name, dto.path)
+        return await this.manageService.getFileInfo(dto.name, dto.path);
     }
 
-    @Post('mark')
-    @ApiOperation({ summary: '添加文件备注' })
+    @Post("mark")
+    @ApiOperation({ summary: "添加文件备注" })
     @Permission(permissions.MARK)
     async mark(@Body() dto: MarkFileDto): Promise<void> {
         await this.manageService.changeFileHeaders(dto.name, dto.path, {
             mark: dto.mark,
-        })
+        });
     }
 
-    @Get('download')
-    @ApiOperation({ summary: '获取下载链接，不支持下载文件夹' })
+    @Get("download")
+    @ApiOperation({ summary: "获取下载链接，不支持下载文件夹" })
     @ApiOkResponse({ type: String })
     @Permission(permissions.DOWNLOAD)
     async download(@Query() dto: FileInfoDto): Promise<string> {
-        return this.manageService.getDownloadLink(`${dto.path}${dto.name}`)
+        return this.manageService.getDownloadLink(`${dto.path}${dto.name}`);
     }
 
-    @Post('rename')
-    @ApiOperation({ summary: '重命名文件或文件夹' })
+    @Post("rename")
+    @ApiOperation({ summary: "重命名文件或文件夹" })
     @Permission(permissions.RENAME)
     async rename(@Body() dto: RenameDto): Promise<void> {
         const result = await this.manageService.checkFileExist(
-            `${dto.path}${dto.toName}${dto.type === 'dir' ? '/' : ''}`,
-        )
+            `${dto.path}${dto.toName}${dto.type === "dir" ? "/" : ""}`,
+        );
         if (result)
-            throw new HttpApiException(ErrorEnum.OSS_FILE_OR_DIR_EXIST)
+            throw new HttpApiException(ErrorEnum.OSS_FILE_OR_DIR_EXIST);
 
-        if (dto.type === 'file')
-            await this.manageService.renameFile(dto.path, dto.name, dto.toName)
+        if (dto.type === "file")
+            await this.manageService.renameFile(dto.path, dto.name, dto.toName);
         else
-            await this.manageService.renameDir(dto.path, dto.name, dto.toName)
+            await this.manageService.renameDir(dto.path, dto.name, dto.toName);
     }
 
-    @Post('delete')
-    @ApiOperation({ summary: '删除文件或文件夹' })
+    @Post("delete")
+    @ApiOperation({ summary: "删除文件或文件夹" })
     @Permission(permissions.DELETE)
     async delete(@Body() dto: DeleteDto): Promise<void> {
-        await this.manageService.deleteMultiFileOrDir(dto.files, dto.path)
+        await this.manageService.deleteMultiFileOrDir(dto.files, dto.path);
     }
 
-    @Post('cut')
-    @ApiOperation({ summary: '剪切文件或文件夹，支持批量' })
+    @Post("cut")
+    @ApiOperation({ summary: "剪切文件或文件夹，支持批量" })
     @Permission(permissions.CUT)
     async cut(@Body() dto: FileOpDto): Promise<void> {
         if (dto.originPath === dto.toPath)
-            throw new HttpApiException(ErrorEnum.OSS_NO_OPERATION_REQUIRED)
+            throw new HttpApiException(ErrorEnum.OSS_NO_OPERATION_REQUIRED);
 
         await this.manageService.moveMultiFileOrDir(
             dto.files,
             dto.originPath,
             dto.toPath,
-        )
+        );
     }
 
-    @Post('copy')
-    @ApiOperation({ summary: '复制文件或文件夹，支持批量' })
+    @Post("copy")
+    @ApiOperation({ summary: "复制文件或文件夹，支持批量" })
     @Permission(permissions.COPY)
     async copy(@Body() dto: FileOpDto): Promise<void> {
         await this.manageService.copyMultiFileOrDir(
             dto.files,
             dto.originPath,
             dto.toPath,
-        )
+        );
     }
 }

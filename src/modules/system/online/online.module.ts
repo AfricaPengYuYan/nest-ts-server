@@ -1,15 +1,15 @@
-import { Module, forwardRef } from '@nestjs/common'
+import { Module, forwardRef } from "@nestjs/common";
 
-import { AuthModule } from '~/modules/auth/auth.module'
+import { OnlineController } from "./online.controller";
+import { OnlineService } from "./online.service";
 
-import { SseModule } from '~/modules/sse/sse.module'
+import { AuthModule } from "~/modules/auth/auth.module";
 
-import { UserModule } from '~/modules/system/user/user.module'
+import { SseModule } from "~/modules/sse/sse.module";
 
-import { OnlineController } from './online.controller'
-import { OnlineService } from './online.service'
+import { UserModule } from "~/modules/system/user/user.module";
 
-const providers = [OnlineService]
+const providers = [OnlineService];
 
 @Module({
     imports: [

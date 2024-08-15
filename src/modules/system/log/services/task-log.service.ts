@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 
-import { LessThan, Repository } from 'typeorm'
+import { LessThan, Repository } from "typeorm";
 
-import { paginate } from '~/helper/paginate'
+import { TaskLogEntity } from "../entities/task-log.entity";
+import { QueryTaskLogDto } from "../log.dto";
 
-import { TaskLogEntity } from '../entities/task-log.entity'
-import { QueryTaskLogDto } from '../log.dto'
+import { paginate } from "~/helper/paginate";
 
 @Injectable()
 export class TaskLogService {
@@ -26,27 +26,27 @@ export class TaskLogService {
             detail: err,
             time,
             task: { id: tid },
-        })
-        return result.id
+        });
+        return result.id;
     }
 
     async list({ page, pageSize }: QueryTaskLogDto) {
         const queryBuilder = await this.taskLogRepository
-            .createQueryBuilder('task_log')
-            .leftJoinAndSelect('task_log.task', 'task')
-            .orderBy('task_log.id', 'DESC')
+            .createQueryBuilder("task_log")
+            .leftJoinAndSelect("task_log.task", "task")
+            .orderBy("task_log.id", "DESC");
 
         return paginate<TaskLogEntity>(queryBuilder, {
             page,
             pageSize,
-        })
+        });
     }
 
     async clearLog(): Promise<void> {
-        await this.taskLogRepository.clear()
+        await this.taskLogRepository.clear();
     }
 
     async clearLogBeforeTime(time: Date): Promise<void> {
-        await this.taskLogRepository.delete({ createdTime: LessThan(time) })
+        await this.taskLogRepository.delete({ createdTime: LessThan(time) });
     }
 }

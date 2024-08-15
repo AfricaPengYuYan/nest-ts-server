@@ -1,66 +1,66 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common'
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Body, Controller, Delete, Get, Post, Query } from "@nestjs/common";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { ApiResult } from '~/common/decorators/api-result.decorator'
-import { AuthUser } from '~/common/decorators/auth-user.decorator'
-import { IdParam } from '~/common/decorators/id-param.decorator'
-import { Permission, definePermission } from '~/common/decorators/permission.decorator'
-import { ApiSecurityAuth } from '~/common/decorators/swagger.decorator'
-import { UpdaterPipe } from '~/common/pipes/updater.pipe'
-import { Pagination } from '~/helper/paginate/pagination'
-import { DictItemEntity } from '~/modules/system/dict-item/dict-item.entity'
+import { DictItemDto, QueryDictItemDto } from "./dict-item.dto";
+import { DictItemService } from "./dict-item.service";
 
-import { DictItemDto, QueryDictItemDto } from './dict-item.dto'
-import { DictItemService } from './dict-item.service'
+import { ApiResult } from "~/common/decorators/api-result.decorator";
+import { AuthUser } from "~/common/decorators/auth-user.decorator";
+import { IdParam } from "~/common/decorators/id-param.decorator";
+import { Permission, definePermission } from "~/common/decorators/permission.decorator";
+import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
+import { UpdaterPipe } from "~/common/pipes/updater.pipe";
+import { Pagination } from "~/helper/paginate/pagination";
+import { DictItemEntity } from "~/modules/system/dict-item/dict-item.entity";
 
-export const permissions = definePermission('system:dict-item', {
-    LIST: 'list',
-    CREATE: 'create',
-    READ: 'read',
-    UPDATE: 'update',
-    DELETE: 'delete',
-} as const)
+export const permissions = definePermission("system:dict-item", {
+    LIST: "list",
+    CREATE: "create",
+    READ: "read",
+    UPDATE: "update",
+    DELETE: "delete",
+} as const);
 
-@ApiTags('System - 字典项模块')
+@ApiTags("System - 字典项模块")
 @ApiSecurityAuth()
-@Controller('dict-item')
+@Controller("dict-item")
 export class DictItemController {
     constructor(private dictItemService: DictItemService) { }
 
     @Get()
-    @ApiOperation({ summary: '获取字典项列表' })
+    @ApiOperation({ summary: "获取字典项列表" })
     @ApiResult({ type: [DictItemEntity], isPage: true })
     @Permission(permissions.LIST)
     async list(@Query() dto: QueryDictItemDto): Promise<Pagination<DictItemEntity>> {
-        return this.dictItemService.page(dto)
+        return this.dictItemService.page(dto);
     }
 
     @Post()
-    @ApiOperation({ summary: '新增字典项' })
+    @ApiOperation({ summary: "新增字典项" })
     @Permission(permissions.CREATE)
     async create(@Body() dto: DictItemDto, @AuthUser() user: IAuthUser): Promise<void> {
-        await this.dictItemService.create(dto)
+        await this.dictItemService.create(dto);
     }
 
-    @Get(':id')
-    @ApiOperation({ summary: '查询字典项信息' })
+    @Get(":id")
+    @ApiOperation({ summary: "查询字典项信息" })
     @ApiResult({ type: DictItemEntity })
     @Permission(permissions.READ)
     async info(@IdParam() id: number): Promise<DictItemEntity> {
-        return this.dictItemService.findOne(id)
+        return this.dictItemService.findOne(id);
     }
 
-    @Post(':id')
-    @ApiOperation({ summary: '更新字典项' })
+    @Post(":id")
+    @ApiOperation({ summary: "更新字典项" })
     @Permission(permissions.UPDATE)
     async update(@IdParam() id: number, @Body(UpdaterPipe) dto: DictItemDto): Promise<void> {
-        await this.dictItemService.update(id, dto)
+        await this.dictItemService.update(id, dto);
     }
 
-    @Delete(':id')
-    @ApiOperation({ summary: '删除指定的字典项' })
+    @Delete(":id")
+    @ApiOperation({ summary: "删除指定的字典项" })
     @Permission(permissions.DELETE)
     async delete(@IdParam() id: number): Promise<void> {
-        await this.dictItemService.delete(id)
+        await this.dictItemService.delete(id);
     }
 }

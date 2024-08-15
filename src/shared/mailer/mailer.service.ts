@@ -1,15 +1,15 @@
-import { InjectRedis } from '@liaoliaots/nestjs-redis'
-import { Inject, Injectable } from '@nestjs/common'
+import { InjectRedis } from "@liaoliaots/nestjs-redis";
+import { Inject, Injectable } from "@nestjs/common";
 
-import { MailerService as NestMailerService } from '@nestjs-modules/mailer'
-import dayjs from 'dayjs'
+import { MailerService as NestMailerService } from "@nestjs-modules/mailer";
+import dayjs from "dayjs";
 
-import Redis from 'ioredis'
+import Redis from "ioredis";
 
-import { ErrorEnum } from '~/common/constants/error-code.constant'
-import { HttpApiException } from '~/common/exceptions/http.api.exception'
-import { AppConfig, IAppConfig } from '~/config'
-import { randomValue } from '~/utils'
+import { ErrorEnum } from "~/common/constants/error-code.constant";
+import { HttpApiException } from "~/common/exceptions/http.api.exception";
+import { AppConfig, IAppConfig } from "~/config";
+import { randomValue } from "~/utils";
 
 @Injectable()
 export class MailerService {
@@ -21,72 +21,72 @@ export class MailerService {
 
     async log(to: string, code: string, ip: string) {
         const getRemainTime = () => {
-            const now = dayjs()
-            return now.endOf('day').diff(now, 'second')
-        }
+            const now = dayjs();
+            return now.endOf("day").diff(now, "second");
+        };
 
-        await this.redis.set(`captcha:${to}`, code, 'EX', 60 * 5)
+        await this.redis.set(`captcha:${to}`, code, "EX", 60 * 5);
 
-        const limitCountOfDay = await this.redis.get(`captcha:${to}:limit-day`)
-        const ipLimitCountOfDay = await this.redis.get(`ip:${ip}:send:limit-day`)
+        const limitCountOfDay = await this.redis.get(`captcha:${to}:limit-day`);
+        const ipLimitCountOfDay = await this.redis.get(`ip:${ip}:send:limit-day`);
 
-        await this.redis.set(`ip:${ip}:send:limit`, 1, 'EX', 60)
-        await this.redis.set(`captcha:${to}:limit`, 1, 'EX', 60)
+        await this.redis.set(`ip:${ip}:send:limit`, 1, "EX", 60);
+        await this.redis.set(`captcha:${to}:limit`, 1, "EX", 60);
         await this.redis.set(
       `captcha:${to}:send:limit-count-day`,
       limitCountOfDay,
-      'EX',
+      "EX",
       getRemainTime(),
-        )
+        );
         await this.redis.set(
       `ip:${ip}:send:limit-count-day`,
       ipLimitCountOfDay,
-      'EX',
+      "EX",
       getRemainTime(),
-        )
+        );
     }
 
     async checkCode(to, code) {
-        const ret = await this.redis.get(`captcha:${to}`)
+        const ret = await this.redis.get(`captcha:${to}`);
         if (ret !== code)
-            throw new HttpApiException(ErrorEnum.INVALID_VERIFICATION_CODE)
+            throw new HttpApiException(ErrorEnum.INVALID_VERIFICATION_CODE);
 
-        await this.redis.del(`captcha:${to}`)
+        await this.redis.del(`captcha:${to}`);
     }
 
     async checkLimit(to, ip) {
-        const LIMIT_TIME = 5
+        const LIMIT_TIME = 5;
 
         // ip限制
-        const ipLimit = await this.redis.get(`ip:${ip}:send:limit`)
+        const ipLimit = await this.redis.get(`ip:${ip}:send:limit`);
         if (ipLimit)
-            throw new HttpApiException(ErrorEnum.TOO_MANY_REQUESTS)
+            throw new HttpApiException(ErrorEnum.TOO_MANY_REQUESTS);
 
         // 1分钟最多接收1条
-        const limit = await this.redis.get(`captcha:${to}:limit`)
+        const limit = await this.redis.get(`captcha:${to}:limit`);
         if (limit)
-            throw new HttpApiException(ErrorEnum.TOO_MANY_REQUESTS)
+            throw new HttpApiException(ErrorEnum.TOO_MANY_REQUESTS);
 
         // 1天一个邮箱最多接收5条
         let limitCountOfDay: string | number = await this.redis.get(
       `captcha:${to}:limit-day`,
-        )
-        limitCountOfDay = limitCountOfDay ? Number(limitCountOfDay) : 0
+        );
+        limitCountOfDay = limitCountOfDay ? Number(limitCountOfDay) : 0;
         if (limitCountOfDay > LIMIT_TIME) {
             throw new HttpApiException(
                 ErrorEnum.MAXIMUM_FIVE_VERIFICATION_CODES_PER_DAY,
-            )
+            );
         }
 
         // 1天一个ip最多发送5条
         let ipLimitCountOfDay: string | number = await this.redis.get(
       `ip:${ip}:send:limit-day`,
-        )
-        ipLimitCountOfDay = ipLimitCountOfDay ? Number(ipLimitCountOfDay) : 0
+        );
+        ipLimitCountOfDay = ipLimitCountOfDay ? Number(ipLimitCountOfDay) : 0;
         if (ipLimitCountOfDay > LIMIT_TIME) {
             throw new HttpApiException(
                 ErrorEnum.MAXIMUM_FIVE_VERIFICATION_CODES_PER_DAY,
-            )
+            );
         }
     }
 
@@ -94,46 +94,46 @@ export class MailerService {
         to,
         subject,
         content: string,
-    type: 'text' | 'html' = 'text',
+    type: "text" | "html" = "text",
     ): Promise<any> {
-        if (type === 'text') {
+        if (type === "text") {
             return this.mailerService.sendMail({
                 to,
                 subject,
                 text: content,
-            })
+            });
         }
         else {
             return this.mailerService.sendMail({
                 to,
                 subject,
                 html: content,
-            })
+            });
         }
     }
 
-    async sendVerificationCode(to, code = randomValue(4, '1234567890')) {
-        const subject = `[${this.appConfig.name}] 验证码`
+    async sendVerificationCode(to, code = randomValue(4, "1234567890")) {
+        const subject = `[${this.appConfig.name}] 验证码`;
 
         try {
             await this.mailerService.sendMail({
                 to,
                 subject,
-                template: './verification-code-zh',
+                template: "./verification-code-zh",
                 context: {
                     code,
                 },
-            })
+            });
         }
         catch (error) {
-            console.log(error)
-            throw new HttpApiException(ErrorEnum.VERIFICATION_CODE_SEND_FAILED)
+            console.log(error);
+            throw new HttpApiException(ErrorEnum.VERIFICATION_CODE_SEND_FAILED);
         }
 
         return {
             to,
             code,
-        }
+        };
     }
 
     // async sendUserConfirmation(user: UserEntity, token: string) {

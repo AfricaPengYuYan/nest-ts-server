@@ -1,24 +1,24 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common'
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Body, Controller, Post, UseGuards } from "@nestjs/common";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { Throttle, ThrottlerGuard } from '@nestjs/throttler'
+import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
 
-import { Ip } from '~/common/decorators/http.decorator'
+import { Public } from "../../../common/decorators/public.decorator";
 
-import { MailerService } from '~/shared/mailer/mailer.service'
+import { SendEmailCodeDto } from "../dto/captcha.dto";
 
-import { Public } from '../../../common/decorators/public.decorator'
+import { Ip } from "~/common/decorators/http.decorator";
 
-import { SendEmailCodeDto } from '../dto/captcha.dto'
+import { MailerService } from "~/shared/mailer/mailer.service";
 
-@ApiTags('Auth - 认证模块')
+@ApiTags("Auth - 认证模块")
 @UseGuards(ThrottlerGuard)
-@Controller('auth/email')
+@Controller("auth/email")
 export class EmailController {
     constructor(private mailerService: MailerService) {}
 
-    @Post('send')
-    @ApiOperation({ summary: '发送邮箱验证码' })
+    @Post("send")
+    @ApiOperation({ summary: "发送邮箱验证码" })
     @Public()
     @Throttle({ default: { limit: 2, ttl: 600000 } })
     async sendEmailCode(
@@ -26,12 +26,12 @@ export class EmailController {
     @Ip() ip: string,
     ): Promise<void> {
     // await this.authService.checkImgCaptcha(dto.captchaId, dto.verifyCode);
-        const { email } = dto
+        const { email } = dto;
 
-        await this.mailerService.checkLimit(email, ip)
-        const { code } = await this.mailerService.sendVerificationCode(email)
+        await this.mailerService.checkLimit(email, ip);
+        const { code } = await this.mailerService.sendVerificationCode(email);
 
-        await this.mailerService.log(email, code, ip)
+        await this.mailerService.log(email, code, ip);
     }
 
     // @Post()

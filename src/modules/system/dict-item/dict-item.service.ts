@@ -1,13 +1,13 @@
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 
-import { Like, Repository } from 'typeorm'
+import { Like, Repository } from "typeorm";
 
-import { paginate } from '~/helper/paginate'
-import { Pagination } from '~/helper/paginate/pagination'
-import { DictItemEntity } from '~/modules/system/dict-item/dict-item.entity'
+import { DictItemDto, QueryDictItemDto } from "./dict-item.dto";
 
-import { DictItemDto, QueryDictItemDto } from './dict-item.dto'
+import { paginate } from "~/helper/paginate";
+import { Pagination } from "~/helper/paginate/pagination";
+import { DictItemEntity } from "~/modules/system/dict-item/dict-item.entity";
 
 @Injectable()
 export class DictItemService {
@@ -26,63 +26,63 @@ export class DictItemService {
         value,
         typeId,
     }: QueryDictItemDto): Promise<Pagination<DictItemEntity>> {
-        const queryBuilder = this.dictItemRepository.createQueryBuilder('dict_item')
-            .orderBy({ sort: 'ASC' })
+        const queryBuilder = this.dictItemRepository.createQueryBuilder("dict_item")
+            .orderBy({ sort: "ASC" })
             .where({
                 ...(label && { label: Like(`%${label}%`) }),
                 ...(value && { value: Like(`%${value}%`) }),
                 type: {
                     id: typeId,
                 },
-            })
+            });
 
-        return paginate(queryBuilder, { page, pageSize })
+        return paginate(queryBuilder, { page, pageSize });
     }
 
     /**
      * 获取参数总数
      */
     async countConfigList(): Promise<number> {
-        return this.dictItemRepository.count()
+        return this.dictItemRepository.count();
     }
 
     /**
      * 新增
      */
     async create(dto: DictItemDto): Promise<void> {
-        const { typeId, ...rest } = dto
+        const { typeId, ...rest } = dto;
         await this.dictItemRepository.insert({
             ...rest,
             type: {
                 id: typeId,
             },
-        })
+        });
     }
 
     /**
      * 更新
      */
     async update(id: number, dto: Partial<DictItemDto>): Promise<void> {
-        const { typeId, ...rest } = dto
+        const { typeId, ...rest } = dto;
         await this.dictItemRepository.update(id, {
             ...rest,
             type: {
                 id: typeId,
             },
-        })
+        });
     }
 
     /**
      * 删除
      */
     async delete(id: number): Promise<void> {
-        await this.dictItemRepository.delete(id)
+        await this.dictItemRepository.delete(id);
     }
 
     /**
      * 查询单个
      */
     async findOne(id: number): Promise<DictItemEntity> {
-        return this.dictItemRepository.findOneBy({ id })
+        return this.dictItemRepository.findOneBy({ id });
     }
 }

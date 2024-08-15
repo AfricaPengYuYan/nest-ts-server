@@ -1,22 +1,24 @@
-import { Body, Controller, Headers, Post, UseGuards } from '@nestjs/common'
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Body, Controller, Headers, Post, UseGuards } from "@nestjs/common";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { ApiResult } from '~/common/decorators/api-result.decorator'
-import { Ip } from '~/common/decorators/http.decorator'
+import { AuthService } from "./auth.service";
+import { LoginDto, RegisterDto } from "./dto/auth.dto";
 
-import { Public } from '~/common/decorators/public.decorator'
-import { LocalGuard } from '~/common/guards/local.guard'
-import { UserService } from '~/modules/system/user/user.service'
+import { LoginToken } from "./models/auth.model";
 
-import { AuthService } from './auth.service'
-import { LoginDto, RegisterDto } from './dto/auth.dto'
-import { LoginToken } from './models/auth.model'
-import { CaptchaService } from './services/captcha.service'
+import { CaptchaService } from "./services/captcha.service";
 
-@ApiTags('Auth - 认证模块')
+import { ApiResult } from "~/common/decorators/api-result.decorator";
+import { Ip } from "~/common/decorators/http.decorator";
+
+import { Public } from "~/common/decorators/public.decorator";
+import { LocalGuard } from "~/common/guards/local.guard";
+import { UserService } from "~/modules/system/user/user.service";
+
+@ApiTags("Auth - 认证模块")
 @UseGuards(LocalGuard)
 @Public()
-@Controller('auth')
+@Controller("auth")
 export class AuthController {
     constructor(
         private authService: AuthService,
@@ -24,23 +26,23 @@ export class AuthController {
         private captchaService: CaptchaService,
     ) {}
 
-    @Post('login')
-    @ApiOperation({ summary: '登录' })
+    @Post("login")
+    @ApiOperation({ summary: "登录" })
     @ApiResult({ type: LoginToken })
-    async login(@Body() dto: LoginDto, @Ip()ip: string, @Headers('user-agent')ua: string): Promise<LoginToken> {
-        await this.captchaService.checkImgCaptcha(dto.captchaId, dto.verifyCode)
+    async login(@Body() dto: LoginDto, @Ip()ip: string, @Headers("user-agent")ua: string): Promise<LoginToken> {
+        await this.captchaService.checkImgCaptcha(dto.captchaId, dto.verifyCode);
         const token = await this.authService.login(
             dto.username,
             dto.password,
             ip,
             ua,
-        )
-        return { token }
+        );
+        return { token };
     }
 
-    @Post('register')
-    @ApiOperation({ summary: '注册' })
+    @Post("register")
+    @ApiOperation({ summary: "注册" })
     async register(@Body() dto: RegisterDto): Promise<void> {
-        await this.userService.register(dto)
+        await this.userService.register(dto);
     }
 }

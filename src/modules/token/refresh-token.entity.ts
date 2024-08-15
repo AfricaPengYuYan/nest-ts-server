@@ -6,27 +6,27 @@ import {
     JoinColumn,
     OneToOne,
     PrimaryGeneratedColumn,
-} from 'typeorm'
+} from "typeorm";
 
-import { AccessTokenEntity } from './access-token.entity'
+import { AccessTokenEntity } from "./access-token.entity";
 
-@Entity('user_refresh_token')
+@Entity("user_refresh_token")
 export class RefreshTokenEntity extends BaseEntity {
-    @PrimaryGeneratedColumn('uuid')
-    id!: string
+    @PrimaryGeneratedColumn("uuid")
+    id!: string;
 
-    @Column({ length: 500 })
-    value!: string
+    @Column({ length: 500, type: "varchar", comment: "令牌值", nullable: true })
+    value!: string;
 
-    @Column({ comment: '令牌过期时间' })
-    expired_time!: Date
+    @Column({ comment: "令牌过期时间", type: "datetime", nullable: true })
+    expired_time!: Date;
 
-    @CreateDateColumn({ comment: '令牌创建时间' })
-    created_time!: Date
+    @CreateDateColumn({ comment: "令牌创建时间", type: "datetime", nullable: true })
+    created_time!: Date;
 
     @OneToOne(() => AccessTokenEntity, accessToken => accessToken.refresh_token, {
-        onDelete: 'CASCADE',
+        onDelete: "CASCADE",
     })
     @JoinColumn()
-    access_token!: AccessTokenEntity
+    access_token!: AccessTokenEntity;
 }

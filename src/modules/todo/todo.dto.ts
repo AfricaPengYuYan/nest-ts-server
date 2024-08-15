@@ -1,12 +1,12 @@
-import { ApiProperty, IntersectionType, PartialType } from '@nestjs/swagger'
-import { IsString } from 'class-validator'
+import { ApiProperty, IntersectionType, PartialType } from "@nestjs/swagger";
+import { IsString } from "class-validator";
 
-import { PageDto } from '~/dto/pager.dto'
+import { PageDto } from "~/dto/pager.dto";
 
 export class TodoDto {
-    @ApiProperty({ description: '名称' })
+    @ApiProperty({ description: "名称" })
     @IsString()
-    value: string
+    value: string;
 }
 
 export class UpdateTodoDto extends PartialType(TodoDto) { }

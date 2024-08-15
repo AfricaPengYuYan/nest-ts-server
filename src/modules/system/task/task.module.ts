@@ -1,21 +1,21 @@
-import { BullModule } from '@nestjs/bull'
-import { Module } from '@nestjs/common'
+import { BullModule } from "@nestjs/bull";
+import { Module } from "@nestjs/common";
 
-import { ConfigService } from '@nestjs/config'
-import { TypeOrmModule } from '@nestjs/typeorm'
+import { ConfigService } from "@nestjs/config";
+import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { ConfigKeyPaths, IRedisConfig } from '~/config'
+import { SYS_TASK_QUEUE_NAME, SYS_TASK_QUEUE_PREFIX } from "./task.constant";
 
-import { LogModule } from '../log/log.module'
+import { TaskController } from "./task.controller";
+import { TaskEntity } from "./task.entity";
+import { TaskConsumer } from "./task.processor";
+import { TaskService } from "./task.service";
 
-import { SYS_TASK_QUEUE_NAME, SYS_TASK_QUEUE_PREFIX } from './task.constant'
+import { LogModule } from "../log/log.module";
 
-import { TaskController } from './task.controller'
-import { TaskEntity } from './task.entity'
-import { TaskConsumer } from './task.processor'
-import { TaskService } from './task.service'
+import { ConfigKeyPaths, IRedisConfig } from "~/config";
 
-const providers = [TaskService, TaskConsumer]
+const providers = [TaskService, TaskConsumer];
 
 @Module({
     imports: [
@@ -23,7 +23,7 @@ const providers = [TaskService, TaskConsumer]
         BullModule.registerQueueAsync({
             name: SYS_TASK_QUEUE_NAME,
             useFactory: (configService: ConfigService<ConfigKeyPaths>) => ({
-                redis: configService.get<IRedisConfig>('redis'),
+                redis: configService.get<IRedisConfig>("redis"),
                 prefix: SYS_TASK_QUEUE_PREFIX,
             }),
             inject: [ConfigService],

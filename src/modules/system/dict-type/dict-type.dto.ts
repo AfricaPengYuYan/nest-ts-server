@@ -1,44 +1,44 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger'
-import { IsInt, IsOptional, IsString, MinLength } from 'class-validator'
+import { ApiProperty, PartialType } from "@nestjs/swagger";
+import { IsInt, IsOptional, IsString, MinLength } from "class-validator";
 
-import { PageDto } from '~/dto/pager.dto'
+import { DictTypeEntity } from "./dict-type.entity";
 
-import { IsUnique } from '~/shared/database/constraints/unique.constraint'
+import { PageDto } from "~/dto/pager.dto";
 
-import { DictTypeEntity } from './dict-type.entity'
+import { IsUnique } from "~/shared/database/constraints/unique.constraint";
 
 export class DictTypeDto extends PartialType(DictTypeEntity) {
-    @ApiProperty({ description: '字典类型名称' })
-    @IsUnique({ entity: DictTypeEntity, message: '已存在相同名称的字典' })
+    @ApiProperty({ description: "字典类型名称" })
+    @IsUnique({ entity: DictTypeEntity, message: "已存在相同名称的字典" })
     @IsString()
     @MinLength(1)
-    name: string
+    name: string;
 
-    @ApiProperty({ description: '字典类型code' })
-    @IsUnique({ entity: DictTypeEntity, message: '已存在相同编码的字典' })
+    @ApiProperty({ description: "字典类型code" })
+    @IsUnique({ entity: DictTypeEntity, message: "已存在相同编码的字典" })
     @IsString()
     @MinLength(3)
-    code: string
+    code: string;
 
-    @ApiProperty({ description: '状态' })
+    @ApiProperty({ description: "状态" })
     @IsOptional()
     @IsInt()
-    status?: number
+    status?: number;
 
-    @ApiProperty({ description: '备注' })
+    @ApiProperty({ description: "备注" })
     @IsOptional()
     @IsString()
-    remark?: string
+    remark?: string;
 }
 
 export class QueryDictTypeDto extends PageDto {
-    @ApiProperty({ description: '字典类型名称' })
+    @ApiProperty({ description: "字典类型名称" })
     @IsString()
     @IsOptional()
-    name: string
+    name: string;
 
-    @ApiProperty({ description: '字典类型code' })
+    @ApiProperty({ description: "字典类型code" })
     @IsString()
     @IsOptional()
-    code: string
+    code: string;
 }
