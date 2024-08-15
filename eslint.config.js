@@ -1,12 +1,17 @@
 // 导入 @antfu/eslint-config 配置包，用于扩展 ESLint 规则
 const antfu = require("@antfu/eslint-config").default;
 
+const PRINTWIDTH = 180;
+const INDENT = 4;
+
 // 导出配置对象，该对象基于 @antfu/eslint-config 进行定制
 module.exports = antfu({
     // 定义样式规则
     stylistic: {
+        printWidth: PRINTWIDTH,
+
         // 缩进空格的数量
-        indent: 4,
+        indent: INDENT,
 
         // 字符串引号的风格
         quotes: "double", // 单引号
@@ -186,6 +191,12 @@ module.exports = antfu({
 }, {
     // 自定义规则覆盖
     rules: {
+        "max-len": ["error", PRINTWIDTH, INDENT],
+
+        // https://typescript-eslint.io/rules/no-unused-expressions/
+        "no-unused-expressions": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
+
         // 允许 console.log 等语句
         "no-console": "off",
         // 关闭未使用的变量警告
@@ -193,9 +204,10 @@ module.exports = antfu({
         // 开启未使用的导入检查，设置为 2 表示警告级别
         "unused-imports/no-unused-imports": 2,
 
-        // 禁用与正则表达式性能相关的规则
-        "no-restricted-syntax": "off",
-        "security/detect-non-literal-regexp": "off",
+        // https://ota-meshi.github.io/eslint-plugin-regexp/rules/no-super-linear-backtracking.html
+        "regexp/no-super-linear-backtracking": "off",
+        // https://ota-meshi.github.io/eslint-plugin-regexp/rules/no-contradiction-with-assertion.html
+        "regexp/no-contradiction-with-assertion": "off",
 
         // 关闭一致的类型导入规则
         "ts/consistent-type-imports": "off",
