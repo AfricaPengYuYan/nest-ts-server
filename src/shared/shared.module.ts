@@ -3,7 +3,7 @@ import { Global, Module } from "@nestjs/common";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { ScheduleModule } from "@nestjs/schedule";
 
-import { seconds, ThrottlerModule } from "@nestjs/throttler";
+import { ThrottlerModule } from "@nestjs/throttler";
 
 import { isDev } from "~/global/env";
 import { HelperModule } from "./helper/helper.module";
@@ -14,7 +14,6 @@ import { RedisModule } from "./redis/redis.module";
 @Global()
 @Module({
     imports: [
-
         // logger
         LoggerModule.forRoot(),
         // http
@@ -26,7 +25,7 @@ import { RedisModule } from "./redis/redis.module";
             useFactory: () => ({
                 errorMessage: "当前操作过于频繁，请稍后再试！",
                 throttlers: [
-                    { ttl: seconds(10), limit: 7 },
+                    { limit: 20, ttl: 60000 },
                 ],
             }),
         }),

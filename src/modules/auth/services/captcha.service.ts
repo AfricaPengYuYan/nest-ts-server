@@ -3,10 +3,10 @@ import Redis from "ioredis";
 
 import { isEmpty } from "lodash";
 
-import { ErrorEnum } from "~/common/constants/error-code.constant";
-
 import { InjectRedis } from "~/common/decorators/inject-redis.decorator";
+
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
+import { ErrorEnum } from "~/constants/error-code.constant";
 import { genCaptchaImgKey } from "~/helper/genRedisKey";
 import { CaptchaLogService } from "~/modules/system/log/services/captcha-log.service";
 

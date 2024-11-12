@@ -3,10 +3,10 @@ import { ConfigService } from "@nestjs/config";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
 import { API_SECURITY_AUTH } from "./common/decorators/swagger.decorator";
+import { CommonEntity } from "./common/entity/common.entity";
+import { Result, TreeResult } from "./common/models/result.model";
 import { ConfigKeyPaths, IAppConfig, ISwaggerConfig } from "./config";
-import { CommonEntity } from "./entity/common.entity";
 import { Pagination } from "./helper/paginate/pagination";
-import { Result, TreeResult } from "./models/result.model";
 
 export function setupSwagger(
     app: INestApplication,

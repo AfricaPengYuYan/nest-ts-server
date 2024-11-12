@@ -6,7 +6,7 @@ import { Cache } from "cache-manager";
 
 import { RedisIoAdapterKey } from "~/common/adapters/socket.adapter";
 
-import { API_CACHE_PREFIX } from "~/common/constants/cache.constant";
+import { API_CACHE_PREFIX } from "~/constants/cache.constant";
 import { getRedisKey } from "~/utils/redis.util";
 
 // 获取器
@@ -23,8 +23,8 @@ export class CacheService {
     }
 
     private get redisClient(): Redis {
-    // eslint-disable-next-line ts/ban-ts-comment
-    // @ts-expect-error
+        // eslint-disable-next-line ts/ban-ts-comment
+        // @ts-expect-error
         return this.cache.store.client;
     }
 

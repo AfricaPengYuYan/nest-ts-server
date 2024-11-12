@@ -3,7 +3,7 @@ import { Type } from "class-transformer";
 import { ArrayMaxSize, ArrayMinSize, ArrayNotEmpty, IsEmail, IsIn, IsInt, IsOptional, IsString, Matches, MaxLength, MinLength, ValidateIf } from "class-validator";
 import { isEmpty } from "lodash";
 
-import { PageDto } from "~/dto/pager.dto";
+import { PageDto } from "~/common/dto/pager.dto";
 
 export class UserDto {
     @ApiProperty({ description: "头像" })

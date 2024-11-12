@@ -3,8 +3,8 @@ import { InjectEntityManager, InjectRepository } from "@nestjs/typeorm";
 import { isEmpty, isNil } from "lodash";
 import { EntityManager, In, Like, Repository } from "typeorm";
 
-import { ROOT_ROLE_ID } from "~/common/constants/system.constant";
-import { PageDto } from "~/dto/pager.dto";
+import { PageDto } from "~/common/dto/pager.dto";
+import { ROOT_ROLE_ID } from "~/constants/system.constant";
 import { paginate } from "~/helper/paginate";
 import { Pagination } from "~/helper/paginate/pagination";
 import { MenuEntity } from "~/modules/system/menu/menu.entity";

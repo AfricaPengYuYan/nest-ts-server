@@ -9,7 +9,7 @@ import { JwtService } from "@nestjs/jwt";
 import { WebSocketServer } from "@nestjs/websockets";
 import { Namespace } from "socket.io";
 
-import { EventBusEvents } from "~/common/constants/event-bus.constant";
+import { EventBusEvents } from "~/constants/event-bus.constant";
 import { TokenService } from "~/modules/token/token.service";
 import { CacheService } from "~/shared/redis/cache.service";
 import { BroadcastBaseGateway } from "../base.gateway";
@@ -21,7 +21,7 @@ export interface AuthGatewayOptions {
 
 // eslint-disable-next-line ts/ban-ts-comment
 // @ts-expect-error
-export interface IAuthGateway extends OnGatewayConnection, OnGatewayDisconnect, BroadcastBaseGateway {}
+export interface IAuthGateway extends OnGatewayConnection, OnGatewayDisconnect, BroadcastBaseGateway { }
 
 export function createAuthGateway(options: AuthGatewayOptions): new (...args: any[]) => IAuthGateway {
     const { namespace } = options;
@@ -68,9 +68,9 @@ export function createAuthGateway(options: AuthGatewayOptions): new (...args: an
 
         async handleConnection(client: Socket) {
             const token
-        = client.handshake.query.token
-        || client.handshake.headers.authorization
-        || client.handshake.headers.Authorization;
+                = client.handshake.query.token
+                || client.handshake.headers.authorization
+                || client.handshake.headers.Authorization;
             if (!token)
                 return this.authFailed(client);
 

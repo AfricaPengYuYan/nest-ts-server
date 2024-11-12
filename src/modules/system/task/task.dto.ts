@@ -4,7 +4,7 @@ import { IsDateString, IsIn, IsInt, IsOptional, IsString, MaxLength, Min, MinLen
 import * as parser from "cron-parser";
 import { isEmpty } from "lodash";
 
-import { PageDto } from "~/dto/pager.dto";
+import { PageDto } from "~/common/dto/pager.dto";
 import { IsUnique } from "~/shared/database/constraints/unique.constraint";
 import { TaskEntity } from "./task.entity";
 

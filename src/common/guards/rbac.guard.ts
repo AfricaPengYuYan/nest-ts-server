@@ -6,8 +6,8 @@ import {
 import { Reflector } from "@nestjs/core";
 import { FastifyRequest } from "fastify";
 
-import { ErrorEnum } from "~/common/constants/error-code.constant";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
+import { ErrorEnum } from "~/constants/error-code.constant";
 import { AuthService } from "~/modules/auth/auth.service";
 import { ALLOW_ANON_KEY, PERMISSION_KEY, PUBLIC_KEY, Roles } from "../../modules/auth/auth.constant";
 
@@ -16,7 +16,7 @@ export class RbacGuard implements CanActivate {
     constructor(
         private reflector: Reflector,
         private authService: AuthService,
-    ) {}
+    ) { }
 
     async canActivate(context: ExecutionContext): Promise<any> {
         const isPublic = this.reflector.getAllAndOverride<boolean>(PUBLIC_KEY, [
@@ -42,7 +42,7 @@ export class RbacGuard implements CanActivate {
             return true;
 
         const payloadPermission = this.reflector.getAllAndOverride<
-      string | string[]
+            string | string[]
         >(PERMISSION_KEY, [context.getHandler(), context.getClass()]);
 
         // 控制器没有设置接口权限，则默认通过

@@ -5,8 +5,8 @@ import { isEmpty } from "lodash";
 import * as qiniu from "qiniu";
 import { auth, conf, rs } from "qiniu";
 
-import { NETDISK_COPY_SUFFIX, NETDISK_DELIMITER, NETDISK_HANDLE_MAX_ITEM, NETDISK_LIMIT } from "~/common/constants/oss.constant";
 import { IOssConfig, OssConfig } from "~/config";
+import { NETDISK_COPY_SUFFIX, NETDISK_DELIMITER, NETDISK_HANDLE_MAX_ITEM, NETDISK_LIMIT } from "~/constants/oss.constant";
 import { AccountInfo } from "~/modules/system/user/user.model";
 import { UserService } from "~/modules/system/user/user.service";
 import { generateRandomValue } from "~/utils";
@@ -21,8 +21,8 @@ export class NetDiskManageService {
     private bucketManager: rs.BucketManager;
 
     constructor(
-    @Inject(OssConfig.KEY) private qiniuConfig: IOssConfig,
-    private userService: UserService,
+        @Inject(OssConfig.KEY) private qiniuConfig: IOssConfig,
+        private userService: UserService,
     ) {
         this.mac = new qiniu.auth.digest.Mac(
             this.qiniuConfig.accessKey,
@@ -36,7 +36,7 @@ export class NetDiskManageService {
     }
 
     async getFileList(prefix = "", marker = "", skey = ""): Promise<SFileList> {
-    // 是否需要搜索
+        // 是否需要搜索
         const searching = !isEmpty(skey);
         return new Promise<SFileList>((resolve, reject) => {
             this.bucketManager.listPrefix(

@@ -13,11 +13,11 @@ import { AppConfig, IAppConfig, RouterWhiteList } from "~/config";
 import { genTokenBlacklistKey } from "~/helper/genRedisKey";
 import { AuthService } from "~/modules/auth/auth.service";
 import { checkIsDemoMode } from "~/utils";
+import { ErrorEnum } from "../../constants/error-code.constant";
+
 import { AuthStrategy, PUBLIC_KEY } from "../../modules/auth/auth.constant";
 
 import { TokenService } from "../../modules/token/token.service";
-
-import { ErrorEnum } from "../constants/error-code.constant";
 
 /** @type {import('fastify').RequestGenericInterface} */
 interface RequestType {

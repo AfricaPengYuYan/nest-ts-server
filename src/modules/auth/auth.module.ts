@@ -40,8 +40,7 @@ const strategies = [LocalStrategy, JwtStrategy];
         JwtModule.registerAsync({
             imports: [ConfigModule],
             useFactory: (configService: ConfigService<ConfigKeyPaths>) => {
-                const { jwtSecret, jwtExprire }
-          = configService.get<ISecurityConfig>("security");
+                const { jwtSecret, jwtExprire } = configService.get<ISecurityConfig>("security");
 
                 return {
                     secret: jwtSecret,
@@ -62,4 +61,4 @@ const strategies = [LocalStrategy, JwtStrategy];
     providers: [...providers, ...strategies],
     exports: [TypeOrmModule, JwtModule, ...providers],
 })
-export class AuthModule {}
+export class AuthModule { }

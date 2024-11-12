@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString } from "class-validator";
 
-import { PageDto } from "~/dto/pager.dto";
+import { PageDto } from "~/common/dto/pager.dto";
 
 export class KickDto {
     @ApiProperty({ description: "tokenId" })

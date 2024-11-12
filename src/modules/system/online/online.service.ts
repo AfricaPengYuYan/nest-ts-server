@@ -5,9 +5,9 @@ import { throttle } from "lodash";
 
 import { UAParser } from "ua-parser-js";
 
-import { ErrorEnum } from "~/common/constants/error-code.constant";
 import { InjectRedis } from "~/common/decorators/inject-redis.decorator";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
+import { ErrorEnum } from "~/constants/error-code.constant";
 import { genOnlineUserKey } from "~/helper/genRedisKey";
 import { AuthService } from "~/modules/auth/auth.service";
 import { SseService } from "~/modules/sse/sse.service";

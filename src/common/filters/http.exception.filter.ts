@@ -9,8 +9,8 @@ import {
 import { FastifyReply, FastifyRequest } from "fastify";
 import { QueryFailedError } from "typeorm";
 
-import { ErrorEnum } from "~/common/constants/error-code.constant";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
+import { ErrorEnum } from "~/constants/error-code.constant";
 
 import { isDev } from "~/global/env";
 

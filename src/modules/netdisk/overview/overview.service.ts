@@ -3,8 +3,8 @@ import { Inject, Injectable } from "@nestjs/common";
 import dayjs from "dayjs";
 import * as qiniu from "qiniu";
 
-import { OSS_API } from "~/common/constants/oss.constant";
 import { IOssConfig, OssConfig } from "~/config";
+import { OSS_API } from "~/constants/oss.constant";
 import { CountInfo, FlowInfo, HitInfo, SpaceInfo } from "./overview.dto";
 
 @Injectable()
@@ -13,8 +13,8 @@ export class NetDiskOverviewService {
     private readonly FORMAT = "YYYYMMDDHHmmss";
 
     constructor(
-    @Inject(OssConfig.KEY) private qiniuConfig: IOssConfig,
-    private readonly httpService: HttpService,
+        @Inject(OssConfig.KEY) private qiniuConfig: IOssConfig,
+        private readonly httpService: HttpService,
     ) {
         this.mac = new qiniu.auth.digest.Mac(
             this.qiniuConfig.accessKey,

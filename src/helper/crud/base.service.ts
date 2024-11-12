@@ -1,7 +1,7 @@
 import { NotFoundException } from "@nestjs/common";
 import { ObjectLiteral, Repository } from "typeorm";
 
-import { PageDto } from "~/dto/pager.dto";
+import { PageDto } from "~/common/dto/pager.dto";
 import { paginate } from "../paginate";
 import { Pagination } from "../paginate/pagination";
 

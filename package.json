@@ -104,6 +104,7 @@
         "@types/node": "^22.9.0",
         "@types/passport-jwt": "^4.0.1",
         "@types/qs": "^6.9.17",
+        "@types/request-ip": "^0.0.41",
         "@types/supertest": "^6.0.2",
         "@types/ua-parser-js": "^0.7.39",
         "cross-env": "^7.0.3",

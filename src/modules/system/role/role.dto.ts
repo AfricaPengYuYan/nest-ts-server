@@ -1,8 +1,8 @@
 import { ApiProperty, IntersectionType, PartialType } from "@nestjs/swagger";
 import { IsArray, IsIn, IsOptional, IsString, Matches, MinLength } from "class-validator";
 
-import { OperatorDto } from "~/dto/operator.dto";
-import { PageDto } from "~/dto/pager.dto";
+import { OperatorDto } from "~/common/dto/operator.dto";
+import { PageDto } from "~/common/dto/pager.dto";
 import { IsUnique } from "~/shared/database/constraints/unique.constraint";
 import { RoleEntity } from "./role.entity";
 

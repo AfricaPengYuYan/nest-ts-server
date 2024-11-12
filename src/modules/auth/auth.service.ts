@@ -3,10 +3,10 @@ import Redis from "ioredis";
 
 import { isEmpty } from "lodash";
 
-import { ErrorEnum } from "~/common/constants/error-code.constant";
 import { InjectRedis } from "~/common/decorators/inject-redis.decorator";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
 import { AppConfig, IAppConfig, ISecurityConfig, SecurityConfig } from "~/config";
+import { ErrorEnum } from "~/constants/error-code.constant";
 import { genAuthPermKey, genAuthPVKey, genAuthTokenKey, genTokenBlacklistKey } from "~/helper/genRedisKey";
 import { UserService } from "~/modules/system/user/user.service";
 

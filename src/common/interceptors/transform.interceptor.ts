@@ -11,7 +11,7 @@ import qs from "qs";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
-import { Result } from "~/models/result.model";
+import { Result } from "~/common/models/result.model";
 import { BYPASS_KEY } from "../decorators/bypass.decorator";
 
 /**

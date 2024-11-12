@@ -1,22 +1,23 @@
-import { HttpException, HttpStatus } from "@nestjs/common";
+import { HttpException } from "@nestjs/common";
+import { WsException } from "@nestjs/websockets";
 
 import { ErrorEnum } from "~/constants/error-code.constant";
-import { RESPONSE_SUCCESS_CODE } from "~/constants/response.constant";
 
-export class HttpApiException extends HttpException {
+export class SocketException extends WsException {
     private errorCode: number;
 
-    constructor(error: ErrorEnum | string) {
-        // 如果是非 ErrorEnum
-        if (!error.includes(":")) {
+    constructor(message: string);
+    constructor(error: ErrorEnum);
+    constructor(...args: any) {
+        const error = args[0];
+        if (typeof error === "string") {
             super(
                 HttpException.createBody({
-                    code: RESPONSE_SUCCESS_CODE,
+                    code: 0,
                     message: error,
                 }),
-                HttpStatus.OK,
             );
-            this.errorCode = RESPONSE_SUCCESS_CODE;
+            this.errorCode = 0;
             return;
         }
 
@@ -26,7 +27,6 @@ export class HttpApiException extends HttpException {
                 code,
                 message,
             }),
-            HttpStatus.OK,
         );
 
         this.errorCode = Number(code);

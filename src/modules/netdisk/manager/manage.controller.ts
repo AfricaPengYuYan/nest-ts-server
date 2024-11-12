@@ -5,10 +5,10 @@ import {
     ApiTags,
 } from "@nestjs/swagger";
 
-import { ErrorEnum } from "~/common/constants/error-code.constant";
 import { AuthUser } from "~/common/decorators/auth-user.decorator";
 import { definePermission, Permission } from "~/common/decorators/permission.decorator";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
+import { ErrorEnum } from "~/constants/error-code.constant";
 import { checkIsDemoMode } from "~/utils";
 import { SFileInfoDetail, SFileList, UploadToken } from "./manage.class";
 

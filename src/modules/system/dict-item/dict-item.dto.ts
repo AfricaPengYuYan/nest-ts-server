@@ -1,7 +1,7 @@
 import { ApiProperty, PartialType } from "@nestjs/swagger";
 import { IsInt, IsOptional, IsString, MinLength } from "class-validator";
 
-import { PageDto } from "~/dto/pager.dto";
+import { PageDto } from "~/common/dto/pager.dto";
 import { DictItemEntity } from "./dict-item.entity";
 
 export class DictItemDto extends PartialType(DictItemEntity) {

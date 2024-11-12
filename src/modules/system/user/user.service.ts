@@ -4,10 +4,10 @@ import Redis from "ioredis";
 import { isEmpty, isNil } from "lodash";
 import { EntityManager, In, Like, Repository } from "typeorm";
 
-import { ErrorEnum } from "~/common/constants/error-code.constant";
-import { ROOT_ROLE_ID, SYS_USER_INITPASSWORD } from "~/common/constants/system.constant";
 import { InjectRedis } from "~/common/decorators/inject-redis.decorator";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
+import { ErrorEnum } from "~/constants/error-code.constant";
+import { ROOT_ROLE_ID, SYS_USER_INITPASSWORD } from "~/constants/system.constant";
 import { genAuthPermKey, genAuthPVKey, genAuthTokenKey, genOnlineUserKey } from "~/helper/genRedisKey";
 import { paginate } from "~/helper/paginate";
 

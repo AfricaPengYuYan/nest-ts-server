@@ -6,8 +6,8 @@ import { isArray, isEmpty, isNil } from "lodash";
 
 import { DataSource, In, Repository } from "typeorm";
 
-import { ErrorEnum } from "~/common/constants/error-code.constant";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
+import { ErrorEnum } from "~/constants/error-code.constant";
 import { PUBLIC_KEY, RESOURCE_KEY, Roles } from "../../modules/auth/auth.constant";
 
 import { ResourceObject } from "../decorators/resource.decorator";
@@ -17,7 +17,7 @@ export class ResourceGuard implements CanActivate {
     constructor(
         private reflector: Reflector,
         private dataSource: DataSource,
-    ) {}
+    ) { }
 
     async canActivate(context: ExecutionContext): Promise<any> {
         const isPublic = this.reflector.getAllAndOverride<boolean>(PUBLIC_KEY, [

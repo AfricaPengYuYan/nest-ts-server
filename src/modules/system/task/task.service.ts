@@ -14,9 +14,9 @@ import Redis from "ioredis";
 import { isEmpty, isNil } from "lodash";
 import { Like, Repository } from "typeorm";
 
-import { ErrorEnum } from "~/common/constants/error-code.constant";
 import { InjectRedis } from "~/common/decorators/inject-redis.decorator";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
+import { ErrorEnum } from "~/constants/error-code.constant";
 import { paginate } from "~/helper/paginate";
 import { Pagination } from "~/helper/paginate/pagination";
 import { TaskEntity } from "~/modules/system/task/task.entity";

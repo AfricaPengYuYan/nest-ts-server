@@ -9,7 +9,7 @@ import {
     ValidateIf,
 } from "class-validator";
 
-import { OperatorDto } from "~/dto/operator.dto";
+import { OperatorDto } from "~/common/dto/operator.dto";
 
 export class MenuDto extends OperatorDto {
     @ApiProperty({ description: "菜单类型" })

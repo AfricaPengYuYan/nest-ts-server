@@ -15,7 +15,7 @@ import {
 } from "class-validator";
 import { isEmpty } from "lodash";
 
-import { NETDISK_HANDLE_MAX_ITEM } from "~/common/constants/oss.constant";
+import { NETDISK_HANDLE_MAX_ITEM } from "~/constants/oss.constant";
 
 @ValidatorConstraint({ name: "IsLegalNameExpression", async: false })
 export class IsLegalNameExpression implements ValidatorConstraintInterface {
@@ -35,7 +35,7 @@ export class IsLegalNameExpression implements ValidatorConstraintInterface {
     }
 
     defaultMessage(_args: ValidationArguments) {
-    // here you can provide default error message if validation failed
+        // here you can provide default error message if validation failed
         return "file or dir name invalid";
     }
 }

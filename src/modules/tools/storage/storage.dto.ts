@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { ArrayNotEmpty, IsArray, IsOptional, IsString } from "class-validator";
 
-import { PageDto } from "~/dto/pager.dto";
+import { PageDto } from "~/common/dto/pager.dto";
 
 export class StoragePageDto extends PageDto {
     @ApiProperty({ description: "文件名" })
