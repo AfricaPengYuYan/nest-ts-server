@@ -15,7 +15,7 @@ declare global {
         data?: T;
     }
 
-    export interface IListRespData<T = any> {
+    export interface IListResponseData<T = any> {
         items: T[];
     }
 }

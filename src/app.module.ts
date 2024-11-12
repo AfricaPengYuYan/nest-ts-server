@@ -6,6 +6,10 @@ import type { FastifyRequest } from "fastify";
 
 import { ClsModule } from "nestjs-cls";
 
+import config from "~/config";
+
+import { SharedModule } from "~/shared/shared.module";
+
 import { HttpExceptionsFilter } from "./common/filters/http.exception.filter";
 import { JwtAuthGuard } from "./common/guards/jwt-auth.guard";
 import { RbacGuard } from "./common/guards/rbac.guard";
@@ -22,9 +26,6 @@ import { TodoModule } from "./modules/todo/todo.module";
 import { ToolsModule } from "./modules/tools/tools.module";
 import { DatabaseModule } from "./shared/database/database.module";
 import { SocketModule } from "./socket/socket.module";
-
-import config from "~/config";
-import { SharedModule } from "~/shared/shared.module";
 
 @Module({
     imports: [

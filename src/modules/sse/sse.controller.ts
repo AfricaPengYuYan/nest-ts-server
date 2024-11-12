@@ -1,16 +1,18 @@
 import { BeforeApplicationShutdown, Controller, Headers, Ip, Param, ParseIntPipe, Req, Res, Sse } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { SkipThrottle } from "@nestjs/throttler";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { Observable, interval } from "rxjs";
-
-import { MessageEvent, SseService } from "./sse.service";
-
-import { OnlineService } from "../system/online/online.service";
+import { interval, Observable } from "rxjs";
 
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
 
+import { OnlineService } from "../system/online/online.service";
+
+import { MessageEvent, SseService } from "./sse.service";
+
 @ApiTags("System - sse模块")
 @ApiSecurityAuth()
+@SkipThrottle()
 @Controller("sse")
 export class SseController implements BeforeApplicationShutdown {
     private replyMap: Map<number, FastifyReply> = new Map();
@@ -29,18 +31,18 @@ export class SseController implements BeforeApplicationShutdown {
 
     // 通过控制台关闭程序时触发
     beforeApplicationShutdown() {
-    // console.log('beforeApplicationShutdown')
+        // console.log('beforeApplicationShutdown')
         this.closeAllConnect();
     }
 
     @ApiOperation({ summary: "服务端推送消息" })
     @Sse(":uid")
     async sse(
-    @Param("uid", ParseIntPipe) uid: number,
-    @Req() req: FastifyRequest,
-    @Res() res: FastifyReply,
-    @Ip() ip: string,
-    @Headers("user-agent") ua: string,
+        @Param("uid", ParseIntPipe) uid: number,
+        @Req() req: FastifyRequest,
+        @Res() res: FastifyReply,
+        @Ip() ip: string,
+        @Headers("user-agent") ua: string,
     ): Promise<Observable<MessageEvent>> {
         this.replyMap.set(uid, res);
         this.onlineService.addOnlineUser(req.accessToken, ip, ua);

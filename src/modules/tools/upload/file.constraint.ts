@@ -1,10 +1,10 @@
 import { FastifyMultipartBaseOptions, MultipartFile } from "@fastify/multipart";
 import {
+    registerDecorator,
     ValidationArguments,
     ValidationOptions,
     ValidatorConstraint,
     ValidatorConstraintInterface,
-    registerDecorator,
 } from "class-validator";
 import { has, isArray } from "lodash";
 

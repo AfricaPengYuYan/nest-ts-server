@@ -1,10 +1,11 @@
-import { Module, Provider, forwardRef } from "@nestjs/common";
-
-import { AdminEventsGateway } from "./events/admin.gateway";
-import { WebEventsGateway } from "./events/web.gateway";
+import { forwardRef, Module, Provider } from "@nestjs/common";
 
 import { AuthModule } from "../modules/auth/auth.module";
 import { SystemModule } from "../modules/system/system.module";
+
+import { AdminEventsGateway } from "./events/admin.gateway";
+
+import { WebEventsGateway } from "./events/web.gateway";
 
 const providers: Provider[] = [AdminEventsGateway, WebEventsGateway];
 

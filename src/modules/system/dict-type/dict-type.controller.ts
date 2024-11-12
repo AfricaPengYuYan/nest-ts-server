@@ -1,17 +1,18 @@
 import { Body, Controller, Delete, Get, Post, Query } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { DictTypeDto, QueryDictTypeDto } from "./dict-type.dto";
-import { DictTypeService } from "./dict-type.service";
-
 import { ApiResult } from "~/common/decorators/api-result.decorator";
 import { IdParam } from "~/common/decorators/id-param.decorator";
-import { Permission, definePermission } from "~/common/decorators/permission.decorator";
+import { definePermission, Permission } from "~/common/decorators/permission.decorator";
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
 import { CreatorPipe } from "~/common/pipes/creator.pipe";
 import { UpdaterPipe } from "~/common/pipes/updater.pipe";
 import { Pagination } from "~/helper/paginate/pagination";
 import { DictTypeEntity } from "~/modules/system/dict-type/dict-type.entity";
+
+import { DictTypeDto, QueryDictTypeDto } from "./dict-type.dto";
+
+import { DictTypeService } from "./dict-type.service";
 
 export const permissions = definePermission("system:dict-type", {
     LIST: "list",

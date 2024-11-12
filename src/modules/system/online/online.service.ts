@@ -6,19 +6,17 @@ import Redis from "ioredis";
 import { throttle } from "lodash";
 import { UAParser } from "ua-parser-js";
 
-import { OnlineUserInfo } from "./online.model";
-
 import { ErrorEnum } from "~/common/constants/error-code.constant";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
-
 import { genOnlineUserKey } from "~/helper/genRedisKey";
 import { AuthService } from "~/modules/auth/auth.service";
 import { SseService } from "~/modules/sse/sse.service";
 import { UserService } from "~/modules/system/user/user.service";
 import { AccessTokenEntity } from "~/modules/token/access-token.entity";
 import { TokenService } from "~/modules/token/token.service";
-
 import { getIpAddress } from "~/utils";
+
+import { OnlineUserInfo } from "./online.model";
 
 @Injectable()
 export class OnlineService {
@@ -61,7 +59,7 @@ export class OnlineService {
             address,
             tokenId: token.id,
             uid: token.user.id,
-            deptName: token.user.dept.name,
+            deptName: token.user.dept?.name ?? "",
             os: `${`${uaResult.os.name ?? ""} `}${uaResult.os.version}`,
             browser: `${`${uaResult.browser.name ?? ""} `}${uaResult.browser.version}`,
             username: token.user.username,

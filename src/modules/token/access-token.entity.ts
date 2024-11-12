@@ -9,9 +9,9 @@ import {
     PrimaryGeneratedColumn,
 } from "typeorm";
 
-import { RefreshTokenEntity } from "./refresh-token.entity";
-
 import { UserEntity } from "~/modules/system/user/user.entity";
+
+import { RefreshTokenEntity } from "./refresh-token.entity";
 
 @Entity("user_access_token")
 export class AccessTokenEntity extends BaseEntity {

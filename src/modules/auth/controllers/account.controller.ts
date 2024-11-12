@@ -2,21 +2,18 @@ import { Body, Controller, Get, Post, Put, Req, UseGuards } from "@nestjs/common
 import { ApiExtraModels, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { FastifyRequest } from "fastify";
 
-import { JwtAuthGuard } from "../../../common/guards/jwt-auth.guard";
-
-import { AuthService } from "../auth.service";
-
-import { AccountMenus, AccountUpdateDto } from "../dto/account.dto";
-
 import { AllowAnon } from "~/common/decorators/allow-anon.decorator";
 import { ApiResult } from "~/common/decorators/api-result.decorator";
-
 import { AuthUser } from "~/common/decorators/auth-user.decorator";
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
-
 import { UpdatePasswordDto } from "~/modules/system/user/user.dto";
 import { AccountInfo } from "~/modules/system/user/user.model";
 import { UserService } from "~/modules/system/user/user.service";
+
+import { JwtAuthGuard } from "../../../common/guards/jwt-auth.guard";
+
+import { AuthService } from "../auth.service";
+import { AccountMenus, AccountUpdateDto } from "../dto/account.dto";
 
 @ApiTags("Account - 账户模块")
 @ApiSecurityAuth()

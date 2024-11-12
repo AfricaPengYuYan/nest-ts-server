@@ -1,19 +1,26 @@
+import type { ConfigKeyPaths } from "./config";
+
 import cluster from "node:cluster";
+
 import path from "node:path";
 
 import { HttpStatus, Logger, UnprocessableEntityException, ValidationPipe } from "@nestjs/common";
+
 import { ConfigService } from "@nestjs/config";
+
 import { NestFactory } from "@nestjs/core";
+
 import { NestFastifyApplication } from "@nestjs/platform-fastify";
 
 import { useContainer } from "class-validator";
 
-import { AppModule } from "./app.module";
+import helmet from "helmet";
 
+import { mw as requestIpMw } from "request-ip";
+import { AppModule } from "./app.module";
 import { fastifyApp } from "./common/adapters/fastify.adapter";
 import { RedisIoAdapter } from "./common/adapters/socket.adapter";
 import { LoggingInterceptor } from "./common/interceptors/logging.interceptor";
-import type { ConfigKeyPaths } from "./config";
 import { isDev, isMainProcess } from "./global/env";
 import { setupSwagger } from "./setup-swagger";
 import { LoggerService } from "./shared/logger/logger.service";
@@ -39,13 +46,22 @@ async function bootstrap() {
     useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
     app.enableCors({ origin: "*", credentials: true });
+    // 设置全局前缀
     app.setGlobalPrefix(globalPrefix);
+    // 静态资源
     app.useStaticAssets({ root: path.join(__dirname, "..", "public") });
     // Starts listening for shutdown hooks
     !isDev && app.enableShutdownHooks();
 
     if (isDev)
         app.useGlobalInterceptors(new LoggingInterceptor());
+
+    // 获取真实ip
+    app.use(requestIpMw({ attributeName: "ip" }));
+
+    // web 安全，防常见漏洞
+    // 注意： 开发环境如果开启 nest static module 需要将 crossOriginResourcePolicy 设置为 false 否则 静态资源 跨域不可访问
+    app.use(helmet({ crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" }, crossOriginResourcePolicy: false }));
 
     app.useGlobalPipes(
         new ValidationPipe({

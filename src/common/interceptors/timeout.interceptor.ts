@@ -5,12 +5,12 @@ import {
     NestInterceptor,
     RequestTimeoutException,
 } from "@nestjs/common";
-import { Observable, TimeoutError, throwError } from "rxjs";
+import { Observable, throwError, TimeoutError } from "rxjs";
 import { catchError, timeout } from "rxjs/operators";
 
 @Injectable()
 export class TimeoutInterceptor implements NestInterceptor {
-    constructor(private readonly time: number = 10000) {}
+    constructor(private readonly time: number = 10000) { }
 
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         return next.handle().pipe(

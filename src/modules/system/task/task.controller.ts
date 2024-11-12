@@ -1,15 +1,16 @@
 import { Body, Controller, Delete, Get, Post, Put, Query } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { TaskDto, TaskQueryDto, TaskUpdateDto } from "./task.dto";
-import { TaskService } from "./task.service";
-
 import { ApiResult } from "~/common/decorators/api-result.decorator";
 import { IdParam } from "~/common/decorators/id-param.decorator";
-import { Permission, definePermission } from "~/common/decorators/permission.decorator";
+import { definePermission, Permission } from "~/common/decorators/permission.decorator";
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
 import { Pagination } from "~/helper/paginate/pagination";
 import { TaskEntity } from "~/modules/system/task/task.entity";
+
+import { TaskDto, TaskQueryDto, TaskUpdateDto } from "./task.dto";
+
+import { TaskService } from "./task.service";
 
 export const permissions = definePermission("system:task", {
     LIST: "list",

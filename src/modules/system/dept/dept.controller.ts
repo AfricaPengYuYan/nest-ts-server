@@ -1,19 +1,20 @@
 import { Body, Controller, Delete, Get, Post, Put, Query } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { DeptDto, DeptQueryDto } from "./dept.dto";
-import { DeptService } from "./dept.service";
-
 import { ErrorEnum } from "~/common/constants/error-code.constant";
 import { ApiResult } from "~/common/decorators/api-result.decorator";
 import { AuthUser } from "~/common/decorators/auth-user.decorator";
 import { IdParam } from "~/common/decorators/id-param.decorator";
-import { Permission, definePermission } from "~/common/decorators/permission.decorator";
+import { definePermission, Permission } from "~/common/decorators/permission.decorator";
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
 import { CreatorPipe } from "~/common/pipes/creator.pipe";
 import { UpdaterPipe } from "~/common/pipes/updater.pipe";
 import { DeptEntity } from "~/modules/system/dept/dept.entity";
+
+import { DeptDto, DeptQueryDto } from "./dept.dto";
+
+import { DeptService } from "./dept.service";
 
 export const permissions = definePermission("system:dept", {
     LIST: "list",

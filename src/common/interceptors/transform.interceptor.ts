@@ -11,16 +11,16 @@ import qs from "qs";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
-import { BYPASS_KEY } from "../decorators/bypass.decorator";
-
 import { Result } from "~/models/result.model";
+
+import { BYPASS_KEY } from "../decorators/bypass.decorator";
 
 /**
  * 统一处理接口请求与响应结果，如果不需要则添加 @Bypass 装饰器
  */
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
-    constructor(private readonly reflector: Reflector) {}
+    constructor(private readonly reflector: Reflector) { }
 
     intercept(
         context: ExecutionContext,

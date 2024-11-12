@@ -52,7 +52,7 @@ export class HttpExceptionsFilter implements ExceptionFilter {
         }
         else {
             this.logger.warn(
-        `错误信息：(${status}) ${message} Path: ${decodeURI(url)}`,
+                `错误信息：(${status}) ${message} Path: ${decodeURI(url)}`,
             );
         }
 

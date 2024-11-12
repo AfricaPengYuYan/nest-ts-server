@@ -1,13 +1,13 @@
-import { Module, forwardRef } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
+
+import { SseService } from "~/modules/sse/sse.service";
+
+import { RoleModule } from "../role/role.module";
 
 import { MenuController } from "./menu.controller";
 import { MenuEntity } from "./menu.entity";
 import { MenuService } from "./menu.service";
-
-import { RoleModule } from "../role/role.module";
-
-import { SseService } from "~/modules/sse/sse.service";
 
 const providers = [MenuService, SseService];
 

@@ -1,16 +1,16 @@
 import { Body, Controller, Delete, Get, Param, ParseArrayPipe, Post, Put, Query } from "@nestjs/common";
 import { ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 
-import { EditPasswordDto, QueryUserDto, UpdateUserDto, UserDto } from "./user.dto";
-import { UserEntity } from "./user.entity";
-
-import { UserService } from "./user.service";
-
 import { ApiResult } from "~/common/decorators/api-result.decorator";
 import { IdParam } from "~/common/decorators/id-param.decorator";
-import { Permission, definePermission } from "~/common/decorators/permission.decorator";
+import { definePermission, Permission } from "~/common/decorators/permission.decorator";
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
 import { MenuService } from "~/modules/system/menu/menu.service";
+
+import { EditPasswordDto, QueryUserDto, UpdateUserDto, UserDto } from "./user.dto";
+
+import { UserEntity } from "./user.entity";
+import { UserService } from "./user.service";
 
 export const permissions = definePermission("system:user", {
     LIST: "list",

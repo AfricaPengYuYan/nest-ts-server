@@ -1,10 +1,10 @@
 import { NotFoundException } from "@nestjs/common";
 import { ObjectLiteral, Repository } from "typeorm";
 
+import { PageDto } from "~/dto/pager.dto";
+
 import { paginate } from "../paginate";
 import { Pagination } from "../paginate/pagination";
-
-import { PageDto } from "~/dto/pager.dto";
 
 export class BaseService<E extends ObjectLiteral, R extends Repository<E> = Repository<E>> {
     constructor(private repository: R) {

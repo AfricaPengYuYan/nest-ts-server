@@ -1,11 +1,11 @@
 import { ApiProperty, IntersectionType, PartialType } from "@nestjs/swagger";
 import { IsArray, IsIn, IsOptional, IsString, Matches, MinLength } from "class-validator";
 
-import { RoleEntity } from "./role.entity";
-
 import { OperatorDto } from "~/dto/operator.dto";
 import { PageDto } from "~/dto/pager.dto";
 import { IsUnique } from "~/shared/database/constraints/unique.constraint";
+
+import { RoleEntity } from "./role.entity";
 
 export class RoleDto extends OperatorDto {
     @ApiProperty({ description: "角色名称" })

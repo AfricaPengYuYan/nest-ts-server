@@ -11,17 +11,17 @@ import {
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { flattenDeep } from "lodash";
 
-import { MenuDto, QueryMenuDto, UpdateMenuDto } from "./menu.dto";
-import { MenuItemInfo } from "./menu.model";
-
-import { MenuService } from "./menu.service";
-
 import { ApiResult } from "~/common/decorators/api-result.decorator";
 import { IdParam } from "~/common/decorators/id-param.decorator";
-import { Permission, definePermission, getDefinePermissions } from "~/common/decorators/permission.decorator";
+import { definePermission, getDefinePermissions, Permission } from "~/common/decorators/permission.decorator";
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
 import { CreatorPipe } from "~/common/pipes/creator.pipe";
 import { UpdaterPipe } from "~/common/pipes/updater.pipe";
+
+import { MenuDto, QueryMenuDto, UpdateMenuDto } from "./menu.dto";
+
+import { MenuItemInfo } from "./menu.model";
+import { MenuService } from "./menu.service";
 
 export const permissions = definePermission("system:menu", {
     LIST: "list",

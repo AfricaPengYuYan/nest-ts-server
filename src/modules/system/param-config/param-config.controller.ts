@@ -1,15 +1,16 @@
 import { Body, Controller, Delete, Get, Post, Query } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { ParamConfigDto, QueryParamConfigDto } from "./param-config.dto";
-import { ParamConfigService } from "./param-config.service";
-
 import { ApiResult } from "~/common/decorators/api-result.decorator";
 import { IdParam } from "~/common/decorators/id-param.decorator";
-import { Permission, definePermission } from "~/common/decorators/permission.decorator";
+import { definePermission, Permission } from "~/common/decorators/permission.decorator";
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
 import { Pagination } from "~/helper/paginate/pagination";
 import { ParamConfigEntity } from "~/modules/system/param-config/param-config.entity";
+
+import { ParamConfigDto, QueryParamConfigDto } from "./param-config.dto";
+
+import { ParamConfigService } from "./param-config.service";
 
 export const permissions = definePermission("system:param-config", {
     LIST: "list",

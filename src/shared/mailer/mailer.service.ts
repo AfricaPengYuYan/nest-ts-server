@@ -14,10 +14,10 @@ import { randomValue } from "~/utils";
 @Injectable()
 export class MailerService {
     constructor(
-    @Inject(AppConfig.KEY) private appConfig: IAppConfig,
-    @InjectRedis() private redis: Redis,
-    private mailerService: NestMailerService,
-    ) {}
+        @Inject(AppConfig.KEY) private appConfig: IAppConfig,
+        @InjectRedis() private redis: Redis,
+        private mailerService: NestMailerService,
+    ) { }
 
     async log(to: string, code: string, ip: string) {
         const getRemainTime = () => {
@@ -33,16 +33,16 @@ export class MailerService {
         await this.redis.set(`ip:${ip}:send:limit`, 1, "EX", 60);
         await this.redis.set(`captcha:${to}:limit`, 1, "EX", 60);
         await this.redis.set(
-      `captcha:${to}:send:limit-count-day`,
-      limitCountOfDay,
-      "EX",
-      getRemainTime(),
+            `captcha:${to}:send:limit-count-day`,
+            limitCountOfDay,
+            "EX",
+            getRemainTime(),
         );
         await this.redis.set(
-      `ip:${ip}:send:limit-count-day`,
-      ipLimitCountOfDay,
-      "EX",
-      getRemainTime(),
+            `ip:${ip}:send:limit-count-day`,
+            ipLimitCountOfDay,
+            "EX",
+            getRemainTime(),
         );
     }
 
@@ -69,7 +69,7 @@ export class MailerService {
 
         // 1天一个邮箱最多接收5条
         let limitCountOfDay: string | number = await this.redis.get(
-      `captcha:${to}:limit-day`,
+            `captcha:${to}:limit-day`,
         );
         limitCountOfDay = limitCountOfDay ? Number(limitCountOfDay) : 0;
         if (limitCountOfDay > LIMIT_TIME) {
@@ -80,7 +80,7 @@ export class MailerService {
 
         // 1天一个ip最多发送5条
         let ipLimitCountOfDay: string | number = await this.redis.get(
-      `ip:${ip}:send:limit-day`,
+            `ip:${ip}:send:limit-day`,
         );
         ipLimitCountOfDay = ipLimitCountOfDay ? Number(ipLimitCountOfDay) : 0;
         if (ipLimitCountOfDay > LIMIT_TIME) {
@@ -94,7 +94,7 @@ export class MailerService {
         to,
         subject,
         content: string,
-    type: "text" | "html" = "text",
+        type: "text" | "html" = "text",
     ): Promise<any> {
         if (type === "text") {
             return this.mailerService.sendMail({

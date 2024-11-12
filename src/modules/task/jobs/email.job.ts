@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 
-import { Mission } from "../mission.decorator";
-
 import { LoggerService } from "~/shared/logger/logger.service";
 import { MailerService } from "~/shared/mailer/mailer.service";
+
+import { Mission } from "../mission.decorator";
 
 /**
  * Api接口请求类型任务

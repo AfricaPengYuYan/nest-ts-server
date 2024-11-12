@@ -26,7 +26,7 @@ async function paginateRepository<T>(repository: Repository<T>, options: IPagina
             take: limit,
             ...searchOptions,
         }),
-        undefined,
+        repository.count(searchOptions),
     ];
 
     const [items, total] = await Promise.all(promises);

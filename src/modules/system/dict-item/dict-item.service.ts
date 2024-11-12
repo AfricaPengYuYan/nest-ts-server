@@ -3,11 +3,11 @@ import { InjectRepository } from "@nestjs/typeorm";
 
 import { Like, Repository } from "typeorm";
 
-import { DictItemDto, QueryDictItemDto } from "./dict-item.dto";
-
 import { paginate } from "~/helper/paginate";
 import { Pagination } from "~/helper/paginate/pagination";
 import { DictItemEntity } from "~/modules/system/dict-item/dict-item.entity";
+
+import { DictItemDto, QueryDictItemDto } from "./dict-item.dto";
 
 @Injectable()
 export class DictItemService {

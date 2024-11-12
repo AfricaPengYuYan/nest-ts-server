@@ -7,7 +7,7 @@ export class QQService {
 
     async getNickname(qq: string | number) {
         const { data } = await this.http.axiosRef.get(
-      `https://users.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?uins=${qq}`,
+            `https://users.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg?uins=${qq}`,
         );
         return data;
     }

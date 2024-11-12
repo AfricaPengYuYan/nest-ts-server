@@ -1,9 +1,9 @@
-import { Module, forwardRef } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
+
+import { SystemModule } from "../system.module";
 
 import { ServeController } from "./serve.controller";
 import { ServeService } from "./serve.service";
-
-import { SystemModule } from "../system.module";
 
 const providers = [ServeService];
 

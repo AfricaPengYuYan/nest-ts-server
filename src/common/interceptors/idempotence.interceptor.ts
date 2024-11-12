@@ -13,12 +13,12 @@ import { Reflector } from "@nestjs/core";
 import type { FastifyRequest } from "fastify";
 import { catchError, tap } from "rxjs";
 
-import { HTTP_IDEMPOTENCE_KEY, HTTP_IDEMPOTENCE_OPTIONS } from "../decorators/idempotence.decorator";
-
 import { CacheService } from "~/shared/redis/cache.service";
 import { hashString } from "~/utils";
 import { getIp } from "~/utils/ip.util";
 import { getRedisKey } from "~/utils/redis.util";
+
+import { HTTP_IDEMPOTENCE_KEY, HTTP_IDEMPOTENCE_OPTIONS } from "../decorators/idempotence.decorator";
 
 const IdempotenceHeaderKey = "x-idempotence";
 
@@ -54,7 +54,7 @@ export class IdempotenceInterceptor implements NestInterceptor {
     constructor(
         private readonly reflector: Reflector,
         private readonly cacheService: CacheService,
-    ) {}
+    ) { }
 
     async intercept(context: ExecutionContext, next: CallHandler) {
         const request = context.switchToHttp().getRequest<FastifyRequest>();
@@ -89,7 +89,7 @@ export class IdempotenceInterceptor implements NestInterceptor {
                 : this.generateKey(request);
 
         const idempotenceKey
-      = !!(idempotence || key) && getRedisKey(`idempotence:${idempotence || key}`);
+            = !!(idempotence || key) && getRedisKey(`idempotence:${idempotence || key}`);
 
         SetMetadata(HTTP_IDEMPOTENCE_KEY, idempotenceKey)(handler);
 
@@ -113,7 +113,9 @@ export class IdempotenceInterceptor implements NestInterceptor {
         }
         return next.handle().pipe(
             tap(async () => {
-                idempotenceKey && (await redis.set(idempotenceKey, "1", "KEEPTTL"));
+                if (idempotenceKey) {
+                    await redis.set(idempotenceKey, "1", "KEEPTTL");
+                }
             }),
             catchError(async (err) => {
                 if (idempotenceKey)

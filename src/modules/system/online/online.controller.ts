@@ -3,17 +3,15 @@ import { ApiExtraModels, ApiOperation, ApiTags } from "@nestjs/swagger";
 
 import { FastifyRequest } from "fastify";
 
-import { KickDto } from "./online.dto";
-import { OnlineUserInfo } from "./online.model";
-
-import { OnlineService } from "./online.service";
-
 import { ApiResult } from "~/common/decorators/api-result.decorator";
-
 import { AuthUser } from "~/common/decorators/auth-user.decorator";
-
-import { Permission, definePermission } from "~/common/decorators/permission.decorator";
+import { definePermission, Permission } from "~/common/decorators/permission.decorator";
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
+
+import { KickDto } from "./online.dto";
+
+import { OnlineUserInfo } from "./online.model";
+import { OnlineService } from "./online.service";
 
 export const permissions = definePermission("system:online", ["list", "kick"] as const);
 

@@ -218,56 +218,18 @@ module.exports = antfu({
 
         // 设置导入顺序规则
         "import/order": [
-            2, // 设置为 2 表示启用并作为错误处理
+            2,
             {
-
-                /**
-                 *
-                 * 以下是 group 的一些常见类别：
-                       external: 外部模块，通常是通过 npm 或其他包管理器安装的第三方库。
-                       builtin: 内置模块，例如 Node.js 的内置模块如 fs、http 等。
-                       internal: 内部模块，指的是项目内的模块，通常位于 src 或者 lib 目录下。
-                       parent: 当前文件所在目录的父目录下的模块。
-                       sibling: 当前文件所在目录的同级目录下的模块。
-                       index: 特指 index.js 或类似的入口文件。
-                 *
-                 */
-
-                // 分组导入路径
                 "pathGroups": [
                     {
-                        pattern: "node:**",
-                        group: "builtin",
-                        position: "before",
-                    },
-                    {
-                        pattern: "@nestjs/**",
-                        group: "external",
-                        position: "before",
-                    },
-                    {
                         pattern: "~/**",
-                        group: "internal",
-                        position: "before",
-                    },
-                    {
-                        pattern: "./**",
-                        group: "parent",
-                        position: "before",
-                    },
-                    {
-                        pattern: "../**",
-                        group: "parent",
+                        group: "external",
                         position: "after",
                     },
                 ],
-                // 字母排序
                 "alphabetize": { order: "asc", caseInsensitive: false },
-                // 导入之间插入新行
                 "newlines-between": "always-and-inside-groups",
-                // 警告未使用的导入
                 "warnOnUnassignedImports": true,
-                "distinctGroup": true,
             },
         ],
     },

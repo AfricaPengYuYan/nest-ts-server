@@ -14,11 +14,11 @@ import { ApiBody, IntersectionType, PartialType } from "@nestjs/swagger";
 import { upperFirst } from "lodash";
 import pluralize from "pluralize";
 
-import { BaseService } from "./base.service";
-
 import { ApiResult } from "~/common/decorators/api-result.decorator";
 import { IdParam } from "~/common/decorators/id-param.decorator";
 import { PageDto } from "~/dto/pager.dto";
+
+import { BaseService } from "./base.service";
 
 export function BaseCrudFactory<
     E extends new (...args: any[]) => any,

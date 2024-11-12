@@ -1,21 +1,20 @@
-import { } from "@nestjs/common";
-import { OnEvent } from "@nestjs/event-emitter";
-import { JwtService } from "@nestjs/jwt";
 import type {
     OnGatewayConnection,
     OnGatewayDisconnect,
 } from "@nestjs/websockets";
-import { WebSocketServer } from "@nestjs/websockets";
 import type { Socket } from "socket.io";
+import { } from "@nestjs/common";
+import { OnEvent } from "@nestjs/event-emitter";
+import { JwtService } from "@nestjs/jwt";
+import { WebSocketServer } from "@nestjs/websockets";
 import { Namespace } from "socket.io";
+
+import { EventBusEvents } from "~/common/constants/event-bus.constant";
+import { TokenService } from "~/modules/token/token.service";
+import { CacheService } from "~/shared/redis/cache.service";
 
 import { BroadcastBaseGateway } from "../base.gateway";
 import { BusinessEvents } from "../business-event.constant";
-
-import { EventBusEvents } from "~/common/constants/event-bus.constant";
-
-import { TokenService } from "~/modules/token/token.service";
-import { CacheService } from "~/shared/redis/cache.service";
 
 export interface AuthGatewayOptions {
     namespace: string;

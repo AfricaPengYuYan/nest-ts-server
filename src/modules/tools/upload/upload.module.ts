@@ -1,9 +1,9 @@
-import { Module, forwardRef } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
+
+import { StorageModule } from "../storage/storage.module";
 
 import { UploadController } from "./upload.controller";
 import { UploadService } from "./upload.service";
-
-import { StorageModule } from "../storage/storage.module";
 
 const services = [UploadService];
 

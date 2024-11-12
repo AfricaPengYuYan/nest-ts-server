@@ -1,11 +1,11 @@
+import type { FastifyRequest } from "fastify";
+
 /**
  * @module utils/ip
  * @description IP utility functions
  */
 import type { IncomingMessage } from "node:http";
-
 import axios from "axios";
-import type { FastifyRequest } from "fastify";
 
 /* 判断IP是不是内网 */
 function isLAN(ip: string) {
@@ -35,14 +35,14 @@ export function getIp(request: FastifyRequest | IncomingMessage) {
     const req = request as any;
 
     let ip: string
-    = request.headers["x-forwarded-for"]
-    || request.headers["X-Forwarded-For"]
-    || request.headers["X-Real-IP"]
-    || request.headers["x-real-ip"]
-    || req?.ip
-    || req?.raw?.connection?.remoteAddress
-    || req?.raw?.socket?.remoteAddress
-    || undefined;
+        = request.headers["x-forwarded-for"]
+        || request.headers["X-Forwarded-For"]
+        || request.headers["X-Real-IP"]
+        || request.headers["x-real-ip"]
+        || req?.ip
+        || req?.raw?.connection?.remoteAddress
+        || req?.raw?.socket?.remoteAddress
+        || undefined;
     if (ip && ip.split(",").length > 0)
         ip = ip.split(",")[0];
 
@@ -54,8 +54,8 @@ export async function getIpAddress(ip: string) {
         return "内网IP";
     try {
         let { data } = await axios.get(
-      `https://whois.pconline.com.cn/ipJson.jsp?ip=${ip}&json=true`,
-      { responseType: "arraybuffer" },
+            `https://whois.pconline.com.cn/ipJson.jsp?ip=${ip}&json=true`,
+            { responseType: "arraybuffer" },
         );
         data = new TextDecoder("gbk").decode(data);
         data = JSON.parse(data);

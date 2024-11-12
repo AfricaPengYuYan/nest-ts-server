@@ -10,18 +10,17 @@ import {
 } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { QueryTodoDto, TodoDto, UpdateTodoDto } from "./todo.dto";
-import { TodoService } from "./todo.service";
-
 import { ApiResult } from "~/common/decorators/api-result.decorator";
 import { IdParam } from "~/common/decorators/id-param.decorator";
-
-import { Permission, definePermission } from "~/common/decorators/permission.decorator";
+import { definePermission, Permission } from "~/common/decorators/permission.decorator";
 import { Resource } from "~/common/decorators/resource.decorator";
 import { ResourceGuard } from "~/common/guards/resource.guard";
 import { Pagination } from "~/helper/paginate/pagination";
-
 import { TodoEntity } from "~/modules/todo/todo.entity";
+
+import { QueryTodoDto, TodoDto, UpdateTodoDto } from "./todo.dto";
+
+import { TodoService } from "./todo.service";
 
 export const permissions = definePermission("todo", {
     LIST: "list",

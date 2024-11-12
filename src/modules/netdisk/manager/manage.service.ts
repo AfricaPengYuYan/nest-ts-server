@@ -5,16 +5,15 @@ import { isEmpty } from "lodash";
 import * as qiniu from "qiniu";
 import { auth, conf, rs } from "qiniu";
 
-import { SFileInfo, SFileInfoDetail, SFileList } from "./manage.class";
-import { FileOpItem } from "./manage.dto";
-
 import { NETDISK_COPY_SUFFIX, NETDISK_DELIMITER, NETDISK_HANDLE_MAX_ITEM, NETDISK_LIMIT } from "~/common/constants/oss.constant";
 import { IOssConfig, OssConfig } from "~/config";
-
 import { AccountInfo } from "~/modules/system/user/user.model";
 import { UserService } from "~/modules/system/user/user.service";
-
 import { generateRandomValue } from "~/utils";
+
+import { SFileInfo, SFileInfoDetail, SFileList } from "./manage.class";
+
+import { FileOpItem } from "./manage.dto";
 
 @Injectable()
 export class NetDiskManageService {
@@ -135,7 +134,7 @@ export class NetDiskManageService {
                     else {
                         reject(
                             new Error(
-                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
                             ),
                         );
                     }
@@ -148,48 +147,48 @@ export class NetDiskManageService {
         return new Promise((resolve, reject) => {
             this.bucketManager.stat(
                 this.qiniuConfig.bucket,
-        `${path}${name}`,
-        (err, respBody, respInfo) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            if (respInfo.statusCode === 200) {
-                const detailInfo: SFileInfoDetail = {
-                    fsize: respBody.fsize,
-                    hash: respBody.hash,
-                    md5: respBody.md5,
-                    mimeType: respBody.mimeType.split("/x-qn-meta")[0],
-                    putTime: new Date(Number.parseInt(respBody.putTime) / 10000),
-                    type: respBody.type,
-                    uploader: "",
-                    mark: respBody?.["x-qn-meta"]?.["!mark"] ?? "",
-                };
-                if (!respBody.endUser) {
-                    resolve(detailInfo);
-                }
-                else {
-                    this.userService
-                        .getAccountInfo(Number.parseInt(respBody.endUser))
-                        .then((user: AccountInfo) => {
-                            if (isEmpty(user)) {
-                                resolve(detailInfo);
-                            }
-                            else {
-                                detailInfo.uploader = user.username;
-                                resolve(detailInfo);
-                            }
-                        });
-                }
-            }
-            else {
-                reject(
-                    new Error(
-                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
-                    ),
-                );
-            }
-        },
+                `${path}${name}`,
+                (err, respBody, respInfo) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    if (respInfo.statusCode === 200) {
+                        const detailInfo: SFileInfoDetail = {
+                            fsize: respBody.fsize,
+                            hash: respBody.hash,
+                            md5: respBody.md5,
+                            mimeType: respBody.mimeType.split("/x-qn-meta")[0],
+                            putTime: new Date(Number.parseInt(respBody.putTime) / 10000),
+                            type: respBody.type,
+                            uploader: "",
+                            mark: respBody?.["x-qn-meta"]?.["!mark"] ?? "",
+                        };
+                        if (!respBody.endUser) {
+                            resolve(detailInfo);
+                        }
+                        else {
+                            this.userService
+                                .getAccountInfo(Number.parseInt(respBody.endUser))
+                                .then((user: AccountInfo) => {
+                                    if (isEmpty(user)) {
+                                        resolve(detailInfo);
+                                    }
+                                    else {
+                                        detailInfo.uploader = user.username;
+                                        resolve(detailInfo);
+                                    }
+                                });
+                        }
+                    }
+                    else {
+                        reject(
+                            new Error(
+                                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                            ),
+                        );
+                    }
+                },
             );
         });
     }
@@ -202,24 +201,24 @@ export class NetDiskManageService {
         return new Promise((resolve, reject) => {
             this.bucketManager.changeHeaders(
                 this.qiniuConfig.bucket,
-        `${path}${name}`,
-        headers,
-        (err, _, respInfo) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            if (respInfo.statusCode === 200) {
-                resolve();
-            }
-            else {
-                reject(
-                    new Error(
-                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
-                    ),
-                );
-            }
-        },
+                `${path}${name}`,
+                headers,
+                (err, _, respInfo) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    if (respInfo.statusCode === 200) {
+                        resolve();
+                    }
+                    else {
+                        reject(
+                            new Error(
+                                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                            ),
+                        );
+                    }
+                },
             );
         });
     }
@@ -246,7 +245,7 @@ export class NetDiskManageService {
                     else {
                         reject(
                             new Error(
-                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
                             ),
                         );
                     }
@@ -279,7 +278,7 @@ export class NetDiskManageService {
                     else {
                         reject(
                             new Error(
-                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
                             ),
                         );
                     }
@@ -323,7 +322,7 @@ export class NetDiskManageService {
                         else {
                             reject(
                                 new Error(
-                  `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                                    `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
                                 ),
                             );
                         }
@@ -357,7 +356,7 @@ export class NetDiskManageService {
                         else {
                             reject(
                                 new Error(
-                  `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                                    `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
                                 ),
                             );
                         }
@@ -394,7 +393,7 @@ export class NetDiskManageService {
                         else {
                             reject(
                                 new Error(
-                  `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                                    `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
                                 ),
                             );
                         }
@@ -458,7 +457,7 @@ export class NetDiskManageService {
                                     else {
                                         reject(
                                             new Error(
-                        `Qiniu Error Code: ${respInfo2.statusCode}, Info: ${respInfo2.statusMessage}`,
+                                                `Qiniu Error Code: ${respInfo2.statusCode}, Info: ${respInfo2.statusMessage}`,
                                             ),
                                         );
                                     }
@@ -468,7 +467,7 @@ export class NetDiskManageService {
                         else {
                             reject(
                                 new Error(
-                  `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                                    `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
                                 ),
                             );
                         }
@@ -496,23 +495,23 @@ export class NetDiskManageService {
         return new Promise((resolve, reject) => {
             this.bucketManager.delete(
                 this.qiniuConfig.bucket,
-        `${dir}${name}`,
-        (err, respBody, respInfo) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            if (respInfo.statusCode === 200) {
-                resolve();
-            }
-            else {
-                reject(
-                    new Error(
-                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
-                    ),
-                );
-            }
-        },
+                `${dir}${name}`,
+                (err, respBody, respInfo) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    if (respInfo.statusCode === 200) {
+                        resolve();
+                    }
+                    else {
+                        reject(
+                            new Error(
+                                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                            ),
+                        );
+                    }
+                },
             );
         });
     }
@@ -543,7 +542,7 @@ export class NetDiskManageService {
                     else {
                         reject(
                             new Error(
-                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
                             ),
                         );
                     }
@@ -596,7 +595,7 @@ export class NetDiskManageService {
                                             else {
                                                 reject(
                                                     new Error(
-                            `Qiniu Error Code: ${respInfo2.statusCode}, Info: ${respInfo2.statusMessage}`,
+                                                        `Qiniu Error Code: ${respInfo2.statusCode}, Info: ${respInfo2.statusMessage}`,
                                                     ),
                                                 );
                                             }
@@ -606,7 +605,7 @@ export class NetDiskManageService {
                                 else {
                                     reject(
                                         new Error(
-                      `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                                            `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
                                         ),
                                     );
                                 }
@@ -658,7 +657,7 @@ export class NetDiskManageService {
                     else {
                         reject(
                             new Error(
-                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
                             ),
                         );
                     }
@@ -719,7 +718,7 @@ export class NetDiskManageService {
                                             else {
                                                 reject(
                                                     new Error(
-                            `Qiniu Error Code: ${respInfo2.statusCode}, Info: ${respInfo2.statusMessage}`,
+                                                        `Qiniu Error Code: ${respInfo2.statusCode}, Info: ${respInfo2.statusMessage}`,
                                                     ),
                                                 );
                                             }
@@ -729,7 +728,7 @@ export class NetDiskManageService {
                                 else {
                                     reject(
                                         new Error(
-                      `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                                            `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
                                         ),
                                     );
                                 }
@@ -778,7 +777,7 @@ export class NetDiskManageService {
                     else {
                         reject(
                             new Error(
-                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                                `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
                             ),
                         );
                     }
@@ -843,7 +842,7 @@ export class NetDiskManageService {
                                             else {
                                                 reject(
                                                     new Error(
-                            `Qiniu Error Code: ${respInfo2.statusCode}, Info: ${respInfo2.statusMessage}`,
+                                                        `Qiniu Error Code: ${respInfo2.statusCode}, Info: ${respInfo2.statusMessage}`,
                                                     ),
                                                 );
                                             }
@@ -853,7 +852,7 @@ export class NetDiskManageService {
                                 else {
                                     reject(
                                         new Error(
-                      `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
+                                            `Qiniu Error Code: ${respInfo.statusCode}, Info: ${respInfo.statusMessage}`,
                                         ),
                                     );
                                 }

@@ -9,10 +9,10 @@ import {
 
 import { Server } from "socket.io";
 
-import { createAuthGateway } from "../shared/auth.gateway";
-
 import { TokenService } from "~/modules/token/token.service";
 import { CacheService } from "~/shared/redis/cache.service";
+
+import { createAuthGateway } from "../shared/auth.gateway";
 
 const AuthGateway = createAuthGateway({ namespace: "web" });
 @WebSocketGateway<GatewayMetadata>({ namespace: "web" })

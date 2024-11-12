@@ -3,11 +3,11 @@ import { InjectRepository } from "@nestjs/typeorm";
 
 import { Repository } from "typeorm";
 
-import { ParamConfigDto, QueryParamConfigDto } from "./param-config.dto";
-
 import { paginate } from "~/helper/paginate";
 import { Pagination } from "~/helper/paginate/pagination";
 import { ParamConfigEntity } from "~/modules/system/param-config/param-config.entity";
+
+import { ParamConfigDto, QueryParamConfigDto } from "./param-config.dto";
 
 @Injectable()
 export class ParamConfigService {

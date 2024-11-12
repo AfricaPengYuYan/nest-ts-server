@@ -1,13 +1,12 @@
-import { Module, forwardRef } from "@nestjs/common";
-
-import { OnlineController } from "./online.controller";
-import { OnlineService } from "./online.service";
+import { forwardRef, Module } from "@nestjs/common";
 
 import { AuthModule } from "~/modules/auth/auth.module";
-
 import { SseModule } from "~/modules/sse/sse.module";
-
 import { UserModule } from "~/modules/system/user/user.module";
+
+import { OnlineController } from "./online.controller";
+
+import { OnlineService } from "./online.service";
 
 const providers = [OnlineService];
 

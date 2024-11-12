@@ -6,18 +6,10 @@ import { isEmpty, isNil } from "lodash";
 
 import { EntityManager, In, Like, Repository } from "typeorm";
 
-import { UserStatus } from "./user.constant";
-import { QueryUserDto, UpdatePasswordDto, UpdateUserDto, UserDto } from "./user.dto";
-
-import { UserEntity } from "./user.entity";
-
-import { AccountInfo } from "./user.model";
-
 import { ErrorEnum } from "~/common/constants/error-code.constant";
 import { ROOT_ROLE_ID, SYS_USER_INITPASSWORD } from "~/common/constants/system.constant";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
-import { genAuthPVKey, genAuthPermKey, genAuthTokenKey, genOnlineUserKey } from "~/helper/genRedisKey";
-
+import { genAuthPermKey, genAuthPVKey, genAuthTokenKey, genOnlineUserKey } from "~/helper/genRedisKey";
 import { paginate } from "~/helper/paginate";
 import { Pagination } from "~/helper/paginate/pagination";
 import { AccountUpdateDto } from "~/modules/auth/dto/account.dto";
@@ -27,8 +19,14 @@ import { ParamConfigService } from "~/modules/system/param-config/param-config.s
 import { RoleEntity } from "~/modules/system/role/role.entity";
 import { AccessTokenEntity } from "~/modules/token/access-token.entity";
 import { QQService } from "~/shared/helper/qq.service";
-
 import { md5, randomValue } from "~/utils";
+
+import { UserStatus } from "./user.constant";
+
+import { QueryUserDto, UpdatePasswordDto, UpdateUserDto, UserDto } from "./user.dto";
+import { UserEntity } from "./user.entity";
+
+import { AccountInfo } from "./user.model";
 
 @Injectable()
 export class UserService {
