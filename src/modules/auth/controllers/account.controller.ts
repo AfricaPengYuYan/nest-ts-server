@@ -9,7 +9,6 @@ import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
 import { UpdatePasswordDto } from "~/modules/system/user/user.dto";
 import { AccountInfo } from "~/modules/system/user/user.model";
 import { UserService } from "~/modules/system/user/user.service";
-
 import { JwtAuthGuard } from "../../../common/guards/jwt-auth.guard";
 
 import { AuthService } from "../auth.service";

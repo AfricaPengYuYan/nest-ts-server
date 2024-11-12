@@ -7,7 +7,6 @@ import { definePermission, Permission } from "~/common/decorators/permission.dec
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
 import { Pagination } from "~/helper/paginate/pagination";
 import { ParamConfigEntity } from "~/modules/system/param-config/param-config.entity";
-
 import { ParamConfigDto, QueryParamConfigDto } from "./param-config.dto";
 
 import { ParamConfigService } from "./param-config.service";

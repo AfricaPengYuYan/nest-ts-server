@@ -5,7 +5,6 @@ import { FastifyRequest } from "fastify";
 import { AuthUser } from "~/common/decorators/auth-user.decorator";
 import { definePermission, Permission } from "~/common/decorators/permission.decorator";
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
-
 import { FileUploadDto } from "./upload.dto";
 
 import { UploadService } from "./upload.service";

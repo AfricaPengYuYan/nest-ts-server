@@ -6,7 +6,6 @@ import { Repository } from "typeorm";
 import { paginate } from "~/helper/paginate";
 import { Pagination } from "~/helper/paginate/pagination";
 import { ParamConfigEntity } from "~/modules/system/param-config/param-config.entity";
-
 import { ParamConfigDto, QueryParamConfigDto } from "./param-config.dto";
 
 @Injectable()

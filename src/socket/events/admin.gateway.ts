@@ -11,7 +11,6 @@ import { Server } from "socket.io";
 
 import { AuthService } from "~/modules/auth/auth.service";
 import { CacheService } from "~/shared/redis/cache.service";
-
 import { createAuthGateway } from "../shared/auth.gateway";
 
 const AuthGateway = createAuthGateway({ namespace: "admin" });

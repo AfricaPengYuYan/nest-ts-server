@@ -5,7 +5,6 @@ import * as qiniu from "qiniu";
 
 import { OSS_API } from "~/common/constants/oss.constant";
 import { IOssConfig, OssConfig } from "~/config";
-
 import { CountInfo, FlowInfo, HitInfo, SpaceInfo } from "./overview.dto";
 
 @Injectable()

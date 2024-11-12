@@ -6,7 +6,6 @@ import { Like, Repository } from "typeorm";
 import { paginate } from "~/helper/paginate";
 import { Pagination } from "~/helper/paginate/pagination";
 import { DictTypeEntity } from "~/modules/system/dict-type/dict-type.entity";
-
 import { DictTypeDto, QueryDictTypeDto } from "./dict-type.dto";
 
 @Injectable()

@@ -10,7 +10,6 @@ import {
 } from "typeorm";
 
 import { UserEntity } from "~/modules/system/user/user.entity";
-
 import { RefreshTokenEntity } from "./refresh-token.entity";
 
 @Entity("user_access_token")

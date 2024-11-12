@@ -1,3 +1,4 @@
+import type { FastifyRequest } from "fastify";
 import {
     CallHandler,
     ExecutionContext,
@@ -6,13 +7,11 @@ import {
     NestInterceptor,
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import type { FastifyRequest } from "fastify";
 import qs from "qs";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
 import { Result } from "~/models/result.model";
-
 import { BYPASS_KEY } from "../decorators/bypass.decorator";
 
 /**

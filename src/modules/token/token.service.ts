@@ -1,10 +1,9 @@
-import { InjectRedis } from "@liaoliaots/nestjs-redis";
 import { Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import dayjs from "dayjs";
-
 import Redis from "ioredis";
 
+import { InjectRedis } from "~/common/decorators/inject-redis.decorator";
 import { ISecurityConfig, SecurityConfig } from "~/config";
 import { genOnlineUserKey } from "~/helper/genRedisKey";
 import { RoleService } from "~/modules/system/role/role.service";
@@ -23,9 +22,9 @@ export class TokenService {
     constructor(
         private jwtService: JwtService,
         private roleService: RoleService,
-    @InjectRedis() private redis: Redis,
-    @Inject(SecurityConfig.KEY) private securityConfig: ISecurityConfig,
-    ) {}
+        @InjectRedis() private redis: Redis,
+        @Inject(SecurityConfig.KEY) private securityConfig: ISecurityConfig,
+    ) { }
 
     /**
      * 根据accessToken刷新AccessToken与RefreshToken
@@ -130,7 +129,7 @@ export class TokenService {
             });
             isValid = Boolean(res);
         }
-        catch (error) {}
+        catch (error) { }
 
         return isValid;
     }

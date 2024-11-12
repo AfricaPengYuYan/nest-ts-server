@@ -12,7 +12,6 @@ import { Namespace } from "socket.io";
 import { EventBusEvents } from "~/common/constants/event-bus.constant";
 import { TokenService } from "~/modules/token/token.service";
 import { CacheService } from "~/shared/redis/cache.service";
-
 import { BroadcastBaseGateway } from "../base.gateway";
 import { BusinessEvents } from "../business-event.constant";
 

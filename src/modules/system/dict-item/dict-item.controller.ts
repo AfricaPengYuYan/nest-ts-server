@@ -9,7 +9,6 @@ import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
 import { UpdaterPipe } from "~/common/pipes/updater.pipe";
 import { Pagination } from "~/helper/paginate/pagination";
 import { DictItemEntity } from "~/modules/system/dict-item/dict-item.entity";
-
 import { DictItemDto, QueryDictItemDto } from "./dict-item.dto";
 
 import { DictItemService } from "./dict-item.service";

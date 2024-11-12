@@ -2,7 +2,6 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { UserModule } from "~/modules/system/user/user.module";
-
 import { CaptchaLogEntity } from "./entities/captcha-log.entity";
 import { LoginLogEntity } from "./entities/login-log.entity";
 import { TaskLogEntity } from "./entities/task-log.entity";

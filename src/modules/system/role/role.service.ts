@@ -9,7 +9,6 @@ import { paginate } from "~/helper/paginate";
 import { Pagination } from "~/helper/paginate/pagination";
 import { MenuEntity } from "~/modules/system/menu/menu.entity";
 import { RoleEntity } from "~/modules/system/role/role.entity";
-
 import { QueryRoleDto, RoleDto, UpdateRoleDto } from "./role.dto";
 
 @Injectable()

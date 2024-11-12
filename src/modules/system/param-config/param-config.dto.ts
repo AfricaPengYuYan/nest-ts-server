@@ -3,7 +3,6 @@ import { IsOptional, IsString, MinLength } from "class-validator";
 
 import { PageDto } from "~/dto/pager.dto";
 import { IsUnique } from "~/shared/database/constraints/unique.constraint";
-
 import { ParamConfigEntity } from "./param-config.entity";
 
 export class ParamConfigDto {

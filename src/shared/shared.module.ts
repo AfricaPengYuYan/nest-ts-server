@@ -6,7 +6,6 @@ import { ScheduleModule } from "@nestjs/schedule";
 import { seconds, ThrottlerModule } from "@nestjs/throttler";
 
 import { isDev } from "~/global/env";
-
 import { HelperModule } from "./helper/helper.module";
 import { LoggerModule } from "./logger/logger.module";
 import { MailerModule } from "./mailer/mailer.module";

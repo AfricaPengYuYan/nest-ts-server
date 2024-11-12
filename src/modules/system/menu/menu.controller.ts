@@ -17,7 +17,6 @@ import { definePermission, getDefinePermissions, Permission } from "~/common/dec
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
 import { CreatorPipe } from "~/common/pipes/creator.pipe";
 import { UpdaterPipe } from "~/common/pipes/updater.pipe";
-
 import { MenuDto, QueryMenuDto, UpdateMenuDto } from "./menu.dto";
 
 import { MenuItemInfo } from "./menu.model";

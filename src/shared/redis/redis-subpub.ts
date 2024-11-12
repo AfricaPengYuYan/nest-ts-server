@@ -1,5 +1,5 @@
-import { Logger } from "@nestjs/common";
 import type { Redis, RedisOptions } from "ioredis";
+import { Logger } from "@nestjs/common";
 import IORedis from "ioredis";
 
 export class RedisSubPub {

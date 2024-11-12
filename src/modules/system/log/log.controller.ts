@@ -5,7 +5,6 @@ import { ApiResult } from "~/common/decorators/api-result.decorator";
 import { definePermission, Permission } from "~/common/decorators/permission.decorator";
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
 import { Pagination } from "~/helper/paginate/pagination";
-
 import { CaptchaLogEntity } from "./entities/captcha-log.entity";
 import { TaskLogEntity } from "./entities/task-log.entity";
 import {

@@ -1,16 +1,16 @@
-import { InjectRedis } from "@liaoliaots/nestjs-redis";
 import { Inject, Injectable } from "@nestjs/common";
-
 import Redis from "ioredis";
+
 import { isEmpty } from "lodash";
 
 import { ErrorEnum } from "~/common/constants/error-code.constant";
+import { InjectRedis } from "~/common/decorators/inject-redis.decorator";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
 import { AppConfig, IAppConfig, ISecurityConfig, SecurityConfig } from "~/config";
 import { genAuthPermKey, genAuthPVKey, genAuthTokenKey, genTokenBlacklistKey } from "~/helper/genRedisKey";
 import { UserService } from "~/modules/system/user/user.service";
-import { md5 } from "~/utils";
 
+import { md5 } from "~/utils";
 import { LoginLogService } from "../system/log/services/login-log.service";
 
 import { MenuService } from "../system/menu/menu.service";
@@ -22,15 +22,15 @@ import { TokenService } from "../token/token.service";
 @Injectable()
 export class AuthService {
     constructor(
-    @InjectRedis() private readonly redis: Redis,
-    private menuService: MenuService,
-    private roleService: RoleService,
-    private userService: UserService,
-    private loginLogService: LoginLogService,
-    private tokenService: TokenService,
-    @Inject(SecurityConfig.KEY) private securityConfig: ISecurityConfig,
-    @Inject(AppConfig.KEY) private appConfig: IAppConfig,
-    ) {}
+        @InjectRedis() private readonly redis: Redis,
+        private menuService: MenuService,
+        private roleService: RoleService,
+        private userService: UserService,
+        private loginLogService: LoginLogService,
+        private tokenService: TokenService,
+        @Inject(SecurityConfig.KEY) private securityConfig: ISecurityConfig,
+        @Inject(AppConfig.KEY) private appConfig: IAppConfig,
+    ) { }
 
     async validateUser(credential: string, password: string): Promise<any> {
         const user = await this.userService.findUserByUserName(credential);

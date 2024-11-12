@@ -6,7 +6,6 @@ import { IdParam } from "~/common/decorators/id-param.decorator";
 import { definePermission, Permission } from "~/common/decorators/permission.decorator";
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
 import { MenuService } from "~/modules/system/menu/menu.service";
-
 import { EditPasswordDto, QueryUserDto, UpdateUserDto, UserDto } from "./user.dto";
 
 import { UserEntity } from "./user.entity";

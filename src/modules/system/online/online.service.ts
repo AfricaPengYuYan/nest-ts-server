@@ -1,21 +1,21 @@
-import { InjectRedis } from "@liaoliaots/nestjs-redis";
 import { Injectable } from "@nestjs/common";
-
 import Redis from "ioredis";
 
 import { throttle } from "lodash";
+
 import { UAParser } from "ua-parser-js";
 
 import { ErrorEnum } from "~/common/constants/error-code.constant";
+import { InjectRedis } from "~/common/decorators/inject-redis.decorator";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
 import { genOnlineUserKey } from "~/helper/genRedisKey";
 import { AuthService } from "~/modules/auth/auth.service";
 import { SseService } from "~/modules/sse/sse.service";
+
 import { UserService } from "~/modules/system/user/user.service";
 import { AccessTokenEntity } from "~/modules/token/access-token.entity";
 import { TokenService } from "~/modules/token/token.service";
 import { getIpAddress } from "~/utils";
-
 import { OnlineUserInfo } from "./online.model";
 
 @Injectable()

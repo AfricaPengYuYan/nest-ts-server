@@ -9,7 +9,6 @@ import { CreatorPipe } from "~/common/pipes/creator.pipe";
 import { UpdaterPipe } from "~/common/pipes/updater.pipe";
 import { Pagination } from "~/helper/paginate/pagination";
 import { DictTypeEntity } from "~/modules/system/dict-type/dict-type.entity";
-
 import { DictTypeDto, QueryDictTypeDto } from "./dict-type.dto";
 
 import { DictTypeService } from "./dict-type.service";

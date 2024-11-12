@@ -4,7 +4,6 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { MenuModule } from "~/modules/system/menu/menu.module";
 import { ParamConfigModule } from "~/modules/system/param-config/param-config.module";
 import { RoleModule } from "~/modules/system/role/role.module";
-
 import { UserController } from "./user.controller";
 
 import { UserEntity } from "./user.entity";

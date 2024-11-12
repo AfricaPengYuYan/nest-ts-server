@@ -5,9 +5,7 @@ import { ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { ConfigKeyPaths, IRedisConfig } from "~/config";
-
 import { LogModule } from "../log/log.module";
-
 import { SYS_TASK_QUEUE_NAME, SYS_TASK_QUEUE_PREFIX } from "./task.constant";
 import { TaskController } from "./task.controller";
 import { TaskEntity } from "./task.entity";

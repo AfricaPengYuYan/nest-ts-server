@@ -1,15 +1,13 @@
+import type { FastifyRequest } from "fastify";
 import { ClassSerializerInterceptor, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
-import { ThrottlerGuard, ThrottlerModule, seconds } from "@nestjs/throttler";
-import type { FastifyRequest } from "fastify";
+import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 
 import { ClsModule } from "nestjs-cls";
 
 import config from "~/config";
-
 import { SharedModule } from "~/shared/shared.module";
-
 import { HttpExceptionsFilter } from "./common/filters/http.exception.filter";
 import { JwtAuthGuard } from "./common/guards/jwt-auth.guard";
 import { RbacGuard } from "./common/guards/rbac.guard";
@@ -41,7 +39,7 @@ import { SocketModule } from "./socket/socket.module";
             useFactory: () => ({
                 errorMessage: "当前操作过于频繁，请稍后再试！",
                 throttlers: [
-                    { ttl: seconds(10), limit: 7 },
+                    { limit: 20, ttl: 60000 },
                 ],
             }),
         }),

@@ -5,7 +5,6 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { interval, Observable } from "rxjs";
 
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
-
 import { OnlineService } from "../system/online/online.service";
 
 import { MessageEvent, SseService } from "./sse.service";

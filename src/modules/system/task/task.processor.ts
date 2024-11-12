@@ -2,7 +2,6 @@ import { OnQueueCompleted, Process, Processor } from "@nestjs/bull";
 import { Job } from "bull";
 
 import { TaskLogService } from "../log/services/task-log.service";
-
 import { SYS_TASK_QUEUE_NAME } from "./task.constant";
 import { TaskService } from "./task.service";
 

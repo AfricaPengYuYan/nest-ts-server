@@ -6,7 +6,6 @@ import { Ip } from "~/common/decorators/http.decorator";
 import { Public } from "~/common/decorators/public.decorator";
 import { LocalGuard } from "~/common/guards/local.guard";
 import { UserService } from "~/modules/system/user/user.service";
-
 import { AuthService } from "./auth.service";
 
 import { LoginDto, RegisterDto } from "./dto/auth.dto";

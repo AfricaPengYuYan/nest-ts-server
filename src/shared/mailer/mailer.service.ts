@@ -1,12 +1,12 @@
-import { InjectRedis } from "@liaoliaots/nestjs-redis";
 import { Inject, Injectable } from "@nestjs/common";
-
 import { MailerService as NestMailerService } from "@nestjs-modules/mailer";
-import dayjs from "dayjs";
 
+import dayjs from "dayjs";
 import Redis from "ioredis";
 
 import { ErrorEnum } from "~/common/constants/error-code.constant";
+
+import { InjectRedis } from "~/common/decorators/inject-redis.decorator";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
 import { AppConfig, IAppConfig } from "~/config";
 import { randomValue } from "~/utils";

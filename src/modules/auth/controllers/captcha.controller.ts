@@ -1,15 +1,14 @@
-import { InjectRedis } from "@liaoliaots/nestjs-redis";
 import { Controller, Get, Query } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-
 import Redis from "ioredis";
+
 import { isEmpty } from "lodash";
 import * as svgCaptcha from "svg-captcha";
 
 import { ApiResult } from "~/common/decorators/api-result.decorator";
+import { InjectRedis } from "~/common/decorators/inject-redis.decorator";
 import { genCaptchaImgKey } from "~/helper/genRedisKey";
 import { generateUUID } from "~/utils";
-
 import { Public } from "../../../common/decorators/public.decorator";
 
 import { ImageCaptchaDto } from "../dto/captcha.dto";
@@ -19,7 +18,7 @@ import { ImageCaptcha } from "../models/auth.model";
 // @UseGuards(ThrottlerGuard)
 @Controller("auth/captcha")
 export class CaptchaController {
-    constructor(@InjectRedis() private redis: Redis) {}
+    constructor(@InjectRedis() private redis: Redis) { }
 
     @Get("img")
     @ApiOperation({ summary: "获取登录图片验证码" })

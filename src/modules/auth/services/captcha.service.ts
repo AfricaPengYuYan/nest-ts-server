@@ -1,10 +1,11 @@
-import { InjectRedis } from "@liaoliaots/nestjs-redis";
 import { Injectable } from "@nestjs/common";
-
 import Redis from "ioredis";
+
 import { isEmpty } from "lodash";
 
 import { ErrorEnum } from "~/common/constants/error-code.constant";
+
+import { InjectRedis } from "~/common/decorators/inject-redis.decorator";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
 import { genCaptchaImgKey } from "~/helper/genRedisKey";
 import { CaptchaLogService } from "~/modules/system/log/services/captcha-log.service";
@@ -12,10 +13,10 @@ import { CaptchaLogService } from "~/modules/system/log/services/captcha-log.ser
 @Injectable()
 export class CaptchaService {
     constructor(
-    @InjectRedis() private redis: Redis,
+        @InjectRedis() private redis: Redis,
 
-    private captchaLogService: CaptchaLogService,
-    ) {}
+        private captchaLogService: CaptchaLogService,
+    ) { }
 
     /**
      * 校验图片验证码

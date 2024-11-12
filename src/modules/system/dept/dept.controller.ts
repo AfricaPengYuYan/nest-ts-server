@@ -11,7 +11,6 @@ import { HttpApiException } from "~/common/exceptions/http.api.exception";
 import { CreatorPipe } from "~/common/pipes/creator.pipe";
 import { UpdaterPipe } from "~/common/pipes/updater.pipe";
 import { DeptEntity } from "~/modules/system/dept/dept.entity";
-
 import { DeptDto, DeptQueryDto } from "./dept.dto";
 
 import { DeptService } from "./dept.service";

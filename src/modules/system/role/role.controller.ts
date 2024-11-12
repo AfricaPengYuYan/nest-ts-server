@@ -19,7 +19,6 @@ import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
 import { UpdaterPipe } from "~/common/pipes/updater.pipe";
 import { SseService } from "~/modules/sse/sse.service";
 import { RoleEntity } from "~/modules/system/role/role.entity";
-
 import { MenuService } from "../menu/menu.service";
 
 import { QueryRoleDto, RoleDto, UpdateRoleDto } from "./role.dto";

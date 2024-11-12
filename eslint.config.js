@@ -1,7 +1,7 @@
 // 导入 @antfu/eslint-config 配置包，用于扩展 ESLint 规则
 const antfu = require("@antfu/eslint-config").default;
 
-const PRINTWIDTH = 180;
+const PRINTWIDTH = 210;
 const INDENT = 4;
 
 // 导出配置对象，该对象基于 @antfu/eslint-config 进行定制
@@ -213,24 +213,7 @@ module.exports = antfu({
         "ts/consistent-type-imports": "off",
         // 允许使用全局的 process 变量
         "node/prefer-global/process": "off",
-        // 允许使用全局的 Buffer 类
-        "node/prefer-global/buffer": "off",
 
-        // 设置导入顺序规则
-        "import/order": [
-            2,
-            {
-                "pathGroups": [
-                    {
-                        pattern: "~/**",
-                        group: "external",
-                        position: "after",
-                    },
-                ],
-                "alphabetize": { order: "asc", caseInsensitive: false },
-                "newlines-between": "always-and-inside-groups",
-                "warnOnUnassignedImports": true,
-            },
-        ],
+        "ts/no-unused-expressions": "off",
     },
 });

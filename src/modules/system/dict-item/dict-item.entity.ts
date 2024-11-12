@@ -2,7 +2,6 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 import { CompleteEntity } from "~/entity/common.entity";
-
 import { DictTypeEntity } from "../dict-type/dict-type.entity";
 
 @Entity({ name: "sys_dict_item" })

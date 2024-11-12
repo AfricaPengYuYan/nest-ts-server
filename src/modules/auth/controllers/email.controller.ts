@@ -5,7 +5,6 @@ import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
 
 import { Ip } from "~/common/decorators/http.decorator";
 import { MailerService } from "~/shared/mailer/mailer.service";
-
 import { Public } from "../../../common/decorators/public.decorator";
 
 import { SendEmailCodeDto } from "../dto/captcha.dto";

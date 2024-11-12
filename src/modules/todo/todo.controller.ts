@@ -17,7 +17,6 @@ import { Resource } from "~/common/decorators/resource.decorator";
 import { ResourceGuard } from "~/common/guards/resource.guard";
 import { Pagination } from "~/helper/paginate/pagination";
 import { TodoEntity } from "~/modules/todo/todo.entity";
-
 import { QueryTodoDto, TodoDto, UpdateTodoDto } from "./todo.dto";
 
 import { TodoService } from "./todo.service";

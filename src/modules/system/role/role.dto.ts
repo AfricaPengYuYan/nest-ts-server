@@ -4,7 +4,6 @@ import { IsArray, IsIn, IsOptional, IsString, Matches, MinLength } from "class-v
 import { OperatorDto } from "~/dto/operator.dto";
 import { PageDto } from "~/dto/pager.dto";
 import { IsUnique } from "~/shared/database/constraints/unique.constraint";
-
 import { RoleEntity } from "./role.entity";
 
 export class RoleDto extends OperatorDto {

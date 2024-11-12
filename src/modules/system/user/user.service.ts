@@ -1,16 +1,16 @@
-import { InjectRedis } from "@liaoliaots/nestjs-redis";
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectEntityManager, InjectRepository } from "@nestjs/typeorm";
 import Redis from "ioredis";
 import { isEmpty, isNil } from "lodash";
-
 import { EntityManager, In, Like, Repository } from "typeorm";
 
 import { ErrorEnum } from "~/common/constants/error-code.constant";
 import { ROOT_ROLE_ID, SYS_USER_INITPASSWORD } from "~/common/constants/system.constant";
+import { InjectRedis } from "~/common/decorators/inject-redis.decorator";
 import { HttpApiException } from "~/common/exceptions/http.api.exception";
 import { genAuthPermKey, genAuthPVKey, genAuthTokenKey, genOnlineUserKey } from "~/helper/genRedisKey";
 import { paginate } from "~/helper/paginate";
+
 import { Pagination } from "~/helper/paginate/pagination";
 import { AccountUpdateDto } from "~/modules/auth/dto/account.dto";
 import { RegisterDto } from "~/modules/auth/dto/auth.dto";
@@ -20,7 +20,6 @@ import { RoleEntity } from "~/modules/system/role/role.entity";
 import { AccessTokenEntity } from "~/modules/token/access-token.entity";
 import { QQService } from "~/shared/helper/qq.service";
 import { md5, randomValue } from "~/utils";
-
 import { UserStatus } from "./user.constant";
 
 import { QueryUserDto, UpdatePasswordDto, UpdateUserDto, UserDto } from "./user.dto";

@@ -18,7 +18,7 @@ export function getFileType(extName: string) {
     const music = "mp3 wav wma mpa ram ra aac aif m4a";
     const video = "avi mpg mpe mpeg asf wmv mov qt rm mp4 flv m4v webm ogv ogg";
     const image
-    = "bmp dib pcp dif wmf gif jpg tif eps psd cdr iff tga pcd mpt png jpeg";
+        = "bmp dib pcp dif wmf gif jpg tif eps psd cdr iff tga pcd mpt png jpeg";
     if (image.includes(extName))
         return Type.IMAGE;
 
@@ -72,11 +72,11 @@ export function getFilePath(name: string, currentDate: string, type: string) {
 export async function saveLocalFile(buffer: Buffer, name: string, currentDate: string, type: string) {
     const filePath = path.join(__dirname, "../../", "public/upload/", `${currentDate}/`, `${type}/`);
     try {
-    // 判断是否有该文件夹
+        // 判断是否有该文件夹
         await fs.promises.stat(filePath);
     }
     catch (error) {
-    // 没有该文件夹就创建
+        // 没有该文件夹就创建
         await fs.promises.mkdir(filePath, { recursive: true });
     }
     const writeStream = fs.createWriteStream(filePath + name);
@@ -92,6 +92,6 @@ export async function saveFile(file: MultipartFile, name: string) {
 
 export async function deleteFile(name: string) {
     fs.unlink(path.join(__dirname, "../../", "public", name), () => {
-    // console.log(error);
+        // console.log(error);
     });
 }

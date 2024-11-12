@@ -3,7 +3,6 @@ import { ForbiddenException } from "@nestjs/common";
 import { envBoolean } from "~/global/env";
 import { MenuEntity } from "~/modules/system/menu/menu.entity";
 import { isExternal } from "~/utils/is.util";
-
 import { uniqueSlash } from "./tool.util";
 
 export interface RouteRecordRaw {

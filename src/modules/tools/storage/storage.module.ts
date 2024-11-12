@@ -2,7 +2,6 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { UserEntity } from "~/modules/system/user/user.entity";
-
 import { StorageController } from "./storage.controller";
 import { Storage } from "./storage.entity";
 import { StorageService } from "./storage.service";

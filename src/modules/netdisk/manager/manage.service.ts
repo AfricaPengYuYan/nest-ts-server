@@ -10,7 +10,6 @@ import { IOssConfig, OssConfig } from "~/config";
 import { AccountInfo } from "~/modules/system/user/user.model";
 import { UserService } from "~/modules/system/user/user.service";
 import { generateRandomValue } from "~/utils";
-
 import { SFileInfo, SFileInfoDetail, SFileList } from "./manage.class";
 
 import { FileOpItem } from "./manage.dto";

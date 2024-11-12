@@ -7,7 +7,6 @@ import { definePermission, Permission } from "~/common/decorators/permission.dec
 import { ApiSecurityAuth } from "~/common/decorators/swagger.decorator";
 import { Pagination } from "~/helper/paginate/pagination";
 import { TaskEntity } from "~/modules/system/task/task.entity";
-
 import { TaskDto, TaskQueryDto, TaskUpdateDto } from "./task.dto";
 
 import { TaskService } from "./task.service";
