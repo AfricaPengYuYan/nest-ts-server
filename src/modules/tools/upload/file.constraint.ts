@@ -10,7 +10,7 @@ import { has, isArray } from "lodash";
 
 type FileLimit = Pick<
     FastifyMultipartBaseOptions["limits"],
-  "fileSize" | "files"
+    "fileSize" | "files"
 > & {
     mimetypes?: string[];
 };

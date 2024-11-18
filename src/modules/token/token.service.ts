@@ -11,7 +11,6 @@ import { UserEntity } from "~/modules/system/user/user.entity";
 import { generateUUID } from "~/utils";
 
 import { AccessTokenEntity } from "./access-token.entity";
-
 import { RefreshTokenEntity } from "./refresh-token.entity";
 
 /**

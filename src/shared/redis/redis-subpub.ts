@@ -5,10 +5,7 @@ import IORedis from "ioredis";
 export class RedisSubPub {
     public pubClient: Redis;
     public subClient: Redis;
-    constructor(
-        private redisConfig: RedisOptions,
-        private channelPrefix: string = "m-shop-channel#",
-    ) {
+    constructor(private redisConfig: RedisOptions, private channelPrefix: string = "m-shop-channel#") {
         this.init();
     }
 
