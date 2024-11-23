@@ -174,7 +174,7 @@ export class NetDiskManageService {
                                         resolve(detailInfo);
                                     }
                                     else {
-                                        detailInfo.uploader = user.username;
+                                        detailInfo.uploader = user.userName;
                                         resolve(detailInfo);
                                     }
                                 });

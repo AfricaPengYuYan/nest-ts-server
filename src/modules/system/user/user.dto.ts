@@ -16,7 +16,7 @@ export class UserDto {
     @Matches(/^[\s\S]+$/)
     @MinLength(4)
     @MaxLength(20)
-    username: string;
+    userName: string;
 
     @ApiProperty({ description: "登录密码", example: "a123456" })
     @IsOptional()
@@ -40,7 +40,7 @@ export class UserDto {
     @ApiProperty({ description: "呢称", example: "admin" })
     @IsOptional()
     @IsString()
-    nickname: string;
+    nickName: string;
 
     @ApiProperty({ description: "邮箱", example: "bqy.dev@qq.com" })
     @IsEmail()

@@ -2,9 +2,9 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { UserModule } from "~/modules/system/user/user.module";
-import { CaptchaLogEntity } from "./entities/captcha-log.entity";
-import { LoginLogEntity } from "./entities/login-log.entity";
-import { TaskLogEntity } from "./entities/task-log.entity";
+import { CaptchaLogEntity } from "./entity/captcha-log.entity";
+import { LoginLogEntity } from "./entity/login-log.entity";
+import { TaskLogEntity } from "./entity/task-log.entity";
 import { LogController } from "./log.controller";
 import { CaptchaLogService } from "./services/captcha-log.service";
 import { LoginLogService } from "./services/login-log.service";

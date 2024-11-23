@@ -4,7 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { LessThan, Repository } from "typeorm";
 
 import { paginate } from "~/helper/paginate";
-import { TaskLogEntity } from "../entities/task-log.entity";
+import { TaskLogEntity } from "../entity/task-log.entity";
 import { QueryTaskLogDto } from "../log.dto";
 
 @Injectable()

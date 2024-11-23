@@ -9,12 +9,7 @@ export class Storage extends CommonEntity {
     @ApiProperty({ description: "文件名" })
     name: string;
 
-    @Column({
-        type: "varchar",
-        length: 200,
-        nullable: true,
-        comment: "真实文件名",
-    })
+    @Column({ type: "varchar", length: 200, nullable: true, comment: "真实文件名" })
     @ApiProperty({ description: "真实文件名" })
     fileName: string;
 

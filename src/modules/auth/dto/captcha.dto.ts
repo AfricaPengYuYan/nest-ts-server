@@ -9,21 +9,13 @@ import {
 } from "class-validator";
 
 export class ImageCaptchaDto {
-    @ApiProperty({
-        required: false,
-        default: 100,
-        description: "验证码宽度",
-    })
+    @ApiProperty({ required: false, default: 100, description: "验证码宽度" })
     @Type(() => Number)
     @IsInt()
     @IsOptional()
     readonly width: number = 100;
 
-    @ApiProperty({
-        required: false,
-        default: 50,
-        description: "验证码宽度",
-    })
+    @ApiProperty({ required: false, default: 50, description: "验证码高度" })
     @Type(() => Number)
     @IsInt()
     @IsOptional()

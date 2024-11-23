@@ -62,7 +62,7 @@ export class OnlineService {
             deptName: token.user.dept?.name ?? "",
             os: `${`${uaResult.os.name ?? ""} `}${uaResult.os.version}`,
             browser: `${`${uaResult.browser.name ?? ""} `}${uaResult.browser.version}`,
-            username: token.user.username,
+            userName: token.user.userName,
             time: token.created_time.toString(),
         };
         await this.redis.set(genOnlineUserKey(token.id), JSON.stringify(result), "EX", exp);

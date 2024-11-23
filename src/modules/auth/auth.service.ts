@@ -50,13 +50,8 @@ export class AuthService {
         return null;
     }
 
-    async login(
-        username: string,
-        password: string,
-        ip: string,
-        ua: string,
-    ): Promise<string> {
-        const user = await this.userService.findUserByUserName(username);
+    async login(account: string, password: string, ip: string, ua: string): Promise<string> {
+        const user = await this.userService.findUserByAccount(account);
         if (isEmpty(user))
             throw new HttpApiException(ErrorEnum.INVALID_USERNAME_PASSWORD);
 
@@ -85,8 +80,8 @@ export class AuthService {
         return token.accessToken;
     }
 
-    async checkPassword(username: string, password: string) {
-        const user = await this.userService.findUserByUserName(username);
+    async checkPassword(account: string, password: string) {
+        const user = await this.userService.findUserByAccount(account);
 
         const comparePassword = md5(`${password}${user.psalt}`);
         if (user.password !== comparePassword)
@@ -97,8 +92,8 @@ export class AuthService {
         await this.loginLogService.create(uid, ip, ua);
     }
 
-    async resetPassword(username: string, password: string) {
-        const user = await this.userService.findUserByUserName(username);
+    async resetPassword(account: string, password: string) {
+        const user = await this.userService.findUserByAccount(account);
 
         await this.userService.forceUpdatePassword(user.id, password);
     }

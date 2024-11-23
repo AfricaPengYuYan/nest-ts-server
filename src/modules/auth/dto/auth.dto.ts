@@ -3,10 +3,10 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsString, Matches, MaxLength, MinLength } from "class-validator";
 
 export class LoginDto {
-    @ApiProperty({ description: "手机号/邮箱" })
+    @ApiProperty({ description: "账号" })
     @IsString()
     @MinLength(4)
-    username: string;
+    account: string;
 
     @ApiProperty({ description: "密码", example: "a123456" })
     @IsString()
@@ -28,7 +28,7 @@ export class LoginDto {
 export class RegisterDto {
     @ApiProperty({ description: "账号" })
     @IsString()
-    username: string;
+    account: string;
 
     @ApiProperty({ description: "密码" })
     @IsString()

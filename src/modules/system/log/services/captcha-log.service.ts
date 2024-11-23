@@ -4,7 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { LessThan, Repository } from "typeorm";
 
 import { paginate } from "~/helper/paginate";
-import { CaptchaLogEntity } from "../entities/captcha-log.entity";
+import { CaptchaLogEntity } from "../entity/captcha-log.entity";
 import { QueryCaptchaLogDto } from "../log.dto";
 
 @Injectable()

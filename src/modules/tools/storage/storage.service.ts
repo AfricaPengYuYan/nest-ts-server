@@ -40,16 +40,7 @@ export class StorageService {
         });
     }
 
-    async list({
-        page,
-    pageSize,
-    name,
-    type,
-    size,
-    extName,
-    time,
-    username,
-    }: StoragePageDto): Promise<Pagination<StorageInfo>> {
+    async list({ page, pageSize, name, type, size, extName, time, userName }: StoragePageDto): Promise<Pagination<StorageInfo>> {
         const queryBuilder = this.storageRepository
             .createQueryBuilder("storage")
             .leftJoinAndSelect("sys_user", "user", "storage.user_id = user.id")
@@ -59,8 +50,8 @@ export class StorageService {
                 ...(extName && { extName }),
                 ...(size && { size: Between(size[0], size[1]) }),
                 ...(time && { createdTime: Between(time[0], time[1]) }),
-                ...(username && {
-                    userId: await (await this.userRepository.findOneBy({ username })).id,
+                ...(userName && {
+                    userId: (await this.userRepository.findOneBy({ userName })).id,
                 }),
             })
             .orderBy("storage.created_time", "DESC");
@@ -81,7 +72,7 @@ export class StorageService {
                     type: e.storage_type,
                     size: e.storage_size,
                     createdTime: e.storage_created_at,
-                    username: e.user_username,
+                    userName: e.user_userName,
                 };
             });
         }

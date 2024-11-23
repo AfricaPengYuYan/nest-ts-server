@@ -53,11 +53,21 @@ export class UserService {
             .getOne();
     }
 
-    async findUserByUserName(username: string): Promise<UserEntity | undefined> {
+    async findUserByUserName(userName: string): Promise<UserEntity | undefined> {
         return this.userRepository
             .createQueryBuilder("user")
             .where({
-                username,
+                userName,
+                status: UserStatus.Enabled,
+            })
+            .getOne();
+    }
+
+    async findUserByAccount(account: string): Promise<UserEntity | undefined> {
+        return this.userRepository
+            .createQueryBuilder("user")
+            .where({
+                account,
                 status: UserStatus.Enabled,
             })
             .getOne();
@@ -84,7 +94,7 @@ export class UserService {
             throw new HttpApiException(ErrorEnum.USER_NOT_FOUND);
 
         const data = {
-            ...(info.nickname ? { nickname: info.nickname } : null),
+            ...(info.nickName ? { nickName: info.nickName } : null),
             ...(info.avatar ? { avatar: info.avatar } : null),
             ...(info.email ? { email: info.email } : null),
             ...(info.phone ? { phone: info.phone } : null),
@@ -124,9 +134,9 @@ export class UserService {
         await this.upgradePasswordV(user.id);
     }
 
-    async create({ username, password, roleIds, deptId, ...data }: UserDto): Promise<void> {
+    async create({ userName, password, roleIds, deptId, ...data }: UserDto): Promise<void> {
         const exists = await this.userRepository.findOneBy({
-            username,
+            userName,
         });
         if (!isEmpty(exists))
             throw new HttpApiException(ErrorEnum.SYSTEM_USER_EXISTS);
@@ -144,7 +154,7 @@ export class UserService {
                 password = md5(`${password ?? "123456"}${salt}`);
             }
             const u = manager.create(UserEntity, {
-                username,
+                userName,
                 password,
                 ...data,
                 psalt: salt,
@@ -224,14 +234,14 @@ export class UserService {
         return user.id;
     }
 
-    async list({ page, pageSize, username, nickname, deptId, email, status }: QueryUserDto): Promise<Pagination<UserEntity>> {
+    async list({ page, pageSize, userName, nickName, deptId, email, status }: QueryUserDto): Promise<Pagination<UserEntity>> {
         const queryBuilder = this.userRepository
             .createQueryBuilder("user")
             .leftJoinAndSelect("user.dept", "dept")
             .leftJoinAndSelect("user.roles", "role")
             .where({
-                ...(username ? { username: Like(`%${username}%`) } : null),
-                ...(nickname ? { nickname: Like(`%${nickname}%`) } : null),
+                ...(userName ? { userName: Like(`%${userName}%`) } : null),
+                ...(nickName ? { nickName: Like(`%${nickName}%`) } : null),
                 ...(email ? { email: Like(`%${email}%`) } : null),
                 ...(!isNil(status) ? { status } : null),
             });
@@ -279,17 +289,17 @@ export class UserService {
             await this.redis.set(genAuthPVKey(id), Number.parseInt(v) + 1);
     }
 
-    async exist(username: string) {
-        const user = await this.userRepository.findOneBy({ username });
+    async exist(userName: string) {
+        const user = await this.userRepository.findOneBy({ userName });
         if (isNil(user))
             throw new HttpApiException(ErrorEnum.SYSTEM_USER_EXISTS);
 
         return true;
     }
 
-    async register({ username, ...data }: RegisterDto): Promise<void> {
+    async register({ account, ...data }: RegisterDto): Promise<void> {
         const exists = await this.userRepository.findOneBy({
-            username,
+            account,
         });
         if (!isEmpty(exists))
             throw new HttpApiException(ErrorEnum.SYSTEM_USER_EXISTS);
@@ -300,7 +310,7 @@ export class UserService {
             const password = md5(`${data.password ?? "a123456"}${salt}`);
 
             const u = manager.create(UserEntity, {
-                username,
+                account,
                 password,
                 status: 1,
                 psalt: salt,

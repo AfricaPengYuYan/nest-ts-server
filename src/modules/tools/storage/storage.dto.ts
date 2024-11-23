@@ -31,7 +31,7 @@ export class StoragePageDto extends PageDto {
     @ApiProperty({ description: "上传者" })
     @IsString()
     @IsOptional()
-    username: string;
+    userName: string;
 }
 
 export class StorageCreateDto {

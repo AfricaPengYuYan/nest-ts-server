@@ -4,10 +4,10 @@ import { IsArray, IsOptional, IsString } from "class-validator";
 import { PageDto } from "~/common/dto/pager.dto";
 
 export class QueryLoginLogDto extends PageDto {
-    @ApiProperty({ description: "用户名" })
+    @ApiProperty({ description: "账号" })
     @IsString()
     @IsOptional()
-    username: string;
+    account: string;
 
     @ApiProperty({ description: "登录IP" })
     @IsOptional()
@@ -26,10 +26,10 @@ export class QueryLoginLogDto extends PageDto {
 }
 
 export class QueryTaskLogDto extends PageDto {
-    @ApiProperty({ description: "用户名" })
+    @ApiProperty({ description: "账号" })
     @IsOptional()
     @IsString()
-    username: string;
+    account: string;
 
     @ApiProperty({ description: "登录IP" })
     @IsString()
@@ -42,10 +42,10 @@ export class QueryTaskLogDto extends PageDto {
 }
 
 export class QueryCaptchaLogDto extends PageDto {
-    @ApiProperty({ description: "用户名" })
+    @ApiProperty({ description: "账号" })
     @IsOptional()
     @IsString()
-    username: string;
+    account: string;
 
     @ApiProperty({ description: "验证码" })
     @IsString()

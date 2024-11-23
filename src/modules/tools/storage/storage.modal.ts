@@ -23,5 +23,5 @@ export class StorageInfo {
     createdTime: string;
 
     @ApiProperty({ description: "上传者" })
-    username: string;
+    userName: string;
 }

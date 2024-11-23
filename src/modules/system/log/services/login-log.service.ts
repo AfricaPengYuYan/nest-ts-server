@@ -7,7 +7,7 @@ import UAParser from "ua-parser-js";
 
 import { paginateRaw } from "~/helper/paginate";
 import { getIpAddress } from "~/utils/ip.util";
-import { LoginLogEntity } from "../entities/login-log.entity";
+import { LoginLogEntity } from "../entity/login-log.entity";
 import { QueryLoginLogDto } from "../log.dto";
 import { LoginLogInfo } from "../log.model";
 
@@ -20,7 +20,7 @@ async function parseLoginLog(e: any, parser: UAParser): Promise<LoginLogInfo> {
         address: e.login_log_address,
         os: `${`${uaResult.os.name ?? ""} `}${uaResult.os.version}`,
         browser: `${`${uaResult.browser.name ?? ""} `}${uaResult.browser.version}`,
-        username: e.user_username,
+        userName: e.user_username,
         time: e.login_log_created_at,
     };
 }
@@ -52,7 +52,7 @@ export class LoginLogService {
     async list({
         page,
         pageSize,
-        username,
+        account,
         ip,
         address,
         time,
@@ -64,9 +64,9 @@ export class LoginLogService {
                 ...(ip && { ip: Like(`%${ip}%`) }),
                 ...(address && { address: Like(`%${address}%`) }),
                 ...(time && { createdTime: Between(time[0], time[1]) }),
-                ...(username && {
+                ...(account && {
                     user: {
-                        username: Like(`%${username}%`),
+                        account: Like(`%${account}%`),
                     },
                 }),
             })

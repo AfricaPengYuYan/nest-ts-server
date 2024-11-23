@@ -14,13 +14,9 @@ import { CaptchaLogService } from "~/modules/system/log/services/captcha-log.ser
 export class CaptchaService {
     constructor(
         @InjectRedis() private redis: Redis,
-
         private captchaLogService: CaptchaLogService,
     ) { }
 
-    /**
-     * 校验图片验证码
-     */
     async checkImgCaptcha(id: string, code: string): Promise<void> {
         const result = await this.redis.get(genCaptchaImgKey(id));
         if (isEmpty(result) || code.toLowerCase() !== result.toLowerCase())
@@ -30,12 +26,7 @@ export class CaptchaService {
         await this.redis.del(genCaptchaImgKey(id));
     }
 
-    async log(
-        account: string,
-        code: string,
-        provider: "sms" | "email",
-        uid?: number,
-    ): Promise<void> {
+    async log(account: string, code: string, provider: "sms" | "email", uid?: number): Promise<void> {
         await this.captchaLogService.create(account, code, provider, uid);
     }
 }

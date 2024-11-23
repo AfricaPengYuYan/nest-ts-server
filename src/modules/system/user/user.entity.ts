@@ -9,8 +9,11 @@ import { AccessTokenEntity } from "~/modules/token/access-token.entity";
 
 @Entity({ name: "sys_user" })
 export class UserEntity extends CommonEntity {
-    @Column({ unique: true, comment: "用户名", type: "varchar", length: 50 })
-    username: string;
+    @Column({ nullable: true, comment: "账号", type: "varchar", length: 50 })
+    account: string;
+
+    @Column({ nullable: true, comment: "用户名/真实姓名", type: "varchar", length: 50, name: "user_name" })
+    userName: string;
 
     @Exclude()
     @Column({ nullable: true, comment: "密码", type: "varchar", length: 50 })
@@ -19,8 +22,8 @@ export class UserEntity extends CommonEntity {
     @Column({ nullable: true, comment: "密码盐", type: "varchar", length: 50 })
     psalt: string;
 
-    @Column({ nullable: true, comment: "昵称", type: "varchar", length: 50 })
-    nickname: string;
+    @Column({ nullable: true, comment: "昵称", type: "varchar", length: 50, name: "nick_name" })
+    nickName: string;
 
     @Column({ nullable: true, comment: "头像", type: "varchar", length: 255 })
     avatar: string;
@@ -37,7 +40,7 @@ export class UserEntity extends CommonEntity {
     @Column({ nullable: true, comment: "备注", type: "varchar", length: 255 })
     remark: string;
 
-    @Column({ comment: "状态：1-启用, 0-禁用", type: "tinyint", default: 1 })
+    @Column({ nullable: true, comment: "状态：1-启用, 0-禁用", type: "tinyint", default: 1 })
     status: number;
 
     @ManyToMany(() => RoleEntity, role => role.users)
