@@ -32,6 +32,7 @@ import { SocketModule } from "./socket/socket.module";
             expandVariables: true,
             // 指定多个 env 文件时，第一个优先级最高
             envFilePath: [`.env.${process.env.NODE_ENV}`, ".env"],
+            // 加载配置文件
             load: [...Object.values(config)],
         }),
         // 启用 CLS 上下文
@@ -64,16 +65,19 @@ import { SocketModule } from "./socket/socket.module";
         TodoModule,
     ],
     providers: [
+        // 全局异常过滤器
         { provide: APP_FILTER, useClass: HttpExceptionsFilter },
 
-        { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
-        { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
-        { provide: APP_INTERCEPTOR, useFactory: () => new TimeoutInterceptor(15 * 1000) },
-        { provide: APP_INTERCEPTOR, useClass: IdempotenceInterceptor },
+        // 全局拦截器
+        { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor }, // 序列化拦截器
+        { provide: APP_INTERCEPTOR, useClass: TransformInterceptor }, // 响应转换拦截器
+        { provide: APP_INTERCEPTOR, useFactory: () => new TimeoutInterceptor(15 * 1000) }, // 超时拦截器
+        { provide: APP_INTERCEPTOR, useClass: IdempotenceInterceptor }, // 幂等性拦截器
 
-        { provide: APP_GUARD, useClass: JwtAuthGuard },
-        { provide: APP_GUARD, useClass: RbacGuard },
-        { provide: APP_GUARD, useClass: ThrottlerGuard },
+        // 全局守卫
+        { provide: APP_GUARD, useClass: JwtAuthGuard }, // JWT认证守卫
+        { provide: APP_GUARD, useClass: RbacGuard }, // 角色权限守卫
+        { provide: APP_GUARD, useClass: ThrottlerGuard }, // 请求限流守卫
 
     ],
 })

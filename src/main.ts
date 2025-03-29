@@ -28,12 +28,13 @@ import { LoggerService } from "./shared/logger/logger.service";
 declare const module: any;
 
 async function bootstrap() {
+    // 创建 NestJS 应用实例
     const app = await NestFactory.create<NestFastifyApplication>(
         AppModule,
         fastifyApp,
         {
-            bufferLogs: true,
-            snapshot: true,
+            bufferLogs: true, // 缓冲日志
+            snapshot: true, // 启用快照
             // forceCloseConnections: true,
         },
     );
@@ -42,35 +43,41 @@ async function bootstrap() {
 
     const { port, globalPrefix } = configService.get("app", { infer: true });
 
-    // class-validator 的 DTO 类中注入 nest 容器的依赖 (用于自定义验证器)
+    // 配置 class-validator 以支持依赖注入
     useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
+    // 配置跨域
     app.enableCors({ origin: "*", credentials: true });
-    // 设置全局前缀
+    // 设置全局路由前缀
     app.setGlobalPrefix(globalPrefix);
-    // 静态资源
+    // 配置静态资源目录
     app.useStaticAssets({ root: path.join(__dirname, "..", "public") });
-    // Starts listening for shutdown hooks
+    // 生产环境启用优雅关闭钩子
     !isDev && app.enableShutdownHooks();
 
+    // 开发环境启用日志拦截器
     if (isDev)
         app.useGlobalInterceptors(new LoggingInterceptor());
 
-    // 获取真实ip
+    // 配置请求IP中间件
     app.use(requestIpMw({ attributeName: "ip" }));
 
-    // web 安全，防常见漏洞
-    // 注意： 开发环境如果开启 nest static module 需要将 crossOriginResourcePolicy 设置为 false 否则 静态资源 跨域不可访问
-    app.use(helmet({ crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" }, crossOriginResourcePolicy: false }));
+    // 配置安全头
+    app.use(helmet({
+        crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
+        crossOriginResourcePolicy: false, // 开发环境允许跨域访问静态资源
+    }));
 
+    // 配置全局验证管道
     app.useGlobalPipes(
         new ValidationPipe({
-            transform: true,
-            whitelist: true,
-            transformOptions: { enableImplicitConversion: true },
-            // forbidNonWhitelisted: true, // 禁止 无装饰器验证的数据通过
+            transform: true, // 开启数据转换
+            whitelist: true, // 启用白名单验证
+            transformOptions: {
+                enableImplicitConversion: true, // 启用隐式转换
+            },
+            stopAtFirstError: true, // 遇到第一个错误即停止
             errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-            stopAtFirstError: true,
             exceptionFactory: errors =>
                 new UnprocessableEntityException(
                     errors.map((e) => {

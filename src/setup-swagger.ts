@@ -8,22 +8,21 @@ import { Result, TreeResult } from "./common/models/result.model";
 import { ConfigKeyPaths, IAppConfig, ISwaggerConfig } from "./config";
 import { Pagination } from "./helper/paginate/pagination";
 
-export function setupSwagger(
-    app: INestApplication,
-    configService: ConfigService<ConfigKeyPaths>,
-): void {
+export function setupSwagger(app: INestApplication, configService: ConfigService<ConfigKeyPaths>): void {
     const { name, port } = configService.get<IAppConfig>("app")!;
     const { enable, path } = configService.get<ISwaggerConfig>("swagger")!;
 
+    // 如果未启用swagger则直接返回
     if (!enable)
         return;
 
+    // 构建 Swagger 文档配置
     const documentBuilder = new DocumentBuilder()
         .setTitle(name)
         .setDescription(`${name} API document`)
         .setVersion("1.0");
 
-    // auth security
+    // 配置JWT认证
     documentBuilder.addSecurity(API_SECURITY_AUTH, {
         description: "输入令牌（Enter the token）",
         type: "http",
@@ -31,14 +30,16 @@ export function setupSwagger(
         bearerFormat: "JWT",
     });
 
+    // 创建 Swagger 文档
     const document = SwaggerModule.createDocument(app, documentBuilder.build(), {
         ignoreGlobalPrefix: false,
-        extraModels: [CommonEntity, Result, Pagination, TreeResult],
+        extraModels: [CommonEntity, Result, Pagination, TreeResult], // 注册额外的模型
     });
 
+    // 设置 Swagger UI
     SwaggerModule.setup(path, app, document, {
         swaggerOptions: {
-            persistAuthorization: true, // 保持登录
+            persistAuthorization: true, // 保持认证状态
         },
     });
 
